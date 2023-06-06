@@ -1,1 +1,3 @@
 rootProject.name = 'MeetWithNeighborsApp'
+include 'weyoui-system-domain'
+include 'weyoui-app-core'
