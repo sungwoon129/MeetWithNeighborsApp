@@ -1,0 +1,7 @@
+spring:
+  config:
+    location: classpath:local.yml
+  profiles:
+    default: local
+
+
