@@ -6,6 +6,9 @@ import jakarta.persistence.*;
 public class PaymentInfo {
 
     @Column(name = "payment_id")
+    @AttributeOverrides(
+            @AttributeOverride(name = "id", column = @Column(name = "payment_id"))
+    )
     private Long id;
 
     @Enumerated(EnumType.STRING)

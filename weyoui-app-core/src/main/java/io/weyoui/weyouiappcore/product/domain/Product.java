@@ -1,12 +1,11 @@
 package io.weyoui.weyouiappcore.product.domain;
 
 import io.weyoui.domain.BaseTimeEntity;
-import io.weyoui.domain.Image;
 import io.weyoui.domain.Money;
 import io.weyoui.util.MoneyConverter;
-import io.weyoui.weyouiappcore.store.domain.StoreId;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,8 +25,10 @@ public class Product extends BaseTimeEntity {
     @Convert(converter = MoneyConverter.class)
     private Money price;
 
-    @OneToMany(mappedBy = "products")
-    private List<Image> images;
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    @OrderColumn(name = "list_idx")
+    private List<Image> images = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "product_state")

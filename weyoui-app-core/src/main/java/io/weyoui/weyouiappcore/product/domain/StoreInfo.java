@@ -1,15 +1,15 @@
 package io.weyoui.weyouiappcore.product.domain;
 
 import io.weyoui.weyouiappcore.store.domain.StoreId;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.*;
 
 @Embeddable
 public class StoreInfo {
 
-    @EmbeddedId
     @Column(name = "store_id")
+    @AttributeOverrides(
+            @AttributeOverride(name = "id", column = @Column(name = "store_id"))
+    )
     private StoreId id;
 
     @Column(name = "store_name")

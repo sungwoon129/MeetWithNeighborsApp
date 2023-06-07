@@ -1,17 +1,15 @@
-package io.weyoui.domain;
+package io.weyoui.weyouiappcore.product.domain;
 
-import io.weyoui.domain.Image;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
-
-@DiscriminatorValue("external")
+@DiscriminatorValue("internal")
 @Entity
-public class ExternalImage extends Image {
+public class InternalImage extends Image {
 
-    protected  ExternalImage() {}
+    protected InternalImage() {}
 
-    public ExternalImage(String path) {
+    public InternalImage(String path) {
         super(path);
     }
 

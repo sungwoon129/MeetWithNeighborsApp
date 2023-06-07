@@ -1,4 +1,4 @@
-package io.weyoui.domain;
+package io.weyoui.weyouiappcore.product.domain;
 
 import jakarta.persistence.*;
 
@@ -16,7 +16,7 @@ public abstract class Image {
 
     @Column(name = "image_path")
     private String path;
-    
+
     @Column(name = "upload_time")
     private LocalDateTime uploadTime;
 
