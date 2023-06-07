@@ -9,13 +9,14 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
+@Entity
 public class Product extends BaseTimeEntity {
 
     @EmbeddedId
     @Column(name = "product_id")
     private ProductId productId;
 
-    @EmbeddedId
+    @Embedded
     private StoreInfo storeInfo;
 
     @Column(name = "product_name")
@@ -27,6 +28,10 @@ public class Product extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "products")
     private List<Image> images;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "product_state")
+    private ProductState state;
 
 
 
