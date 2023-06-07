@@ -7,13 +7,17 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.util.Objects;
 
-@NoArgsConstructor
 @Embeddable
 public class UserId implements Serializable {
 
     @Column(name = "user_id")
     private String id;
 
+    protected UserId() {}
+
+    public UserId(String id) {
+        this.id = id;
+    }
 
     @Override
     public boolean equals(Object o) {

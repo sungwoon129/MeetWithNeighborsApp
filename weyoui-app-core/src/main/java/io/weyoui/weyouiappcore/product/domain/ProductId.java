@@ -1,32 +1,30 @@
-package io.weyoui.weyouiappcore.group.domain;
+package io.weyoui.weyouiappcore.product.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-@Getter
 @Embeddable
-public class GroupId implements Serializable {
+public class ProductId implements Serializable {
 
-    @Column(name = "group_id")
+    @Column(name = "product_id")
     private String id;
 
 
-    protected GroupId() {}
+    protected ProductId() {}
 
-    public GroupId(String id) {
+    public ProductId(String id) {
         this.id = id;
     }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof GroupId groupId)) return false;
-        return Objects.equals(id, groupId.id);
+        if (!(o instanceof ProductId productId)) return false;
+        return Objects.equals(id, productId.id);
     }
 
     @Override

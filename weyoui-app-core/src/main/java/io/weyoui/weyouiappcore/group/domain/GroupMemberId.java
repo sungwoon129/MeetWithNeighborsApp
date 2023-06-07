@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.util.Objects;
 
-@NoArgsConstructor
 @Embeddable
 public class GroupMemberId implements Serializable {
 
@@ -15,6 +14,12 @@ public class GroupMemberId implements Serializable {
     private String id;
 
 
+
+    protected GroupMemberId() {}
+
+    public GroupMemberId(String id) {
+        this.id = id;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
