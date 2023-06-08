@@ -21,6 +21,11 @@ public class Group extends BaseTimeEntity {
     @Embedded
     private GroupCategory category;
 
+    private Integer capacity;
+
+    @Column(name = "head_count")
+    private Integer headCount;
+
     @Lob
     private String description;
 
@@ -33,7 +38,7 @@ public class Group extends BaseTimeEntity {
             @AttributeOverride(name = "address2", column = @Column(name = "group_activity_address2")),
             @AttributeOverride(name = "zipCode", column = @Column(name = "group_activity_zipCode"))
     })
-    private Address address;
+    private Address venue;
 
     @Column(name = "start_time")
     private LocalDateTime startTime;

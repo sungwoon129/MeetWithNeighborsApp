@@ -7,7 +7,8 @@ public enum GroupCategory implements EnumMapperType {
     WORKOUT("운동"),
     WALK("산책"),
     FRIENDSHIP("친목"),
-    MEAL("식사");
+    MEAL("식사"),
+    ETC("기타");
 
     private String title;
 
