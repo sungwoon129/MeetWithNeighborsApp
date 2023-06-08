@@ -30,7 +30,7 @@ public class User extends BaseTimeEntity {
     })
     private Address address;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<GroupMember> groups = new ArrayList<>();
 
     @Column(name = "user_state")

@@ -41,7 +41,7 @@ public class Group extends BaseTimeEntity {
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "group", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<GroupMember> members = new ArrayList<>();
 
 

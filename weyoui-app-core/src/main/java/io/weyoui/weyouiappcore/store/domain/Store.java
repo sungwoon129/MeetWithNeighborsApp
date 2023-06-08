@@ -1,7 +1,7 @@
 package io.weyoui.weyouiappcore.store.domain;
 
+import io.weyoui.domain.Address;
 import io.weyoui.domain.BaseTimeEntity;
-import io.weyoui.weyouiappcore.product.domain.ProductId;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -16,9 +16,12 @@ public class Store extends BaseTimeEntity {
     @Column(name = "store_name")
     private String name;
 
+    @Embedded
+    private Address address;
+
     @ElementCollection
     @CollectionTable(name = "store_product", joinColumns = @JoinColumn(name = "store_id"))
-    private Set<ProductId> productIds;
+    private Set<ProductInfo> productInfos;
 
     private Float rating;
 

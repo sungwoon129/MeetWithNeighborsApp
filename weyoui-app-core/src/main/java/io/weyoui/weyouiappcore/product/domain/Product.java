@@ -21,7 +21,6 @@ public class Product extends BaseTimeEntity {
     @Column(name = "product_name")
     private String name;
 
-
     @Convert(converter = MoneyConverter.class)
     private Money price;
 

@@ -18,6 +18,7 @@ public class Orderer {
     @Column(name = "orderer_name")
     private String name;
 
+    @Column(name = "orderer_phone")
     private String phone;
 
 
