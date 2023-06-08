@@ -100,7 +100,7 @@ WeYouI(가제)는 SNS를 통해서 전 세계 사람들과 소통할 수 있지�
 
 
 ### UML ###
-![UML](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/0c7252e2-5c8c-4041-9135-f493668e98a0)
+![UML](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/c52c7e8b-6595-4a00-88c0-2700968ffb5a)
 
 
 
