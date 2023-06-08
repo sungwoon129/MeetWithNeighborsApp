@@ -6,6 +6,7 @@ public enum OrderState implements EnumMapperType {
     ORDER("주문"),
     PAYMENT_REQUEST("결제요청"),
     PAYMENT_COMPLETE("결제완료"),
+    CONFIRM("주문확인"),
     COMPLETE("주문완료"),
     CANCEL("주문취소");
 

@@ -3,9 +3,9 @@ package io.weyoui.weyouiappcore.group.domain;
 import io.weyoui.weyouiappcore.util.EnumMapperType;
 
 public enum GroupState implements EnumMapperType {
-    BEFORE("활동 전"),
-    ACTIVE("활동 중"),
-    END("활동 종료");
+    BEFORE_ACTIVITY("활동 전"),
+    IN_ACTIVITY("활동 중"),
+    END_ACTIVITY("활동 종료");
 
     private String title;
 

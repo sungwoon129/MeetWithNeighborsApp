@@ -1,6 +1,6 @@
 package io.weyoui.weyouiappcore.config.webConfig;
 
-import io.weyoui.weyouiappcore.group.domain.Category;
+import io.weyoui.weyouiappcore.group.domain.GroupCategory;
 import io.weyoui.weyouiappcore.group.domain.GroupState;
 import io.weyoui.weyouiappcore.order.domain.OrderState;
 import io.weyoui.weyouiappcore.store.domain.StoreCategory;
@@ -18,7 +18,7 @@ public class AppConfig {
         EnumMapper enumMapper = new EnumMapper();
         enumMapper.put("userState", UserState.class);
         enumMapper.put("groupState", GroupState.class);
-        enumMapper.put("category", Category.class);
+        enumMapper.put("groupCategory", GroupCategory.class);
         enumMapper.put("orderState", OrderState.class);
         enumMapper.put("storeCategory", StoreCategory.class);
         enumMapper.put("storeState", StoreState.class);

@@ -19,7 +19,7 @@ public class Group extends BaseTimeEntity {
     private GroupId id;
 
     @Embedded
-    private Category category;
+    private GroupCategory category;
 
     @Lob
     private String description;
