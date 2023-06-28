@@ -107,13 +107,9 @@ WeYouI(가제)는 SNS를 통해서 전 세계 사람들과 소통할 수 있지�
 전체 스토리보드는 [WeYou,I.pdf](https://github.com/sungwoon129/MeetWithNeighborsApp/files/11898676/WeYou.I.pdf) 에서 확인할 수 있습니다.
 아래는 전체 스토리보드 중 일부입니다.
 
-![홈 _ 로그인 정보가 없는 경우](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/17166041-115f-4e60-9070-218749000b64)
-
-![홈(모임) - 메인 - 목록 _ 로그인 정보가 있는 경우](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/4a759d94-915d-4161-8d96-988e9ee9a2d6)
-
-![홈- 모임활동 상세](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/9f333e0a-2a20-4f3b-b53c-de3a673002eb)
-
-![My - 나의 가게 - 가게관리](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/518be024-72f9-4328-a0ab-77cc09384d49)
-
+![홈 _ 로그인 정보가 없는 경우](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/17166041-115f-4e60-9070-218749000b64){: width="20%" height="20%"}
+![홈(모임) - 메인 - 목록 _ 로그인 정보가 있는 경우](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/4a759d94-915d-4161-8d96-988e9ee9a2d6){: width="20%" height="20%"}
+![홈- 모임활동 상세](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/9f333e0a-2a20-4f3b-b53c-de3a673002eb){: width="20%" height="20%"}
+![My - 나의 가게 - 가게관리](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/518be024-72f9-4328-a0ab-77cc09384d49){: width="20%" height="20%"}
 ![WeYou,I - 전체](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/8684f1c7-e0bc-4ee6-a88c-469136b604f9)
 
