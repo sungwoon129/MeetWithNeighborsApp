@@ -3,13 +3,16 @@ package io.weyoui.weyouiappcore.user.domain;
 import io.weyoui.domain.Address;
 import io.weyoui.domain.BaseTimeEntity;
 import io.weyoui.weyouiappcore.group.domain.GroupMember;
+import io.weyoui.weyouiappcore.user.presentation.dto.UserResponse;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Builder
 @Table(name = "users")
 @Entity
 public class User extends BaseTimeEntity {
@@ -39,6 +42,21 @@ public class User extends BaseTimeEntity {
 
     @Embedded
     private DeviceInfo deviceInfo;
+
+    protected User() {}
+
+
+    public UserResponse toResponseDto() {
+        return UserResponse.builder()
+                .id(id)
+                .name(name)
+                .address(address)
+                .groups(groups)
+                .deviceInfo(deviceInfo)
+                .build();
+
+    }
+
 
 
 
