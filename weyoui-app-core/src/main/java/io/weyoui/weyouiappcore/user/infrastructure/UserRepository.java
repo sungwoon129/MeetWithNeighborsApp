@@ -12,6 +12,8 @@ public interface UserRepository extends Repository<User, UserId> {
 
     Optional<User> findById(UserId id);
 
+    Optional<User> findByEmail(String email);
+
     void save(User user);
 
     void delete(User user);

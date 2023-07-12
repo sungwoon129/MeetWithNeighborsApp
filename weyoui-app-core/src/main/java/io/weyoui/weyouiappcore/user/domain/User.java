@@ -21,6 +21,8 @@ public class User extends BaseTimeEntity {
     @EmbeddedId
     private UserId id;
 
+    private String email;
+
     private String name;
 
     private String password;
@@ -34,7 +36,7 @@ public class User extends BaseTimeEntity {
     private Address address;
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
-    private List<GroupMember> groups = new ArrayList<>();
+    private List<GroupMember> groups;
 
     @Column(name = "user_state")
     @Enumerated(EnumType.STRING)
@@ -44,6 +46,17 @@ public class User extends BaseTimeEntity {
     private DeviceInfo deviceInfo;
 
     protected User() {}
+
+    public User(UserId id, String email, String name, String password, Address address, List<GroupMember> groups, UserState state, DeviceInfo deviceInfo) {
+        this.id = id;
+        this.email = email;
+        this.name = name;
+        this.password = password;
+        this.address = address;
+        this.groups = groups;
+        this.state = state;
+        this.deviceInfo = deviceInfo;
+    }
 
 
     public UserResponse toResponseDto() {

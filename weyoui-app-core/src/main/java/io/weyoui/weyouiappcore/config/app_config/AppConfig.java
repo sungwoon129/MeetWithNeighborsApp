@@ -1,5 +1,6 @@
-package io.weyoui.weyouiappcore.config.webConfig;
+package io.weyoui.weyouiappcore.config.app_config;
 
+import io.weyoui.weyouiappcore.config.exception.ErrorCode;
 import io.weyoui.weyouiappcore.group.domain.GroupCategory;
 import io.weyoui.weyouiappcore.group.domain.GroupState;
 import io.weyoui.weyouiappcore.order.domain.OrderState;
@@ -22,6 +23,7 @@ public class AppConfig {
         enumMapper.put("orderState", OrderState.class);
         enumMapper.put("storeCategory", StoreCategory.class);
         enumMapper.put("storeState", StoreState.class);
+        enumMapper.put("errorCode", ErrorCode.class);
 
         return enumMapper;
     }

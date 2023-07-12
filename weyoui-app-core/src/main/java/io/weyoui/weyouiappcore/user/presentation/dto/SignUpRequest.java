@@ -9,24 +9,16 @@ import lombok.Getter;
 @Getter
 public class SignUpRequest {
 
-    private String name;
+    private String email;
     private String password;
     private String passwordConfirm;
     private DeviceInfo deviceInfo;
 
 
     @Builder
-    public SignUpRequest(String password, String name) {
+    public SignUpRequest(String password, String email) {
         this.password = password;
-        this.name = name;
-    }
-
-    public User toEntity() {
-        return User.builder()
-                .name(this.name)
-                .password(this.password)
-                .deviceInfo(deviceInfo)
-                .build();
+        this.email = email;
     }
 
 
