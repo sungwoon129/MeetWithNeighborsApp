@@ -1,7 +1,10 @@
 package io.weyoui.weyouiappcore.product.domain;
 
 import io.weyoui.weyouiappcore.store.domain.StoreId;
-import jakarta.persistence.*;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 
 @Embeddable
 public class StoreInfo {

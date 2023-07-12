@@ -3,7 +3,6 @@ package io.weyoui.weyouiappcore.order.domain;
 import io.weyoui.domain.Money;
 import io.weyoui.util.MoneyConverter;
 import io.weyoui.weyouiappcore.product.domain.ProductId;
-import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;

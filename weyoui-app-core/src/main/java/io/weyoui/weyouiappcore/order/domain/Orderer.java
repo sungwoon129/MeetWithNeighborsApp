@@ -1,6 +1,5 @@
 package io.weyoui.weyouiappcore.order.domain;
 
-import io.weyoui.weyouiappcore.group.domain.Group;
 import io.weyoui.weyouiappcore.group.domain.GroupId;
 import jakarta.persistence.*;
 

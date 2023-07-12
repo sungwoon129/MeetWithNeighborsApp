@@ -1,7 +1,5 @@
 package io.weyoui.weyouiappcore.util;
 
-import org.springframework.context.annotation.Bean;
-
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
