@@ -30,4 +30,6 @@ public class CustomExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    //TODO : JWT 인증과정에서 발생하는 예외처리 필요
+
 }

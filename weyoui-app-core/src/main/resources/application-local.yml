@@ -27,3 +27,10 @@ spring:
       org.hibernate:
         SQL: debug
         type: trace
+
+jwt:
+  token:
+    secret-key: weyoui####
+
+baseUrl: http://localhost:8080
+

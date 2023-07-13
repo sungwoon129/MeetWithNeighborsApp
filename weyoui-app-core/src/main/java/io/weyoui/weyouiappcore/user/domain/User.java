@@ -3,18 +3,23 @@ package io.weyoui.weyouiappcore.user.domain;
 import io.weyoui.domain.Address;
 import io.weyoui.domain.BaseTimeEntity;
 import io.weyoui.weyouiappcore.group.domain.GroupMember;
-import io.weyoui.weyouiappcore.user.presentation.dto.UserResponse;
+import io.weyoui.weyouiappcore.user.presentation.dto.response.UserResponse;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
 @Builder
 @Table(name = "users")
 @Entity
-public class User extends BaseTimeEntity {
+public class User extends BaseTimeEntity implements UserDetails {
 
     @Column(name = "user_id")
     @EmbeddedId
@@ -44,9 +49,13 @@ public class User extends BaseTimeEntity {
     @Embedded
     private DeviceInfo deviceInfo;
 
+    @Enumerated(EnumType.STRING)
+    private RoleType role;
+
     protected User() {}
 
-    public User(UserId id, String email, String name, String password, Address address, List<GroupMember> groups, UserState state, DeviceInfo deviceInfo) {
+    public User(UserId id, String email, String name, String password, Address address, List<GroupMember> groups, UserState state, DeviceInfo deviceInfo,
+                RoleType role) {
         this.id = id;
         this.email = email;
         this.name = name;
@@ -55,6 +64,7 @@ public class User extends BaseTimeEntity {
         this.groups = groups;
         this.state = state;
         this.deviceInfo = deviceInfo;
+        this.role = role;
     }
 
 
@@ -70,6 +80,33 @@ public class User extends BaseTimeEntity {
     }
 
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singleton(new SimpleGrantedAuthority(getRole().name()));
+    }
 
+    @Override
+    public String getUsername() {
+        return email;
+    }
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return !state.equals(UserState.INACTIVE);
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return !state.equals(UserState.BLOCK);
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isAccountNonExpired() && isAccountNonLocked();
+    }
 }

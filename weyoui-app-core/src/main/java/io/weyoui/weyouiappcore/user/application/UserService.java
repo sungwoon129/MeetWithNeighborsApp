@@ -5,8 +5,8 @@ import io.weyoui.weyouiappcore.user.domain.UserId;
 import io.weyoui.weyouiappcore.user.exception.DuplicateEmailException;
 import io.weyoui.weyouiappcore.user.exception.NotFoundUserException;
 import io.weyoui.weyouiappcore.user.infrastructure.UserRepository;
-import io.weyoui.weyouiappcore.user.presentation.dto.LoginRequest;
-import io.weyoui.weyouiappcore.user.presentation.dto.SignUpRequest;
+import io.weyoui.weyouiappcore.user.presentation.dto.request.LoginRequest;
+import io.weyoui.weyouiappcore.user.presentation.dto.request.SignUpRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

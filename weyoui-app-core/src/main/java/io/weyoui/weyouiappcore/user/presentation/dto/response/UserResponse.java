@@ -1,10 +1,11 @@
-package io.weyoui.weyouiappcore.user.presentation.dto;
+package io.weyoui.weyouiappcore.user.presentation.dto.response;
 
 import io.weyoui.domain.Address;
 import io.weyoui.weyouiappcore.group.domain.GroupMember;
 import io.weyoui.weyouiappcore.user.domain.DeviceInfo;
 import io.weyoui.weyouiappcore.user.domain.UserId;
 import io.weyoui.weyouiappcore.user.domain.UserState;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -25,5 +26,16 @@ public class UserResponse {
     private UserState state;
 
     private DeviceInfo deviceInfo;
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    public static class Token {
+        private String grantType;
+        private String accessToken;
+        private String refreshToken;
+        private Long refreshTokenExpirationTime;
+    }
+
 
 }

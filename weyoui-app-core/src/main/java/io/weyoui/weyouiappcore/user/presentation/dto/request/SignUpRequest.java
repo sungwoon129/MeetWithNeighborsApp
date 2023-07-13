@@ -1,8 +1,6 @@
-package io.weyoui.weyouiappcore.user.presentation.dto;
+package io.weyoui.weyouiappcore.user.presentation.dto.request;
 
-import io.weyoui.domain.Address;
 import io.weyoui.weyouiappcore.user.domain.DeviceInfo;
-import io.weyoui.weyouiappcore.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 
