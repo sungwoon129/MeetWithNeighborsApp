@@ -55,7 +55,6 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/guest/**").permitAll());
 
 
-
         return http.build();
     }
 

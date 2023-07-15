@@ -1,5 +1,6 @@
 package io.weyoui.weyouiappcore.user.application;
 
+import io.weyoui.weyouiappcore.config.app_config.JwtTokenProvider;
 import io.weyoui.weyouiappcore.user.domain.User;
 import io.weyoui.weyouiappcore.user.domain.UserId;
 import io.weyoui.weyouiappcore.user.exception.DuplicateEmailException;
@@ -7,6 +8,10 @@ import io.weyoui.weyouiappcore.user.exception.NotFoundUserException;
 import io.weyoui.weyouiappcore.user.infrastructure.UserRepository;
 import io.weyoui.weyouiappcore.user.presentation.dto.request.LoginRequest;
 import io.weyoui.weyouiappcore.user.presentation.dto.request.SignUpRequest;
+import io.weyoui.weyouiappcore.user.presentation.dto.response.UserResponse;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,10 +21,14 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, JwtTokenProvider jwtTokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {
         this.userRepository = userRepository;
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.authenticationManagerBuilder = authenticationManagerBuilder;
     }
 
     public UserId signUp(SignUpRequest request) {
@@ -37,10 +46,14 @@ public class UserService {
         return user.getId();
     }
 
-    public User login(LoginRequest request) {
-        User user = findByEmail(request.getEmail());
+    public UserResponse.Token login(LoginRequest loginRequest) {
 
-        return user;
+        findByEmail(loginRequest.getEmail());
+
+        UsernamePasswordAuthenticationToken authToken = loginRequest.toAuthentication();
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authToken);
+
+        return jwtTokenProvider.generateToken(authentication);
     }
 
 
@@ -54,9 +67,8 @@ public class UserService {
     }
 
     public User findByEmail(String email) {
-        User findUser = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundUserException("해당 email을 가진 회원을 찾을 수 없습니다."));
 
-        return findUser;
+        return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundUserException("해당 email을 가진 회원을 찾을 수 없습니다."));
     }
 
     private void validationDuplicateUser(String email) {
