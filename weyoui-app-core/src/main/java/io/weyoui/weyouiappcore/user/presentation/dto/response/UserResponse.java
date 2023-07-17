@@ -3,6 +3,7 @@ package io.weyoui.weyouiappcore.user.presentation.dto.response;
 import io.weyoui.domain.Address;
 import io.weyoui.weyouiappcore.group.domain.GroupMember;
 import io.weyoui.weyouiappcore.user.domain.DeviceInfo;
+import io.weyoui.weyouiappcore.user.domain.RoleType;
 import io.weyoui.weyouiappcore.user.domain.UserId;
 import io.weyoui.weyouiappcore.user.domain.UserState;
 import lombok.AllArgsConstructor;
@@ -25,7 +26,10 @@ public class UserResponse {
 
     private UserState state;
 
+    private RoleType role;
+
     private DeviceInfo deviceInfo;
+
 
     @Builder
     @Getter
