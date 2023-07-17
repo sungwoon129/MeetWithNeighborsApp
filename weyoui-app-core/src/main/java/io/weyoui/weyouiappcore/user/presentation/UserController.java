@@ -23,13 +23,6 @@ public class UserController {
 
     public UserController(UserService userService) {this.userService = userService;}
 
-    @PostMapping("/api/v1/users/sign-up")
-    public ResponseEntity<CommonResponse<UserId>> signUp(@RequestBody SignUpRequest signUpRequest) {
-        UserId userId = userService.signUp(signUpRequest);
-
-        return ResponseEntity.ok().body(new CommonResponse<>(userId));
-    }
-
     @PostMapping("/api/v1/users/login")
     public ResponseEntity<CommonResponse<UserResponse.Token>> login(@RequestBody LoginRequest loginRequest) {
 
