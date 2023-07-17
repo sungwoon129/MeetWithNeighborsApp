@@ -30,7 +30,7 @@ spring:
 
 jwt:
   token:
-    secret-key: weyoui####
+    secret-key: we3y6o54ui134nsndnfenGR34zcR3kiKM5MVz3po5zer10Ge5fKqI98vRCbLiqpz40t1t5ef9Zc
 
 baseUrl: http://localhost:8080
 

@@ -12,7 +12,8 @@ public enum ErrorCode implements EnumMapperType {
     PAGE_NOT_FOUND("E005", "Page Not Found"),
     INTERNAL_SERVER_ERROR("E006", "INTERNAL SERVER ERROR."),
     NOT_FOUND_USER("E007", "존재하지 않는 회원입니다."),
-    DUPLICATION_EMAIL("E008", "이미 존재하는 이메일입니다.");
+    DUPLICATION_EMAIL("E008", "이미 존재하는 이메일입니다."),
+    VALIDATION_FAILED("E009", "유효성 검사에 실패하였습니다.");
 
     private String code;
     private String message;
