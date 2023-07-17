@@ -80,15 +80,8 @@ public class JwtTokenProvider {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
         }
 
-        // 클레임에서 권한 정보 가져오기
-        RoleType role = Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-                .map(RoleType::findByName)
-                .findFirst()
-                .orElse(null);
-
-        // TODO : User 엔티티의 role이 null일경우, 어떻게 동작하는지 테스트코드 작성
-        // TODO : getAuthentication 함수 리팩토링(코드분리)
-
+        // TODO : User 엔티티의 role이 null일경우, 어떻게 동작하는지 테스트코드 작성(코드분리)
+        RoleType role = getFirstRoleType(claims);
 
         // UserDetails 객체를 만들어서 Authentication 리턴
         UserDetails principal = User.builder()
@@ -97,6 +90,16 @@ public class JwtTokenProvider {
                 .build();
 
         return new UsernamePasswordAuthenticationToken(principal, "", principal.getAuthorities());
+    }
+
+    private static RoleType getFirstRoleType(Claims claims) {
+        // 클레임에서 권한 정보 가져오기
+        RoleType role = Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+                .map(RoleType::findByName)
+                .findFirst()
+                .orElse(null);
+
+        return role;
     }
 
     private Claims parseClaims(String accessToken) {
@@ -115,6 +118,9 @@ public class JwtTokenProvider {
 
 
     public boolean validateToken(String token) {
+
+        if(token == null) return false; // GUEST
+
         try {
             Jwts.parserBuilder()
                     .setSigningKey(secretKey)
