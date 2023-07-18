@@ -1,7 +1,15 @@
 package io.weyoui.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
 public class CommonResponse<T>  {
     private T data;
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     private int count;
 
     public CommonResponse(T data, int count) {
@@ -11,6 +19,6 @@ public class CommonResponse<T>  {
 
     public CommonResponse(T data) {
         this.data = data;
-        this.count = 1;
+
     }
 }
