@@ -6,9 +6,11 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Builder
 @Getter
+@NoArgsConstructor
 public class SignUpRequest {
 
     @NotEmpty(message = "이메일 필드는 필수입력값입니다.")
@@ -22,10 +24,19 @@ public class SignUpRequest {
     private String passwordConfirm;
     private DeviceInfo deviceInfo;
 
-
+    public SignUpRequest(String email, String password, String passwordConfirm, DeviceInfo deviceInfo) {
+        this.email = email;
+        this.password = password;
+        this.passwordConfirm = passwordConfirm;
+        this.deviceInfo = deviceInfo;
+    }
 
 
     public boolean isEqualPwAndPwConfirm() {
+
+        if(password == null || passwordConfirm == null) {
+            throw new NullPointerException("비밀번호와 비밀번호확인은 필수값 입니다.");
+        }
 
         if(!password.equals(passwordConfirm)) {
             throw new IllegalStateException("비밀번호와 비밀번호확인의 값이 일치하지 않습니다.");
