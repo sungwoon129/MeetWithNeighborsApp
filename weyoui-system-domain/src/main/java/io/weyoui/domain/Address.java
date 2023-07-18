@@ -18,7 +18,7 @@ public class Address {
     @Column(name = "address2")
     private String address2;
 
-    @Column(name = "zipCode")
+    @Column(name = "zip_code")
     private String zipCode;
 
     public String getFullAddress() {
