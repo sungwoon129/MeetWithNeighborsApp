@@ -17,8 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Transactional
 @Service
 public class UserService {
@@ -77,20 +75,17 @@ public class UserService {
         return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundUserException("해당 email을 가진 회원을 찾을 수 없습니다."));
     }
 
-    private void singUpValidate(SignUpRequest request) {
+    private void singUpValidate(SignUpRequest signUpRequest) {
 
-        request.isEqualPwAndPwConfirm();
-        validationDuplicateUser(request.getEmail());
+        signUpRequest.isEqualPwAndPwConfirm();
+        validationDuplicateUser(signUpRequest.getEmail());
 
     }
 
     private void validationDuplicateUser(String email) {
-
-        Optional<User> findUser = userRepository.findByEmail(email);
-
-        findUser.ifPresent(user -> {
+        if(userRepository.existsByEmail(email)) {
             throw new DuplicateEmailException("이미 존재하는 이메일입니다.");
-        });
+        }
     }
 
 }
