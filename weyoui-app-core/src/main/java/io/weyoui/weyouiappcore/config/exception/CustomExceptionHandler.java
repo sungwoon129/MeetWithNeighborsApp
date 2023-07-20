@@ -1,5 +1,7 @@
 package io.weyoui.weyouiappcore.config.exception;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.weyoui.weyouiappcore.user.exception.DuplicateEmailException;
 import io.weyoui.weyouiappcore.user.exception.NotFoundUserException;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +44,23 @@ public class CustomExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(value = ExpiredJwtException.class)
+    protected ResponseEntity<ErrorResponse> handleExpiredJwtException(ExpiredJwtException e) {
+        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.TOKEN_ERROR);
+        errorResponse.setHttpStatus(HttpStatus.UNAUTHORIZED);
+        errorResponse.setDetail("Toke is Expired.");
+        log.error(e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
 
-    //TODO : JWT 인증과정에서 발생하는 예외처리 필요
+    @ExceptionHandler(value = UnsupportedJwtException.class)
+    protected ResponseEntity<ErrorResponse> handleUnsupportedJwtException(UnsupportedJwtException e) {
+        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.TOKEN_ERROR);
+        errorResponse.setHttpStatus(HttpStatus.UNAUTHORIZED);
+        errorResponse.setDetail("Invalid JWT Token");
+        log.error(e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
+
 
 }
