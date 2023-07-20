@@ -31,16 +31,14 @@ public class JwtTokenProvider {
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 7 * 24 * 60 * 60 * 1000L;    // 7일
     private static final String BEARER_TYPE = "Bearer";
 
-    public JwtTokenProvider(@Value("${jwt.token.secret-key}")String secretKey) {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+    public JwtTokenProvider(@Value("${jwt.token.secret-key}")String key) {
+        byte[] keyBytes = Decoders.BASE64.decode(key);
         this.secretKey = Keys.hmacShaKeyFor(keyBytes);
     }
 
     public UserResponse.Token generateToken(Authentication authentication) {
-        // 권한 가져오기
-        String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
+
+        String authorities = getAuthorities(authentication);
 
         Date now = new Date();
 
@@ -80,19 +78,18 @@ public class JwtTokenProvider {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
         }
 
-        // TODO : User 엔티티의 role이 null일경우, 어떻게 동작하는지 테스트코드 작성(코드분리)
         RoleType role = getFirstRoleType(claims);
 
         // UserDetails 객체를 만들어서 Authentication 리턴
         UserDetails principal = User.builder()
-                .id(new UserId(claims.getSubject()))
+                .email(claims.getSubject())
                 .role(role)
                 .build();
 
         return new UsernamePasswordAuthenticationToken(principal, "", principal.getAuthorities());
     }
 
-    private static RoleType getFirstRoleType(Claims claims) {
+    private RoleType getFirstRoleType(Claims claims) {
         // 클레임에서 권한 정보 가져오기
         RoleType role = Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
                 .map(RoleType::findByName)
@@ -100,6 +97,13 @@ public class JwtTokenProvider {
                 .orElse(null);
 
         return role;
+    }
+
+    private String getAuthorities(Authentication authentication) {
+        // 권한 가져오기
+        return authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
     }
 
     private Claims parseClaims(String accessToken) {
@@ -128,11 +132,7 @@ public class JwtTokenProvider {
                     .parseClaimsJws(token);
         } catch (SecurityException | MalformedJwtException e) {
             log.info("Invalid JWT Token", e);
-        } catch (ExpiredJwtException e) {
-            log.info("Expired JWT Token", e);
-        } catch (UnsupportedJwtException e) {
-            log.info("Unsupported JWT Token", e);
-        } catch (IllegalArgumentException e) {
+        }  catch (IllegalArgumentException e) {
             log.info("JWT claims string is empty.", e);
         }
         return false;
