@@ -2,6 +2,7 @@ package io.weyoui.weyouiappcore.user.presentation.dto.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,6 +16,12 @@ public class LoginRequest {
     private String email;
     @NotEmpty(message = "비밀번호는 필수입력값입니다.")
     private String password;
+
+    @Builder
+    public LoginRequest(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 
     public UsernamePasswordAuthenticationToken toAuthentication() {
         return new UsernamePasswordAuthenticationToken(email,password);
