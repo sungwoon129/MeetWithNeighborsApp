@@ -1,6 +1,5 @@
-package io.weyoui.domain;
+package io.weyoui.weyouiappcore.common;
 
-import jakarta.persistence.Embeddable;
 import lombok.Getter;
 
 import java.util.Objects;

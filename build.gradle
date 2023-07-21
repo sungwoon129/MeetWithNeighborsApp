@@ -48,8 +48,7 @@ subprojects {
     // 관리하는 모듈에 공통 dependencies
     dependencies {
 
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
+
     }
 
     test {

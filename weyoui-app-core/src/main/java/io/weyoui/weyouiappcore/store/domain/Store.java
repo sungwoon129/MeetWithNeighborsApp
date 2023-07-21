@@ -1,7 +1,7 @@
 package io.weyoui.weyouiappcore.store.domain;
 
-import io.weyoui.domain.Address;
-import io.weyoui.domain.BaseTimeEntity;
+import io.weyoui.weyouiappcore.common.Address;
+import io.weyoui.weyouiappcore.common.BaseTimeEntity;
 import jakarta.persistence.*;
 
 import java.util.Set;

@@ -1,6 +1,6 @@
 package io.weyoui.weyouiappcore.user.presentation.dto.response;
 
-import io.weyoui.domain.Address;
+import io.weyoui.weyouiappcore.common.Address;
 import io.weyoui.weyouiappcore.group.domain.GroupMember;
 import io.weyoui.weyouiappcore.user.domain.DeviceInfo;
 import io.weyoui.weyouiappcore.user.domain.RoleType;

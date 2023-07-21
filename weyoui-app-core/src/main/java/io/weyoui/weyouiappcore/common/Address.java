@@ -1,4 +1,4 @@
-package io.weyoui.domain;
+package io.weyoui.weyouiappcore.common;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

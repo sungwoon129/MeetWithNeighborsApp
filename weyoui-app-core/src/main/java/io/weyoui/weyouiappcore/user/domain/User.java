@@ -1,7 +1,7 @@
 package io.weyoui.weyouiappcore.user.domain;
 
-import io.weyoui.domain.Address;
-import io.weyoui.domain.BaseTimeEntity;
+import io.weyoui.weyouiappcore.common.Address;
+import io.weyoui.weyouiappcore.common.BaseTimeEntity;
 import io.weyoui.weyouiappcore.group.domain.GroupMember;
 import io.weyoui.weyouiappcore.user.presentation.dto.response.UserResponse;
 import jakarta.persistence.*;

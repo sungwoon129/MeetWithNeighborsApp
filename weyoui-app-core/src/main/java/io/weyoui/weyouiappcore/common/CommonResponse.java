@@ -1,4 +1,4 @@
-package io.weyoui.domain;
+package io.weyoui.weyouiappcore.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;

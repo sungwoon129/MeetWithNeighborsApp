@@ -1,6 +1,6 @@
 package io.weyoui.weyouiappcore.group.domain;
 
-import io.weyoui.domain.BaseTimeEntity;
+import io.weyoui.weyouiappcore.common.BaseTimeEntity;
 import io.weyoui.weyouiappcore.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Getter;

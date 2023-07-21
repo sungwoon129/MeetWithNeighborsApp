@@ -1,6 +1,5 @@
-package io.weyoui.util;
+package io.weyoui.weyouiappcore.common;
 
-import io.weyoui.domain.Money;
 import jakarta.persistence.AttributeConverter;
 
 public class MoneyConverter implements AttributeConverter<Money, Integer> {

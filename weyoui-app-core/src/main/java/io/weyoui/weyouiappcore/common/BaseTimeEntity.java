@@ -1,4 +1,4 @@
-package io.weyoui.domain;
+package io.weyoui.weyouiappcore.common;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
