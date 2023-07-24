@@ -5,6 +5,7 @@ import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.geo.Point;
 
 @Getter
 @AllArgsConstructor
@@ -20,6 +21,8 @@ public class Address {
 
     @Column(name = "zip_code")
     private String zipCode;
+
+    private Point point;
 
     public String getFullAddress() {
         return address1 + address2;
