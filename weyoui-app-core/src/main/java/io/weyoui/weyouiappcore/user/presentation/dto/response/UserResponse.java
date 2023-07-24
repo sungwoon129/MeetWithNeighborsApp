@@ -18,7 +18,9 @@ public class UserResponse {
 
     private UserId id;
 
-    private String name;
+    private String email;
+
+    private String nickname;
 
     private Address address;
 

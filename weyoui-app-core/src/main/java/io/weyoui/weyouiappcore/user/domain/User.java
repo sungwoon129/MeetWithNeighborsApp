@@ -27,7 +27,7 @@ public class User extends BaseTimeEntity implements UserDetails {
 
     private String email;
 
-    private String name;
+    private String nickname;
 
     private String password;
 
@@ -58,7 +58,7 @@ public class User extends BaseTimeEntity implements UserDetails {
                 RoleType role) {
         this.id = id;
         this.email = email;
-        this.name = name;
+        this.nickname = nickname;
         this.password = password;
         this.address = address;
         this.groups = groups;
@@ -71,7 +71,8 @@ public class User extends BaseTimeEntity implements UserDetails {
     public UserResponse toResponseDto() {
         return UserResponse.builder()
                 .id(id)
-                .name(name)
+                .email(email)
+                .nickname(nickname)
                 .address(address)
                 .groups(groups)
                 .deviceInfo(deviceInfo)
