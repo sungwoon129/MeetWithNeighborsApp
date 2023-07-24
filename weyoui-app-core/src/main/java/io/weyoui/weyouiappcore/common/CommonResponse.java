@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 public class CommonResponse<T>  {
     private T data;
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-    private int count;
+    private long total;
 
-    public CommonResponse(T data, int count) {
+    public CommonResponse(T data, long count) {
         this.data = data;
-        this.count = count;
+        this.total = count;
     }
 
     public CommonResponse(T data) {
