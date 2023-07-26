@@ -1,7 +1,10 @@
 spring:
-  config:
-    location: classpath:local.yml
   profiles:
     default: local
+    group:
+      local: local
+      dev: dev
+      test: test
+
 
 
