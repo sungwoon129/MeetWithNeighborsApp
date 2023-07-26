@@ -54,7 +54,7 @@ public class User extends BaseTimeEntity implements UserDetails {
 
     protected User() {}
 
-    public User(UserId id, String email, String name, String password, Address address, List<GroupMember> groups, UserState state, DeviceInfo deviceInfo,
+    public User(UserId id, String email, String nickname, String password, Address address, List<GroupMember> groups, UserState state, DeviceInfo deviceInfo,
                 RoleType role) {
         this.id = id;
         this.email = email;

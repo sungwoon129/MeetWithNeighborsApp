@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.user.application;
+package io.weyoui.weyouiappcore.user.command.application;
 
 import io.weyoui.weyouiappcore.config.app_config.JwtTokenProvider;
 import io.weyoui.weyouiappcore.user.domain.RoleType;
@@ -87,5 +87,7 @@ public class UserService {
             throw new DuplicateEmailException("이미 존재하는 이메일입니다.");
         }
     }
+
+
 
 }

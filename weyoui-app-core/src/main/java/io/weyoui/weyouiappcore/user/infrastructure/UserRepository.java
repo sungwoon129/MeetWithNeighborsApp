@@ -2,15 +2,14 @@ package io.weyoui.weyouiappcore.user.infrastructure;
 
 import io.weyoui.weyouiappcore.user.domain.User;
 import io.weyoui.weyouiappcore.user.domain.UserId;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import io.weyoui.weyouiappcore.user.query.application.dao.UserRepositoryCustom;
 import org.springframework.data.repository.Repository;
 
 import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
-public interface UserRepository extends Repository<User, UserId> {
+public interface UserRepository extends Repository<User, UserId>, UserRepositoryCustom {
 
     Optional<User> findById(UserId id);
 
@@ -20,7 +19,6 @@ public interface UserRepository extends Repository<User, UserId> {
 
     boolean existsByEmail(String email);
 
-    Page<User> findAll(Pageable pageable);
 
     default UserId nextUserId() {
         int randomNo = ThreadLocalRandom.current().nextInt(900000) + 100000;
