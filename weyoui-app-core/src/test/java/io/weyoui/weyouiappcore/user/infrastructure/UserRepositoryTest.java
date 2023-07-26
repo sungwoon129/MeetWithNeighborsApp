@@ -2,6 +2,7 @@ package io.weyoui.weyouiappcore.user.infrastructure;
 
 import io.weyoui.weyouiappcore.user.domain.RoleType;
 import io.weyoui.weyouiappcore.user.domain.User;
+import io.weyoui.weyouiappcore.user.presentation.dto.UserSearch;
 import io.weyoui.weyouiappcore.user.presentation.dto.request.SignUpRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,7 @@ class UserRepositoryTest {
 
         userRepository.save(user);
 
-        Page<User> users = userRepository.findAll(PageRequest.of(0,20));
+        Page<User> users = userRepository.searchAll(new UserSearch(), PageRequest.of(0,10));
         User findUser = users.stream().findFirst().orElseThrow(() -> new NullPointerException("불러올 회원이 존재하지 않습니다."));
 
         //then
