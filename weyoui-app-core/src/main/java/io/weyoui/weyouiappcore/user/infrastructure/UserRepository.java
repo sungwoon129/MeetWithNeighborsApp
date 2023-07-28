@@ -25,5 +25,4 @@ public interface UserRepository extends Repository<User, UserId>, UserRepository
         String number = String.format("%tY%<tm%<td%<tH-%d", new Date(), randomNo);
         return new UserId(number);
     }
-
 }

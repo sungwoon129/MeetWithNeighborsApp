@@ -4,8 +4,6 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.weyoui.weyouiappcore.user.domain.RoleType;
-import io.weyoui.weyouiappcore.user.domain.User;
-import io.weyoui.weyouiappcore.user.domain.UserId;
 import io.weyoui.weyouiappcore.user.presentation.dto.response.UserResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,13 +25,17 @@ public class JwtTokenProvider {
 
     private static final String AUTHORITIES_KEY = "auth";
     private final SecretKey secretKey;
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 30 * 60 * 1000L;              // 30분
-    private static final long REFRESH_TOKEN_EXPIRE_TIME = 7 * 24 * 60 * 60 * 1000L;    // 7일
+    private long accessTokenExpireTime;
+    private long refreshTokenExpireTime;
     private static final String BEARER_TYPE = "Bearer";
 
-    public JwtTokenProvider(@Value("${jwt.token.secret-key}")String key) {
+    public JwtTokenProvider(@Value("${jwt.token.secret-key}")String key
+            , @Value("${jwt.token.expiration-in-access-token}") final long accessTokenExpireTime
+            , @Value("${jwt.token.expiration-in-refresh-token}") final long refreshTokenExpireTime) {
         byte[] keyBytes = Decoders.BASE64.decode(key);
         this.secretKey = Keys.hmacShaKeyFor(keyBytes);
+        this.accessTokenExpireTime = accessTokenExpireTime;
+        this.refreshTokenExpireTime = refreshTokenExpireTime;
     }
 
     public UserResponse.Token generateToken(Authentication authentication) {
@@ -42,30 +44,59 @@ public class JwtTokenProvider {
 
         Date now = new Date();
 
-        // Access Token 생성
-        Date accessTokenExpiresIn = new Date(now.getTime() + ACCESS_TOKEN_EXPIRE_TIME);
+        String accessToken = generateAccessToken(authentication, now, authorities);
 
-        String accessToken = Jwts.builder()
+        String refreshToken = generateRefreshToken(authentication, now, authorities);
+
+        return UserResponse.Token.builder()
+                .grantType(BEARER_TYPE)
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .refreshTokenExpirationTime(refreshTokenExpireTime)
+                .build();
+
+    }
+
+    private String generateRefreshToken(Authentication authentication, Date now, String authorities) {
+        // Refresh Token 생성
+        return Jwts.builder()
+                .setSubject(authentication.getName())
+                .claim(AUTHORITIES_KEY, authorities)
+                .setExpiration(new Date(now.getTime() + refreshTokenExpireTime))
+                .setIssuedAt(now)
+                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    private String generateAccessToken(Authentication authentication, Date now, String authorities) {
+        // Access Token 생성
+        Date accessTokenExpiresIn = new Date(now.getTime() + accessTokenExpireTime);
+
+        return Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY, authorities)
                 .setExpiration(accessTokenExpiresIn)
                 .setIssuedAt(now)
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
+    }
 
-        // Refresh Token 생성
-        String refreshToken = Jwts.builder()
-                .setExpiration(new Date(now.getTime() + REFRESH_TOKEN_EXPIRE_TIME))
-                .claim(AUTHORITIES_KEY, authorities)
-                .setIssuedAt(now)
-                .signWith(secretKey, SignatureAlgorithm.HS256)
-                .compact();
+    public UserResponse.Token reissue(String refreshToken) {
+
+        validateToken(refreshToken);
+
+        Authentication authentication = getAuthentication(refreshToken);
+        Date now = new Date();
+        String authorities = getAuthorities(authentication);
+
+        String newAccessToken = generateAccessToken(authentication,now,authorities);
+        String newRefreshToken = generateRefreshToken(authentication,now,authorities);
 
         return UserResponse.Token.builder()
                 .grantType(BEARER_TYPE)
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .refreshTokenExpirationTime(REFRESH_TOKEN_EXPIRE_TIME)
+                .accessToken(newAccessToken)
+                .refreshToken(newRefreshToken)
+                .refreshTokenExpirationTime(refreshTokenExpireTime)
                 .build();
 
     }
@@ -80,13 +111,12 @@ public class JwtTokenProvider {
 
         RoleType role = getFirstRoleType(claims);
 
-        // UserDetails 객체를 만들어서 Authentication 리턴
-        UserDetails principal = User.builder()
-                .email(claims.getSubject())
+        UserDetails userResponse = UserResponse.builder()
+                .id(claims.getSubject())
                 .role(role)
                 .build();
 
-        return new UsernamePasswordAuthenticationToken(principal, "", principal.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userResponse.getUsername(), "", userResponse.getAuthorities());
     }
 
     private RoleType getFirstRoleType(Claims claims) {
@@ -106,13 +136,13 @@ public class JwtTokenProvider {
                 .collect(Collectors.joining(","));
     }
 
-    private Claims parseClaims(String accessToken) {
+    private Claims parseClaims(String token) {
         try {
             return Jwts
                     .parserBuilder()
                     .setSigningKey(secretKey)
                     .build()
-                    .parseClaimsJws(accessToken)
+                    .parseClaimsJws(token)
                     .getBody();
         } catch (ExpiredJwtException e) {
             return e.getClaims();
@@ -139,10 +169,12 @@ public class JwtTokenProvider {
     }
 
     public Long getExpiration(String accessToken) {
-        // accessToken 남은 유효시간
+
         Date expiration = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(accessToken).getBody().getExpiration();
 
         long now = new Date().getTime();
         return (expiration.getTime() - now);
     }
+
+
 }

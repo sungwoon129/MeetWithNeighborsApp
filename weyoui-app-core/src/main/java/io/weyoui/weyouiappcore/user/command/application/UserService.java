@@ -6,6 +6,7 @@ import io.weyoui.weyouiappcore.user.domain.User;
 import io.weyoui.weyouiappcore.user.domain.UserId;
 import io.weyoui.weyouiappcore.user.exception.DuplicateEmailException;
 import io.weyoui.weyouiappcore.user.exception.NotFoundUserException;
+import io.weyoui.weyouiappcore.user.infrastructure.RefreshTokenRedisRepository;
 import io.weyoui.weyouiappcore.user.infrastructure.UserRepository;
 import io.weyoui.weyouiappcore.user.presentation.dto.request.LoginRequest;
 import io.weyoui.weyouiappcore.user.presentation.dto.request.SignUpRequest;
@@ -17,20 +18,28 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
+import java.util.Optional;
+
 @Transactional
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final RefreshTokenRedisRepository refreshTokenRedisRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, JwtTokenProvider jwtTokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, RefreshTokenRedisRepository refreshTokenRedisRepository
+            ,JwtTokenProvider jwtTokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder, PasswordEncoder passwordEncoder)
+    {
         this.userRepository = userRepository;
+        this.refreshTokenRedisRepository = refreshTokenRedisRepository;
         this.jwtTokenProvider = jwtTokenProvider;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.passwordEncoder = passwordEncoder;
+
     }
 
     public UserId signUp(SignUpRequest request) {
@@ -52,14 +61,32 @@ public class UserService {
 
     public UserResponse.Token login(LoginRequest loginRequest) {
 
-        findByEmail(loginRequest.getEmail());
+        User findUser = findByEmail(loginRequest.getEmail());
 
-        UsernamePasswordAuthenticationToken authToken = loginRequest.toAuthentication();
+        if(!passwordEncoder.matches(loginRequest.getPassword(), findUser.getPassword())) {
+            throw new NotFoundUserException("로그인 정보와 일치하는 사용자를 찾을 수 없습니다.");
+        }
+
+        UserResponse userResponse = findUser.toResponseDto();
+
+        UsernamePasswordAuthenticationToken authToken = userResponse.toAuthentication();
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authToken);
 
-        return jwtTokenProvider.generateToken(authentication);
+        UserResponse.Token token = jwtTokenProvider.generateToken(authentication);
+
+        refreshTokenRedisRepository.save(token.getRefreshToken(), findUser.getId().getId());
+
+        return token;
     }
 
+    public UserResponse.Token reissue(String token) {
+        if(token == null) {
+            throw new NullPointerException("token은 필수값입니다.");
+        }
+        Optional<Map<String, String>> tokenMap = refreshTokenRedisRepository.findById(token);
+
+        return jwtTokenProvider.reissue(token);
+    }
 
     public User findById(UserId id) {
 
@@ -67,13 +94,14 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundUserException("해당 ID를 가진 회원이 존재하지 않습니다."));
 
         return user;
-
     }
 
     public User findByEmail(String email) {
 
         return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundUserException("해당 email을 가진 회원을 찾을 수 없습니다."));
     }
+
+
 
     private void singUpValidate(SignUpRequest signUpRequest) {
 

@@ -7,19 +7,14 @@ import io.weyoui.weyouiappcore.user.presentation.dto.response.UserResponse;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Getter
 @Builder
 @Table(name = "users")
 @Entity
-public class User extends BaseTimeEntity implements UserDetails {
+public class User extends BaseTimeEntity {
 
     @Column(name = "user_id")
     @EmbeddedId
@@ -70,7 +65,7 @@ public class User extends BaseTimeEntity implements UserDetails {
 
     public UserResponse toResponseDto() {
         return UserResponse.builder()
-                .id(id)
+                .id(id.getId())
                 .email(email)
                 .nickname(nickname)
                 .address(address)
@@ -78,36 +73,5 @@ public class User extends BaseTimeEntity implements UserDetails {
                 .deviceInfo(deviceInfo)
                 .build();
 
-    }
-
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(getRole().name()));
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return !state.equals(UserState.INACTIVE);
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return !state.equals(UserState.BLOCK);
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return isAccountNonExpired() && isAccountNonLocked();
     }
 }
