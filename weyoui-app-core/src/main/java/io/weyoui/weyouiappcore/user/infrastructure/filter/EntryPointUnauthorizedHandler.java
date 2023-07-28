@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.user.infrastructure;
+package io.weyoui.weyouiappcore.user.infrastructure.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.weyoui.weyouiappcore.config.exception.ErrorCode;

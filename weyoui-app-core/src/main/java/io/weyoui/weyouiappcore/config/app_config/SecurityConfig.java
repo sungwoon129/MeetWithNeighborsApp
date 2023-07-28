@@ -1,8 +1,8 @@
 package io.weyoui.weyouiappcore.config.app_config;
 
-import io.weyoui.weyouiappcore.user.infrastructure.CustomAccessDeniedHandler;
-import io.weyoui.weyouiappcore.user.infrastructure.EntryPointUnauthorizedHandler;
-import io.weyoui.weyouiappcore.user.infrastructure.JwtAuthenticationFilter;
+import io.weyoui.weyouiappcore.user.infrastructure.filter.CustomAccessDeniedHandler;
+import io.weyoui.weyouiappcore.user.infrastructure.filter.EntryPointUnauthorizedHandler;
+import io.weyoui.weyouiappcore.user.infrastructure.filter.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
