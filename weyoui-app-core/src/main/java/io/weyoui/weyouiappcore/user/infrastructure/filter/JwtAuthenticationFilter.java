@@ -1,6 +1,6 @@
 package io.weyoui.weyouiappcore.user.infrastructure.filter;
 
-import io.weyoui.weyouiappcore.config.app_config.JwtTokenProvider;
+import io.weyoui.weyouiappcore.user.infrastructure.JwtTokenProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

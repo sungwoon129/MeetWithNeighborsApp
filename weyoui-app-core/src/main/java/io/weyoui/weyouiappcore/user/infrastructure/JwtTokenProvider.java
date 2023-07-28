@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.config.app_config;
+package io.weyoui.weyouiappcore.user.infrastructure;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;

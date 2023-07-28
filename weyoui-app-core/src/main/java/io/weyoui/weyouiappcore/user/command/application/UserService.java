@@ -1,6 +1,6 @@
 package io.weyoui.weyouiappcore.user.command.application;
 
-import io.weyoui.weyouiappcore.config.app_config.JwtTokenProvider;
+import io.weyoui.weyouiappcore.user.infrastructure.JwtTokenProvider;
 import io.weyoui.weyouiappcore.user.domain.RoleType;
 import io.weyoui.weyouiappcore.user.domain.User;
 import io.weyoui.weyouiappcore.user.domain.UserId;

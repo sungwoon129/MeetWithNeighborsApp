@@ -1,7 +1,7 @@
 package io.weyoui.weyouiappcore.user.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.weyoui.weyouiappcore.config.app_config.JwtTokenProvider;
+import io.weyoui.weyouiappcore.user.infrastructure.JwtTokenProvider;
 import io.weyoui.weyouiappcore.config.app_config.SecurityConfig;
 import io.weyoui.weyouiappcore.user.command.application.UserService;
 

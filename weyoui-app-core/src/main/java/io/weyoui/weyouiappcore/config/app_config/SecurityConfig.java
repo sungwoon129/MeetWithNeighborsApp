@@ -1,5 +1,6 @@
 package io.weyoui.weyouiappcore.config.app_config;
 
+import io.weyoui.weyouiappcore.user.infrastructure.JwtTokenProvider;
 import io.weyoui.weyouiappcore.user.infrastructure.filter.CustomAccessDeniedHandler;
 import io.weyoui.weyouiappcore.user.infrastructure.filter.EntryPointUnauthorizedHandler;
 import io.weyoui.weyouiappcore.user.infrastructure.filter.JwtAuthenticationFilter;
