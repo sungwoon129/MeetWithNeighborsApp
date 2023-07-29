@@ -4,6 +4,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.weyoui.weyouiappcore.user.domain.RoleType;
+import io.weyoui.weyouiappcore.user.infrastructure.dto.UserSession;
 import io.weyoui.weyouiappcore.user.presentation.dto.response.UserResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -90,12 +91,11 @@ public class JwtTokenProvider {
         String authorities = getAuthorities(authentication);
 
         String newAccessToken = generateAccessToken(authentication,now,authorities);
-        String newRefreshToken = generateRefreshToken(authentication,now,authorities);
 
         return UserResponse.Token.builder()
                 .grantType(BEARER_TYPE)
                 .accessToken(newAccessToken)
-                .refreshToken(newRefreshToken)
+                .refreshToken(refreshToken)
                 .refreshTokenExpirationTime(refreshTokenExpireTime)
                 .build();
 
@@ -111,12 +111,12 @@ public class JwtTokenProvider {
 
         RoleType role = getFirstRoleType(claims);
 
-        UserDetails userResponse = UserResponse.builder()
-                .id(claims.getSubject())
+        UserDetails userSession = UserSession.builder()
+                .email(claims.getSubject())
                 .role(role)
                 .build();
 
-        return new UsernamePasswordAuthenticationToken(userResponse.getUsername(), "", userResponse.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userSession.getUsername(), "", userSession.getAuthorities());
     }
 
     private RoleType getFirstRoleType(Claims claims) {
@@ -165,7 +165,9 @@ public class JwtTokenProvider {
         }  catch (IllegalArgumentException e) {
             log.info("JWT claims string is empty.", e);
         }
-        return false;
+
+        return true;
+
     }
 
     public Long getExpiration(String accessToken) {

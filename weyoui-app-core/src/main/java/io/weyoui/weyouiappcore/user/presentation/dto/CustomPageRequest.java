@@ -9,7 +9,6 @@ import org.springframework.data.domain.Sort;
 
 @Setter
 @Getter
-@Builder
 @NoArgsConstructor
 public class CustomPageRequest {
     private int page = 0;

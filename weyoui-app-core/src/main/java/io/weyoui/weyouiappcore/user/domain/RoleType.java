@@ -8,8 +8,8 @@ import java.util.NoSuchElementException;
 
 @Getter
 public enum RoleType implements EnumMapperType {
-    USER("U","회원"),
-    ADMIN("A","관리자");
+    ROLE_USER("U","회원"),
+    ROLE_ADMIN("A","관리자");
 
     private String code;
     private String title;

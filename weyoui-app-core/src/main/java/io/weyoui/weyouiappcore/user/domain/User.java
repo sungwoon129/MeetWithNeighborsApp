@@ -3,6 +3,7 @@ package io.weyoui.weyouiappcore.user.domain;
 import io.weyoui.weyouiappcore.common.Address;
 import io.weyoui.weyouiappcore.common.BaseTimeEntity;
 import io.weyoui.weyouiappcore.group.domain.GroupMember;
+import io.weyoui.weyouiappcore.user.infrastructure.dto.UserSession;
 import io.weyoui.weyouiappcore.user.presentation.dto.response.UserResponse;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -70,8 +71,19 @@ public class User extends BaseTimeEntity {
                 .nickname(nickname)
                 .address(address)
                 .groups(groups)
+                .role(role)
+                .state(state)
                 .deviceInfo(deviceInfo)
                 .build();
 
+    }
+
+    public UserSession toUserSession() {
+        return UserSession.builder()
+                .email(email)
+                .password(password)
+                .role(role)
+                .state(state)
+                .build();
     }
 }

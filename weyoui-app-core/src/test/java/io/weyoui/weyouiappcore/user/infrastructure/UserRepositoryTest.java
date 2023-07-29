@@ -36,7 +36,7 @@ class UserRepositoryTest {
         User user = User.builder()
                 .id(userRepository.nextUserId())
                 .password(new BCryptPasswordEncoder().encode(signUpRequest.getPassword()))
-                .role(RoleType.USER)
+                .role(RoleType.ROLE_USER)
                 .build();
 
         userRepository.save(user);

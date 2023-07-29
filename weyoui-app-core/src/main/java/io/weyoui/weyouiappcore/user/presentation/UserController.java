@@ -17,9 +17,8 @@ public class UserController {
     public UserController(UserService userService) {this.userService = userService;}
 
 
-
     @GetMapping("/api/v1/users/{userId}")
-    public ResponseEntity<CommonResponse<UserResponse>> findById(@PathVariable UserId userId) {
+    public ResponseEntity<CommonResponse<UserResponse>> findById(@PathVariable String userId) {
 
         User user = userService.findById(userId);
 

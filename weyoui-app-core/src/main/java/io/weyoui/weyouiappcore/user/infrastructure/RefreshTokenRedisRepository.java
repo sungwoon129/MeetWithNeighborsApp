@@ -1,6 +1,9 @@
 package io.weyoui.weyouiappcore.user.infrastructure;
 
+import io.weyoui.weyouiappcore.user.domain.RefreshToken;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
@@ -13,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 @Repository
 public class RefreshTokenRedisRepository {
 
-    private final StringRedisTemplate redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
     private final long refreshTokenExpireTime;
 
     public RefreshTokenRedisRepository(StringRedisTemplate redisTemplate, @Value("${jwt.token.expiration-in-refresh-token}") final long refreshTokenExpireTime) {
@@ -21,13 +24,15 @@ public class RefreshTokenRedisRepository {
         this.refreshTokenExpireTime = refreshTokenExpireTime;
     }
 
-    public void save(final String token, final String id) {
+    @Transactional
+    public void save(final String token, final String email) {
+
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        valueOperations.set(token, id);
+        valueOperations.set(token, email);
         redisTemplate.expire(token, refreshTokenExpireTime, TimeUnit.MILLISECONDS);
     }
 
-    public Optional<Map<String, String>> findById(final String token) {
+    public Optional<RefreshToken> findById(final String token) {
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         String id = valueOperations.get(token);
 
@@ -35,6 +40,6 @@ public class RefreshTokenRedisRepository {
             return Optional.empty();
         }
 
-        return Optional.of(Map.of(token,id));
+        return Optional.of(new RefreshToken(token,id));
     }
 }

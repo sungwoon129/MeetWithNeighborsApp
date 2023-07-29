@@ -21,7 +21,7 @@ public class CustomExceptionHandler {
     protected ResponseEntity<ErrorResponse> handleNotFoundUserException(NotFoundUserException e) {
         ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NOT_FOUND_USER);
         errorResponse.setHttpStatus(HttpStatus.BAD_REQUEST);
-        //errorResponse.setDetail(e.getMessage());
+        errorResponse.setDetail(e.getMessage());
         log.error(e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
@@ -48,7 +48,7 @@ public class CustomExceptionHandler {
     protected ResponseEntity<ErrorResponse> handleExpiredJwtException(ExpiredJwtException e) {
         ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.TOKEN_ERROR);
         errorResponse.setHttpStatus(HttpStatus.UNAUTHORIZED);
-        errorResponse.setDetail("Toke is Expired.");
+        errorResponse.setDetail("Token is Expired.");
         log.error(e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }

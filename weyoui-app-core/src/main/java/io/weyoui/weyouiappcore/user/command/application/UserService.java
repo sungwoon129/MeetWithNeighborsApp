@@ -1,16 +1,16 @@
 package io.weyoui.weyouiappcore.user.command.application;
 
+import io.weyoui.weyouiappcore.user.domain.*;
 import io.weyoui.weyouiappcore.user.infrastructure.JwtTokenProvider;
-import io.weyoui.weyouiappcore.user.domain.RoleType;
-import io.weyoui.weyouiappcore.user.domain.User;
-import io.weyoui.weyouiappcore.user.domain.UserId;
 import io.weyoui.weyouiappcore.user.exception.DuplicateEmailException;
 import io.weyoui.weyouiappcore.user.exception.NotFoundUserException;
 import io.weyoui.weyouiappcore.user.infrastructure.RefreshTokenRedisRepository;
 import io.weyoui.weyouiappcore.user.infrastructure.UserRepository;
+import io.weyoui.weyouiappcore.user.infrastructure.dto.UserSession;
 import io.weyoui.weyouiappcore.user.presentation.dto.request.LoginRequest;
 import io.weyoui.weyouiappcore.user.presentation.dto.request.SignUpRequest;
 import io.weyoui.weyouiappcore.user.presentation.dto.response.UserResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Map;
 import java.util.Optional;
 
+@Slf4j
 @Transactional
 @Service
 public class UserService {
@@ -51,7 +52,8 @@ public class UserService {
                 .id(userId)
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(RoleType.USER)
+                .state(UserState.ACTIVE)
+                .role(RoleType.ROLE_USER)
                 .build();
         userRepository.save(user);
 
@@ -61,20 +63,17 @@ public class UserService {
 
     public UserResponse.Token login(LoginRequest loginRequest) {
 
-        User findUser = findByEmail(loginRequest.getEmail());
+        UserSession userSession = UserSession.builder()
+                .email(loginRequest.getEmail())
+                .password(loginRequest.getPassword())
+                .build();
 
-        if(!passwordEncoder.matches(loginRequest.getPassword(), findUser.getPassword())) {
-            throw new NotFoundUserException("로그인 정보와 일치하는 사용자를 찾을 수 없습니다.");
-        }
-
-        UserResponse userResponse = findUser.toResponseDto();
-
-        UsernamePasswordAuthenticationToken authToken = userResponse.toAuthentication();
+        UsernamePasswordAuthenticationToken authToken = userSession.toAuthentication();
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authToken);
 
         UserResponse.Token token = jwtTokenProvider.generateToken(authentication);
 
-        refreshTokenRedisRepository.save(token.getRefreshToken(), findUser.getId().getId());
+        refreshTokenRedisRepository.save(token.getRefreshToken(), userSession.getEmail());
 
         return token;
     }
@@ -83,17 +82,16 @@ public class UserService {
         if(token == null) {
             throw new NullPointerException("token은 필수값입니다.");
         }
-        Optional<Map<String, String>> tokenMap = refreshTokenRedisRepository.findById(token);
+        RefreshToken tokenDto = refreshTokenRedisRepository.findById(token)
+                .orElseThrow(() -> new NotFoundUserException("유효한 refresh 토큰 정보를 찾을 수 없습니다."));
 
-        return jwtTokenProvider.reissue(token);
+        return jwtTokenProvider.reissue(tokenDto.getRefreshToken());
     }
 
-    public User findById(UserId id) {
+    public User findById(String id) {
 
-        User user = userRepository.findById(id)
+        return userRepository.findById(new UserId(id))
                 .orElseThrow(() -> new NotFoundUserException("해당 ID를 가진 회원이 존재하지 않습니다."));
-
-        return user;
     }
 
     public User findByEmail(String email) {

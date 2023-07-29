@@ -14,10 +14,15 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
+    format-sql: true
+    use_sql_comments: true
     properties:
       hibernate.format_sql: true
       dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-
+  data:
+    redis:
+      host: localhost
+      port: 6379
 logging:
   level:
     org.hibernate:
@@ -27,6 +32,12 @@ logging:
 
 jwt:
   token:
+    # 30분
+    #expiration-in-refresh-token: 1800000
+    # 7일
+    #expiration-in-access-token: 604800000 7일
+    expiration-in-refresh-token: 240000
+    expiration-in-access-token: 180000
     secret-key: we3y6o54ui134nsndnfenGR34zcR3kiKM5MVz3po5zer10Ge5fKqI98vRCbLiqpz40t1t5ef9Zc
 
 baseUrl: http://localhost:8080

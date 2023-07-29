@@ -19,7 +19,7 @@ import java.util.List;
 
 @Builder
 @Getter
-public class UserResponse implements UserDetails {
+public class UserResponse {
 
     private String id;
 
@@ -46,48 +46,4 @@ public class UserResponse implements UserDetails {
         private String refreshToken;
         private Long refreshTokenExpirationTime;
     }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(getRole().name()));
-    }
-
-    @Override
-    public String getPassword() {
-        return null;
-    }
-
-    @Override
-    public String getUsername() {
-        return id;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return !state.equals(UserState.INACTIVE);
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return !state.equals(UserState.BLOCK);
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return isAccountNonExpired() && isAccountNonLocked();
-    }
-
-    public UsernamePasswordAuthenticationToken toAuthentication() {
-        return new UsernamePasswordAuthenticationToken(id,"", getAuthorities());
-    }
-
-
-
-
-
 }

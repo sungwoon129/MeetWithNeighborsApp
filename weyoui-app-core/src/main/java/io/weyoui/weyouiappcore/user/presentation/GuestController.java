@@ -44,7 +44,7 @@ public class GuestController {
 
     }
 
-    @GetMapping("/api/v1/guest/reissue")
+    @PostMapping("/api/v1/guest/reissue")
     public ResponseEntity<CommonResponse<UserResponse.Token>> reissue(HttpServletRequest request) {
 
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
