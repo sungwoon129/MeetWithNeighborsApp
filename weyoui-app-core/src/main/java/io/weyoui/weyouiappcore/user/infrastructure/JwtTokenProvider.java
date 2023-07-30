@@ -179,4 +179,8 @@ public class JwtTokenProvider {
     }
 
 
+    public String getSubject(String token) {
+        Claims claims = parseClaims(token);
+        return claims.getSubject();
+    }
 }
