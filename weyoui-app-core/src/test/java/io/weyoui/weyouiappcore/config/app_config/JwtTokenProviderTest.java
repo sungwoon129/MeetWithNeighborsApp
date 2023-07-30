@@ -4,6 +4,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
+import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import io.weyoui.weyouiappcore.user.infrastructure.JwtTokenProvider;
 import io.weyoui.weyouiappcore.user.query.application.dto.UserResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,7 +51,7 @@ class JwtTokenProviderTest {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(email,password);
 
         //when
-        UserResponse.Token responseToken = provider.generateToken(token);
+        UserResponse.Token responseToken = provider.generateToken(token, new UserId(""));
 
         //then
         JwtParser parser = Jwts.parserBuilder().setSigningKey(secretKey).build();
@@ -72,7 +73,7 @@ class JwtTokenProviderTest {
 
         String accessToken = Jwts.builder()
                 .setSubject(token.getName())
-                .claim("auth", "USER")
+                .claim("auth", "ROLE_USER")
                 .setExpiration(new Date(new Date().getTime() + ACCESS_TOKEN_EXPIRE_TIME))
                 .setIssuedAt(new Date())
                 .signWith(secretKey, SignatureAlgorithm.HS256)
@@ -84,7 +85,7 @@ class JwtTokenProviderTest {
         //then
         assertTrue(authentication.isAuthenticated());
         assertThat(authentication.getName()).isEqualTo(email);
-        assertThat(authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","))).isEqualTo("USER");
+        assertThat(authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","))).isEqualTo("ROLE_USER");
 
     }
 

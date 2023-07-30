@@ -18,12 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RequiredArgsConstructor
+
 @RestController
 public class AdminController {
 
-    private final UserService userService;
-    private final UserViewService userViewService;
+    private UserViewService userViewService;
+
+    public AdminController(UserViewService userViewService) {
+        this.userViewService = userViewService;
+    }
 
     @GetMapping("/api/v1/admin/users")
     public ResponseEntity<CommonResponse<List<UserResponse>>> list(UserSearchRequest usersearch, @Valid CustomPageRequest pageRequest) {

@@ -2,15 +2,19 @@ package io.weyoui.weyouiappcore.user.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.weyoui.weyouiappcore.user.command.application.UserAuthService;
+import io.weyoui.weyouiappcore.user.command.application.UserService;
 import io.weyoui.weyouiappcore.user.infrastructure.JwtTokenProvider;
 import io.weyoui.weyouiappcore.config.app_config.SecurityConfig;
 
 import io.weyoui.weyouiappcore.user.command.application.dto.LoginRequest;
 import io.weyoui.weyouiappcore.user.command.application.dto.SignUpRequest;
+import io.weyoui.weyouiappcore.user.query.application.UserViewService;
 import io.weyoui.weyouiappcore.user.query.application.dto.UserResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -29,9 +33,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Import(SecurityConfig.class)
+@Import({SecurityConfig.class})
 @AutoConfigureMockMvc
-@WebMvcTest
+@WebMvcTest(GuestController.class)
 @ExtendWith(MockitoExtension.class)
 class GuestControllerTest {
 
@@ -40,13 +44,10 @@ class GuestControllerTest {
 
     @MockBean
     UserAuthService userAuthService;
-
     @MockBean
-    JwtTokenProvider provider;
-
-    @Autowired
-    GuestController guestController;
-
+    UserService userService;
+    @MockBean
+    JwtTokenProvider jwtTokenProvider;
     ObjectMapper objectMapper = new ObjectMapper();
 
 

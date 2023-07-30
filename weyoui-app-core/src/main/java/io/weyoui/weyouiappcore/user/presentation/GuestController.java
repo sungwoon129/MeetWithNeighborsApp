@@ -22,9 +22,8 @@ import static io.weyoui.weyouiappcore.user.infrastructure.filter.JwtAuthenticati
 @RestController
 public class GuestController {
 
-
-    private final UserService userService;
-    private final UserAuthService userAuthService;
+    private UserService userService;
+    private UserAuthService userAuthService;
 
     public GuestController(UserService userService, UserAuthService userAuthService) {
         this.userService = userService;

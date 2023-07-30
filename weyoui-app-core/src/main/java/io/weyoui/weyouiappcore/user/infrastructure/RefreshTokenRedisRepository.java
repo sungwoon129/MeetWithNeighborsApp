@@ -24,10 +24,10 @@ public class RefreshTokenRedisRepository {
     }
 
     @Transactional
-    public void save(final String token, final String email) {
+    public void save(final String token, final String id) {
 
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        valueOperations.set(token, email);
+        valueOperations.set(token, id);
         redisTemplate.expire(token, refreshTokenExpireTime, TimeUnit.MILLISECONDS);
     }
 

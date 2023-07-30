@@ -28,9 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token = resolveToken(request);
 
-        if(request.getServletPath().equals("/api/v1/guest/reissue")){
-            //do nothing
-        } else if(provider.validateToken(token)) {
+        if(token != null && provider.validateToken(token)) {
             Authentication authentication = provider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }

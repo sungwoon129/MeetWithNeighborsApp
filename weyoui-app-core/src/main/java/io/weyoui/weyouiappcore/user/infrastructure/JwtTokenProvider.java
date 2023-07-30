@@ -4,6 +4,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.weyoui.weyouiappcore.user.command.domain.RoleType;
+import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import io.weyoui.weyouiappcore.user.infrastructure.dto.UserSession;
 import io.weyoui.weyouiappcore.user.query.application.dto.UserResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -39,15 +40,15 @@ public class JwtTokenProvider {
         this.refreshTokenExpireTime = refreshTokenExpireTime;
     }
 
-    public UserResponse.Token generateToken(Authentication authentication) {
+    public UserResponse.Token generateToken(Authentication authentication, UserId userId) {
 
         String authorities = getAuthorities(authentication);
 
         Date now = new Date();
 
-        String accessToken = generateAccessToken(authentication, now, authorities);
+        String accessToken = generateAccessToken(authentication, now, authorities, userId);
 
-        String refreshToken = generateRefreshToken(authentication, now, authorities);
+        String refreshToken = generateRefreshToken(authentication, now, authorities, userId);
 
         return UserResponse.Token.builder()
                 .grantType(BEARER_TYPE)
@@ -58,39 +59,39 @@ public class JwtTokenProvider {
 
     }
 
-    private String generateRefreshToken(Authentication authentication, Date now, String authorities) {
+    private String generateRefreshToken(Authentication authentication, Date now, String authorities, UserId userId) {
         // Refresh Token 생성
         return Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY, authorities)
+                .claim("id",userId.getId())
                 .setExpiration(new Date(now.getTime() + refreshTokenExpireTime))
                 .setIssuedAt(now)
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    private String generateAccessToken(Authentication authentication, Date now, String authorities) {
+    private String generateAccessToken(Authentication authentication, Date now, String authorities, UserId userId) {
         // Access Token 생성
         Date accessTokenExpiresIn = new Date(now.getTime() + accessTokenExpireTime);
 
         return Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY, authorities)
+                .claim("id",userId.getId())
                 .setExpiration(accessTokenExpiresIn)
                 .setIssuedAt(now)
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public UserResponse.Token reissue(String refreshToken) {
-
-        validateToken(refreshToken);
+    public UserResponse.Token reissue(String refreshToken, UserId userId) {
 
         Authentication authentication = getAuthentication(refreshToken);
         Date now = new Date();
         String authorities = getAuthorities(authentication);
 
-        String newAccessToken = generateAccessToken(authentication,now,authorities);
+        String newAccessToken = generateAccessToken(authentication,now,authorities, userId);
 
         return UserResponse.Token.builder()
                 .grantType(BEARER_TYPE)
@@ -152,9 +153,6 @@ public class JwtTokenProvider {
 
 
     public boolean validateToken(String token) {
-
-        if(token == null) return false; // GUEST
-
         try {
             Jwts.parserBuilder()
                     .setSigningKey(secretKey)
@@ -179,8 +177,17 @@ public class JwtTokenProvider {
     }
 
 
-    public String getSubject(String token) {
+    public String getUserEmailByToken(String token) {
         Claims claims = parseClaims(token);
         return claims.getSubject();
+    }
+
+    public UserId getUserIdByToken(String token) {
+        Claims claims = parseClaims(token);
+        String userid = claims.get("id").toString();
+
+        if(userid == null || userid.trim().isEmpty()) throw new SecurityException("Invalid JWT Token");
+
+        return new UserId(claims.get("id").toString());
     }
 }

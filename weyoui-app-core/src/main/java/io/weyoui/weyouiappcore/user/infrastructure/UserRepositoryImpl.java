@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.user.query.dao;
+package io.weyoui.weyouiappcore.user.infrastructure;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -10,14 +10,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static io.weyoui.weyouiappcore.user.domain.QUser.user;
+import static io.weyoui.weyouiappcore.user.command.domain.QUser.user;
 
 
-@Repository
+
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepositoryCustom {
 

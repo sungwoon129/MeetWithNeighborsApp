@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.user.query.dao;
+package io.weyoui.weyouiappcore.user.infrastructure;
 
 import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.user.query.application.dto.UserSearchRequest;

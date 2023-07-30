@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.user.query.application.dao;
+package io.weyoui.weyouiappcore;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
@@ -16,4 +16,5 @@ public class TestConfig {
     public JPAQueryFactory jpaQueryFactory() {
         return new JPAQueryFactory(entityManager);
     }
+
 }

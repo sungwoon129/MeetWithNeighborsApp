@@ -1,5 +1,6 @@
 package io.weyoui.weyouiappcore.user.query.application.dao;
 
+import io.weyoui.weyouiappcore.TestConfig;
 import io.weyoui.weyouiappcore.common.Address;
 import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.user.infrastructure.UserRepository;
@@ -14,13 +15,11 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.geo.Point;
-import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-@ActiveProfiles("test")
 @Import(TestConfig.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest
@@ -28,7 +27,6 @@ class UserRepositoryCustomTest {
 
     @Autowired
     UserRepository userRepository;
-
 
     @DisplayName("회원 검색 쿼리가 동적으로 생성된다")
     @Test

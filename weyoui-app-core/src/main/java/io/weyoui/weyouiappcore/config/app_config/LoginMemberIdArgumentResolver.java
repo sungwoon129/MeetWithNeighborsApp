@@ -28,6 +28,6 @@ public class LoginMemberIdArgumentResolver implements HandlerMethodArgumentResol
         String bearerToken = webRequest.getHeader(AUTHORIZATION_HEADER);
         if(StringUtils.isNullOrEmpty(bearerToken)) throw new SecurityException("토큰값이 null 이거나 비어있습니다.");
         String token = bearerToken.substring(7);
-        return tokenProvider.getSubject(token);
+        return tokenProvider.getUserIdByToken(token);
     }
 }
