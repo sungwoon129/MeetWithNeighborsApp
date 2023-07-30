@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.user.domain;
+package io.weyoui.weyouiappcore.user.command.domain;
 
 import io.weyoui.weyouiappcore.util.EnumMapperType;
 import lombok.Getter;

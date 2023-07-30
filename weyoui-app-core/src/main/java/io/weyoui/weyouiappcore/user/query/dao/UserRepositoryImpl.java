@@ -1,11 +1,11 @@
-package io.weyoui.weyouiappcore.user.query.application.dao;
+package io.weyoui.weyouiappcore.user.query.dao;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.micrometer.common.util.StringUtils;
-import io.weyoui.weyouiappcore.user.domain.User;
-import io.weyoui.weyouiappcore.user.presentation.dto.UserSearch;
+import io.weyoui.weyouiappcore.user.command.domain.User;
+import io.weyoui.weyouiappcore.user.query.application.dto.UserSearchRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,33 +24,33 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Page<User> searchAll(UserSearch userSearch, Pageable pageable) {
+    public Page<User> searchAll(UserSearchRequest userSearchRequest, Pageable pageable) {
 
 
-         List<User> content = getContent(userSearch, pageable);
-         JPAQuery<Long> countQuery = getCountQuery(userSearch);
+         List<User> content = getContent(userSearchRequest, pageable);
+         JPAQuery<Long> countQuery = getCountQuery(userSearchRequest);
 
          return PageableExecutionUtils.getPage(content,pageable, countQuery::fetchOne);
 
     }
 
-    private JPAQuery<Long> getCountQuery(UserSearch userSearch) {
+    private JPAQuery<Long> getCountQuery(UserSearchRequest userSearchRequest) {
         return jpaQueryFactory
                 .select(user.count())
                 .where(
-                        emailLike(userSearch.getEmail()),
-                        nicknameLike(userSearch.getNickname()),
-                        addressLike(userSearch.getAddress())
+                        emailLike(userSearchRequest.getEmail()),
+                        nicknameLike(userSearchRequest.getNickname()),
+                        addressLike(userSearchRequest.getAddress())
                 );
     }
 
-    private List<User> getContent(UserSearch userSearch, Pageable pageable) {
+    private List<User> getContent(UserSearchRequest userSearchRequest, Pageable pageable) {
         return jpaQueryFactory
                 .selectFrom(user)
                 .where(
-                        emailLike(userSearch.getEmail()),
-                        nicknameLike(userSearch.getNickname()),
-                        addressLike(userSearch.getAddress())
+                        emailLike(userSearchRequest.getEmail()),
+                        nicknameLike(userSearchRequest.getNickname()),
+                        addressLike(userSearchRequest.getAddress())
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())

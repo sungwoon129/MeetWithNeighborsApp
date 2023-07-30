@@ -2,10 +2,10 @@ package io.weyoui.weyouiappcore.user.presentation;
 
 import io.weyoui.weyouiappcore.common.CommonResponse;
 import io.weyoui.weyouiappcore.user.command.application.UserService;
-import io.weyoui.weyouiappcore.user.domain.User;
-import io.weyoui.weyouiappcore.user.presentation.dto.CustomPageRequest;
-import io.weyoui.weyouiappcore.user.presentation.dto.UserSearch;
-import io.weyoui.weyouiappcore.user.presentation.dto.response.UserResponse;
+import io.weyoui.weyouiappcore.user.command.domain.User;
+import io.weyoui.weyouiappcore.user.query.application.dto.CustomPageRequest;
+import io.weyoui.weyouiappcore.user.query.application.dto.UserSearchRequest;
+import io.weyoui.weyouiappcore.user.query.application.dto.UserResponse;
 import io.weyoui.weyouiappcore.user.query.application.UserViewService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class AdminController {
     private final UserViewService userViewService;
 
     @GetMapping("/api/v1/admin/users")
-    public ResponseEntity<CommonResponse<List<UserResponse>>> list(UserSearch usersearch, @Valid CustomPageRequest pageRequest) {
+    public ResponseEntity<CommonResponse<List<UserResponse>>> list(UserSearchRequest usersearch, @Valid CustomPageRequest pageRequest) {
 
         Pageable pageable = PageRequest.of(pageRequest.getPage(), pageRequest.getSize());
 

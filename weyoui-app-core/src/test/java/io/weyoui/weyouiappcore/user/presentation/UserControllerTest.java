@@ -1,8 +1,8 @@
 package io.weyoui.weyouiappcore.user.presentation;
 
 import io.weyoui.weyouiappcore.user.command.application.UserService;
-import io.weyoui.weyouiappcore.user.domain.UserId;
-import io.weyoui.weyouiappcore.user.presentation.dto.request.SignUpRequest;
+import io.weyoui.weyouiappcore.user.command.domain.UserId;
+import io.weyoui.weyouiappcore.user.command.application.dto.SignUpRequest;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,13 +1,13 @@
 package io.weyoui.weyouiappcore.user.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.weyoui.weyouiappcore.user.command.application.UserAuthService;
 import io.weyoui.weyouiappcore.user.infrastructure.JwtTokenProvider;
 import io.weyoui.weyouiappcore.config.app_config.SecurityConfig;
-import io.weyoui.weyouiappcore.user.command.application.UserService;
 
-import io.weyoui.weyouiappcore.user.presentation.dto.request.LoginRequest;
-import io.weyoui.weyouiappcore.user.presentation.dto.request.SignUpRequest;
-import io.weyoui.weyouiappcore.user.presentation.dto.response.UserResponse;
+import io.weyoui.weyouiappcore.user.command.application.dto.LoginRequest;
+import io.weyoui.weyouiappcore.user.command.application.dto.SignUpRequest;
+import io.weyoui.weyouiappcore.user.query.application.dto.UserResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,7 +39,7 @@ class GuestControllerTest {
     MockMvc mvc;
 
     @MockBean
-    UserService userService;
+    UserAuthService userAuthService;
 
     @MockBean
     JwtTokenProvider provider;
@@ -87,7 +87,7 @@ class GuestControllerTest {
                 .grantType("Bearer")
                 .refreshTokenExpirationTime(12391034324L)
                 .build();
-        when(userService.login(any(LoginRequest.class))).thenReturn(token);
+        when(userAuthService.login(any(LoginRequest.class))).thenReturn(token);
 
         //when
         ResultActions resultActions = mvc.perform(post("/api/v1/guest/login")

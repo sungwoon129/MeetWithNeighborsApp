@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.user.domain;
+package io.weyoui.weyouiappcore.user.command.domain;
 
 
 import jakarta.persistence.Id;

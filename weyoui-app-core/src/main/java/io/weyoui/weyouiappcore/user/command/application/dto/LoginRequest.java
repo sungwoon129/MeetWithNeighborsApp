@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.user.presentation.dto.request;
+package io.weyoui.weyouiappcore.user.command.application.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;

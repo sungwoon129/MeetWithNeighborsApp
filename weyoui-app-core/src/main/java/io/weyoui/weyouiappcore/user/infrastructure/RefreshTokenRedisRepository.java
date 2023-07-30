@@ -1,6 +1,6 @@
 package io.weyoui.weyouiappcore.user.infrastructure;
 
-import io.weyoui.weyouiappcore.user.domain.RefreshToken;
+import io.weyoui.weyouiappcore.user.command.domain.RefreshToken;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -8,7 +8,6 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
 
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;

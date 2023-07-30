@@ -1,7 +1,7 @@
 package io.weyoui.weyouiappcore.config.app_config;
 
 import com.querydsl.core.util.StringUtils;
-import io.weyoui.weyouiappcore.user.domain.UserId;
+import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import io.weyoui.weyouiappcore.user.infrastructure.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;

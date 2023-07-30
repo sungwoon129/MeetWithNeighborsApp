@@ -1,12 +1,9 @@
 package io.weyoui.weyouiappcore.user.infrastructure.dto;
 
-import io.weyoui.weyouiappcore.user.domain.RoleType;
-import io.weyoui.weyouiappcore.user.domain.User;
-import io.weyoui.weyouiappcore.user.domain.UserState;
-import lombok.AllArgsConstructor;
+import io.weyoui.weyouiappcore.user.command.domain.RoleType;
+import io.weyoui.weyouiappcore.user.command.domain.UserState;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

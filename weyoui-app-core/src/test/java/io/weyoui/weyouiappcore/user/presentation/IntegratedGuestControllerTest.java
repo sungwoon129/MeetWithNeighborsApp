@@ -1,9 +1,10 @@
 package io.weyoui.weyouiappcore.user.presentation;
 
+import io.weyoui.weyouiappcore.user.command.application.UserAuthService;
 import io.weyoui.weyouiappcore.user.command.application.UserService;
-import io.weyoui.weyouiappcore.user.presentation.dto.request.LoginRequest;
-import io.weyoui.weyouiappcore.user.presentation.dto.request.SignUpRequest;
-import io.weyoui.weyouiappcore.user.presentation.dto.response.UserResponse;
+import io.weyoui.weyouiappcore.user.command.application.dto.LoginRequest;
+import io.weyoui.weyouiappcore.user.command.application.dto.SignUpRequest;
+import io.weyoui.weyouiappcore.user.query.application.dto.UserResponse;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,9 @@ public class IntegratedGuestControllerTest {
     MockMvc mvc;
 
     @Autowired
+    UserAuthService userAuthService;
+
+    @Autowired
     UserService userService;
 
     @Autowired
@@ -45,7 +49,7 @@ public class IntegratedGuestControllerTest {
                 .passwordConfirm("123456")
                 .build();
         userService.signUp(signUpRequest);
-        UserResponse.Token token = userService.login(new LoginRequest(signUpRequest.getEmail(), signUpRequest.getPassword()));
+        UserResponse.Token token = userAuthService.login(new LoginRequest(signUpRequest.getEmail(), signUpRequest.getPassword()));
 
         ResultActions resultActions = mvc.perform(post("/api/v1/guest/reissue")
                 .header("Authorization",grantType + " " + token.getRefreshToken())

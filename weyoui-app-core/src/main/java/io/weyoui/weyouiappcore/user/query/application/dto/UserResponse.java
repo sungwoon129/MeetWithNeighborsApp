@@ -1,20 +1,14 @@
-package io.weyoui.weyouiappcore.user.presentation.dto.response;
+package io.weyoui.weyouiappcore.user.query.application.dto;
 
 import io.weyoui.weyouiappcore.common.Address;
 import io.weyoui.weyouiappcore.group.domain.GroupMember;
-import io.weyoui.weyouiappcore.user.domain.DeviceInfo;
-import io.weyoui.weyouiappcore.user.domain.RoleType;
-import io.weyoui.weyouiappcore.user.domain.UserState;
+import io.weyoui.weyouiappcore.user.command.domain.DeviceInfo;
+import io.weyoui.weyouiappcore.user.command.domain.RoleType;
+import io.weyoui.weyouiappcore.user.command.domain.UserState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Builder

@@ -1,10 +1,10 @@
-package io.weyoui.weyouiappcore.user.domain;
+package io.weyoui.weyouiappcore.user.command.domain;
 
 import io.weyoui.weyouiappcore.common.Address;
 import io.weyoui.weyouiappcore.common.BaseTimeEntity;
 import io.weyoui.weyouiappcore.group.domain.GroupMember;
 import io.weyoui.weyouiappcore.user.infrastructure.dto.UserSession;
-import io.weyoui.weyouiappcore.user.presentation.dto.response.UserResponse;
+import io.weyoui.weyouiappcore.user.query.application.dto.UserResponse;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -61,6 +61,14 @@ public class User extends BaseTimeEntity {
         this.state = state;
         this.deviceInfo = deviceInfo;
         this.role = role;
+    }
+
+    public void changeAddress(Address address) {
+        this.address = address;
+    }
+
+    public void changeNickName(String nickname) {
+        this.nickname = nickname;
     }
 
 

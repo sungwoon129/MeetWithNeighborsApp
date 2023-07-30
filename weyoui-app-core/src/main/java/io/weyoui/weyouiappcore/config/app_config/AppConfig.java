@@ -6,7 +6,7 @@ import io.weyoui.weyouiappcore.group.domain.GroupState;
 import io.weyoui.weyouiappcore.order.domain.OrderState;
 import io.weyoui.weyouiappcore.store.domain.StoreCategory;
 import io.weyoui.weyouiappcore.store.domain.StoreState;
-import io.weyoui.weyouiappcore.user.domain.UserState;
+import io.weyoui.weyouiappcore.user.command.domain.UserState;
 import io.weyoui.weyouiappcore.user.infrastructure.JwtTokenProvider;
 import io.weyoui.weyouiappcore.util.EnumMapper;
 import org.springframework.context.annotation.Bean;

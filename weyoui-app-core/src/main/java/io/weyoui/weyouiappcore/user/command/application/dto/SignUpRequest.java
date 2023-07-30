@@ -1,6 +1,6 @@
-package io.weyoui.weyouiappcore.user.presentation.dto.request;
+package io.weyoui.weyouiappcore.user.command.application.dto;
 
-import io.weyoui.weyouiappcore.user.domain.DeviceInfo;
+import io.weyoui.weyouiappcore.user.command.domain.DeviceInfo;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;

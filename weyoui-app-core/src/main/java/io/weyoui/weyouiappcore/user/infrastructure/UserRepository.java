@@ -1,8 +1,8 @@
 package io.weyoui.weyouiappcore.user.infrastructure;
 
-import io.weyoui.weyouiappcore.user.domain.User;
-import io.weyoui.weyouiappcore.user.domain.UserId;
-import io.weyoui.weyouiappcore.user.query.application.dao.UserRepositoryCustom;
+import io.weyoui.weyouiappcore.user.command.domain.User;
+import io.weyoui.weyouiappcore.user.command.domain.UserId;
+import io.weyoui.weyouiappcore.user.query.dao.UserRepositoryCustom;
 import org.springframework.data.repository.Repository;
 
 import java.util.Date;

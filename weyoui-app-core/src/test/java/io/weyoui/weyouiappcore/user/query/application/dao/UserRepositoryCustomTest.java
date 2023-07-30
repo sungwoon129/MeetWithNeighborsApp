@@ -1,10 +1,10 @@
 package io.weyoui.weyouiappcore.user.query.application.dao;
 
 import io.weyoui.weyouiappcore.common.Address;
-import io.weyoui.weyouiappcore.user.domain.User;
+import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.user.infrastructure.UserRepository;
-import io.weyoui.weyouiappcore.user.presentation.dto.CustomPageRequest;
-import io.weyoui.weyouiappcore.user.presentation.dto.UserSearch;
+import io.weyoui.weyouiappcore.user.query.application.dto.CustomPageRequest;
+import io.weyoui.weyouiappcore.user.query.application.dto.UserSearchRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ class UserRepositoryCustomTest {
                 .build();
         userRepository.save(user);
 
-        UserSearch search = UserSearch.builder()
+        UserSearchRequest search = UserSearchRequest.builder()
                 .email("test")
                 .nickname("test")
                 .build();

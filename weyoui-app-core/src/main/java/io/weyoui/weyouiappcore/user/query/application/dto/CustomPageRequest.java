@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.user.presentation.dto;
+package io.weyoui.weyouiappcore.user.query.application.dto;
 
 import jakarta.validation.constraints.Max;
 import lombok.Builder;
