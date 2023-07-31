@@ -3,7 +3,7 @@ package io.weyoui.weyouiappcore.user.query.application.dao;
 import io.weyoui.weyouiappcore.TestConfig;
 import io.weyoui.weyouiappcore.common.Address;
 import io.weyoui.weyouiappcore.user.command.domain.User;
-import io.weyoui.weyouiappcore.user.infrastructure.UserRepository;
+import io.weyoui.weyouiappcore.user.command.domain.UserRepository;
 import io.weyoui.weyouiappcore.user.query.application.dto.CustomPageRequest;
 import io.weyoui.weyouiappcore.user.query.application.dto.UserSearchRequest;
 import org.junit.jupiter.api.DisplayName;
