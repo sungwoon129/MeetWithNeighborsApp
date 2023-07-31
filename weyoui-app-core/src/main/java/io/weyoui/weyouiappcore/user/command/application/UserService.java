@@ -5,7 +5,7 @@ import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import io.weyoui.weyouiappcore.user.command.domain.UserState;
 import io.weyoui.weyouiappcore.user.exception.DuplicateEmailException;
-import io.weyoui.weyouiappcore.user.infrastructure.UserRepository;
+import io.weyoui.weyouiappcore.user.command.domain.UserRepository;
 import io.weyoui.weyouiappcore.user.command.application.dto.SignUpRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;

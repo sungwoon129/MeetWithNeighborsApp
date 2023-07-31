@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.group.domain;
+package io.weyoui.weyouiappcore.group.command.domain;
 
 import io.weyoui.weyouiappcore.util.EnumMapperType;
 
