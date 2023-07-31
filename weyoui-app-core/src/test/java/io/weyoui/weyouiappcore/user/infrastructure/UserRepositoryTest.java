@@ -3,6 +3,7 @@ package io.weyoui.weyouiappcore.user.infrastructure;
 import io.weyoui.weyouiappcore.user.command.domain.RoleType;
 import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.TestConfig;
+import io.weyoui.weyouiappcore.user.command.domain.UserRepository;
 import io.weyoui.weyouiappcore.user.query.application.dto.UserSearchRequest;
 import io.weyoui.weyouiappcore.user.command.application.dto.SignUpRequest;
 import org.junit.jupiter.api.DisplayName;

@@ -1,9 +1,9 @@
 package io.weyoui.weyouiappcore.config.app_config;
 
 import io.weyoui.weyouiappcore.config.exception.ErrorCode;
-import io.weyoui.weyouiappcore.group.domain.GroupCategory;
-import io.weyoui.weyouiappcore.group.domain.GroupState;
-import io.weyoui.weyouiappcore.order.domain.OrderState;
+import io.weyoui.weyouiappcore.group.command.domain.GroupCategory;
+import io.weyoui.weyouiappcore.group.command.domain.GroupState;
+import io.weyoui.weyouiappcore.order.command.domain.OrderState;
 import io.weyoui.weyouiappcore.store.domain.StoreCategory;
 import io.weyoui.weyouiappcore.store.domain.StoreState;
 import io.weyoui.weyouiappcore.user.command.domain.UserState;

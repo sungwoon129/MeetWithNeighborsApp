@@ -1,11 +1,10 @@
 package io.weyoui.weyouiappcore.user.query.application;
 
-import io.weyoui.weyouiappcore.config.app_config.LoginUserId;
 import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import io.weyoui.weyouiappcore.user.exception.NotFoundUserException;
 import io.weyoui.weyouiappcore.user.query.application.dto.UserSearchRequest;
-import io.weyoui.weyouiappcore.user.infrastructure.UserRepository;
+import io.weyoui.weyouiappcore.user.command.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

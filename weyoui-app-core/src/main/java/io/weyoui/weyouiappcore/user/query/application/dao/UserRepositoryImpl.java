@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.user.infrastructure;
+package io.weyoui.weyouiappcore.user.query.application.dao;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;

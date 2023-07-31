@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.order.domain;
+package io.weyoui.weyouiappcore.order.command.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

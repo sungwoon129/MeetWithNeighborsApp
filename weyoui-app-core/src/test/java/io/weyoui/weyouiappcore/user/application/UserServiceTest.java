@@ -3,8 +3,8 @@ package io.weyoui.weyouiappcore.user.application;
 
 import io.weyoui.weyouiappcore.user.command.application.UserService;
 import io.weyoui.weyouiappcore.user.exception.DuplicateEmailException;
-import io.weyoui.weyouiappcore.user.infrastructure.RefreshTokenRedisRepository;
-import io.weyoui.weyouiappcore.user.infrastructure.UserRepository;
+import io.weyoui.weyouiappcore.user.command.domain.RefreshTokenRedisRepository;
+import io.weyoui.weyouiappcore.user.command.domain.UserRepository;
 import io.weyoui.weyouiappcore.user.command.application.dto.SignUpRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

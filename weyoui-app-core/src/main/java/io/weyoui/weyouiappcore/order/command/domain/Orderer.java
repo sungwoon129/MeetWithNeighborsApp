@@ -1,6 +1,6 @@
-package io.weyoui.weyouiappcore.order.domain;
+package io.weyoui.weyouiappcore.order.command.domain;
 
-import io.weyoui.weyouiappcore.group.domain.GroupId;
+import io.weyoui.weyouiappcore.group.command.domain.GroupId;
 import jakarta.persistence.*;
 
 import java.util.Objects;

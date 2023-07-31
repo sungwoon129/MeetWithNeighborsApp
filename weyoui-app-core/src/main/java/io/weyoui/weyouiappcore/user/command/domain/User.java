@@ -2,17 +2,18 @@ package io.weyoui.weyouiappcore.user.command.domain;
 
 import io.weyoui.weyouiappcore.common.Address;
 import io.weyoui.weyouiappcore.common.BaseTimeEntity;
-import io.weyoui.weyouiappcore.group.domain.GroupMember;
+import io.weyoui.weyouiappcore.group.command.domain.GroupMember;
 import io.weyoui.weyouiappcore.user.infrastructure.dto.UserSession;
 import io.weyoui.weyouiappcore.user.query.application.dto.UserResponse;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
-@Builder
 @Table(name = "users")
 @Entity
 public class User extends BaseTimeEntity {
@@ -36,7 +37,7 @@ public class User extends BaseTimeEntity {
     private Address address;
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
-    private List<GroupMember> groups;
+    private Set<GroupMember> groups = new HashSet<>();
 
     @Column(name = "user_state")
     @Enumerated(EnumType.STRING)
@@ -50,7 +51,8 @@ public class User extends BaseTimeEntity {
 
     protected User() {}
 
-    public User(UserId id, String email, String nickname, String password, Address address, List<GroupMember> groups, UserState state, DeviceInfo deviceInfo,
+    @Builder
+    public User(UserId id, String email, String nickname, String password, Address address, Set<GroupMember> groups, UserState state, DeviceInfo deviceInfo,
                 RoleType role) {
         this.id = id;
         this.email = email;
@@ -70,7 +72,6 @@ public class User extends BaseTimeEntity {
     public void changeNickName(String nickname) {
         this.nickname = nickname;
     }
-
 
     public UserResponse toResponseDto() {
         return UserResponse.builder()
@@ -93,5 +94,9 @@ public class User extends BaseTimeEntity {
                 .role(role)
                 .state(state)
                 .build();
+    }
+
+    public void addGroupMember(GroupMember groupMember) {
+        this.groups.add(groupMember);
     }
 }

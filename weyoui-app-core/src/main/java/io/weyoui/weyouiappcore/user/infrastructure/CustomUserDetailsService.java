@@ -1,6 +1,7 @@
 package io.weyoui.weyouiappcore.user.infrastructure;
 
 import io.weyoui.weyouiappcore.user.command.domain.User;
+import io.weyoui.weyouiappcore.user.command.domain.UserRepository;
 import io.weyoui.weyouiappcore.user.exception.NotFoundUserException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

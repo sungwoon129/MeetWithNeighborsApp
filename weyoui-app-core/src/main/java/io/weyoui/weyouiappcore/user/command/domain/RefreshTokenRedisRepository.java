@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.user.infrastructure;
+package io.weyoui.weyouiappcore.user.command.domain;
 
 import io.weyoui.weyouiappcore.user.command.domain.RefreshToken;
 import jakarta.transaction.Transactional;

@@ -5,7 +5,7 @@ import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import io.weyoui.weyouiappcore.user.exception.NotFoundUserException;
 import io.weyoui.weyouiappcore.user.infrastructure.JwtTokenProvider;
-import io.weyoui.weyouiappcore.user.infrastructure.RefreshTokenRedisRepository;
+import io.weyoui.weyouiappcore.user.command.domain.RefreshTokenRedisRepository;
 import io.weyoui.weyouiappcore.user.infrastructure.dto.UserSession;
 import io.weyoui.weyouiappcore.user.command.application.dto.LoginRequest;
 import io.weyoui.weyouiappcore.user.query.application.UserViewService;

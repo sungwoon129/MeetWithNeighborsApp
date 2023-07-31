@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.order.domain;
+package io.weyoui.weyouiappcore.order.command.domain;
 
 import io.weyoui.weyouiappcore.common.BaseTimeEntity;
 import io.weyoui.weyouiappcore.common.Money;
