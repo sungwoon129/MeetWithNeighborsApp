@@ -2,8 +2,8 @@ package io.weyoui.weyouiappcore.config.exception;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
-import io.weyoui.weyouiappcore.user.exception.DuplicateEmailException;
-import io.weyoui.weyouiappcore.user.exception.NotFoundUserException;
+import io.weyoui.weyouiappcore.user.command.application.exception.DuplicateEmailException;
+import io.weyoui.weyouiappcore.user.command.application.exception.NotFoundUserException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

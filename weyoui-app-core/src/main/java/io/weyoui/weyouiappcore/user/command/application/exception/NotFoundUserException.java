@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.user.exception;
+package io.weyoui.weyouiappcore.user.command.application.exception;
 
 public class NotFoundUserException extends NullPointerException{
 

@@ -1,8 +1,8 @@
 package io.weyoui.weyouiappcore.user.presentation;
 
 import io.weyoui.weyouiappcore.common.CommonResponse;
+import io.weyoui.weyouiappcore.user.command.application.UserTokenService;
 import io.weyoui.weyouiappcore.user.command.application.UserAuthService;
-import io.weyoui.weyouiappcore.user.command.application.UserService;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import io.weyoui.weyouiappcore.user.command.application.dto.LoginRequest;
 import io.weyoui.weyouiappcore.user.command.application.dto.SignUpRequest;
@@ -22,18 +22,18 @@ import static io.weyoui.weyouiappcore.user.infrastructure.filter.JwtAuthenticati
 @RestController
 public class GuestController {
 
-    private UserService userService;
-    private UserAuthService userAuthService;
+    private final UserAuthService userAuthService;
+    private final UserTokenService userTokenService;
 
-    public GuestController(UserService userService, UserAuthService userAuthService) {
-        this.userService = userService;
+    public GuestController(UserAuthService userAuthService, UserTokenService userTokenService) {
         this.userAuthService = userAuthService;
+        this.userTokenService = userTokenService;
     }
 
     @PostMapping("/api/v1/guest/login")
     public ResponseEntity<CommonResponse<UserResponse.Token>> login(@RequestBody LoginRequest loginRequest) {
 
-        UserResponse.Token token = userAuthService.login(loginRequest);
+        UserResponse.Token token = userTokenService.login(loginRequest);
 
         return ResponseEntity.ok(new CommonResponse<>(token));
     }
@@ -41,7 +41,7 @@ public class GuestController {
     @PostMapping("/api/v1/guest/sign-up")
     public ResponseEntity<CommonResponse<UserId>> signUp(@RequestBody @Valid SignUpRequest signUpRequest) {
 
-        UserId userId = userService.signUp(signUpRequest);
+        UserId userId = userAuthService.signUp(signUpRequest);
 
         return ResponseEntity.ok().body(new CommonResponse<>(userId));
 
@@ -56,7 +56,7 @@ public class GuestController {
             refreshToken = bearerToken.substring(7);
         }
 
-        UserResponse.Token newToken = userAuthService.reissue(refreshToken);
+        UserResponse.Token newToken = userTokenService.reissue(refreshToken);
 
         return ResponseEntity.ok().body(new CommonResponse<>(newToken));
     }

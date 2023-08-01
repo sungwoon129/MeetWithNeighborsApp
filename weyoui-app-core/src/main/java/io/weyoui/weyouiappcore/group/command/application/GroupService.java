@@ -1,10 +1,9 @@
 package io.weyoui.weyouiappcore.group.command.application;
 
-import io.weyoui.weyouiappcore.group.command.dto.GroupRequest;
+import io.weyoui.weyouiappcore.group.command.application.dto.GroupRequest;
 import io.weyoui.weyouiappcore.group.command.domain.Group;
 import io.weyoui.weyouiappcore.group.command.domain.GroupId;
 import io.weyoui.weyouiappcore.group.infrastructure.GroupRepository;
-import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import org.springframework.stereotype.Service;
 
 @Service

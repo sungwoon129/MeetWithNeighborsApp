@@ -1,9 +1,9 @@
-package io.weyoui.weyouiappcore.user.query.application.dao;
+package io.weyoui.weyouiappcore.user.query.infrastructure;
 
 import io.weyoui.weyouiappcore.TestConfig;
 import io.weyoui.weyouiappcore.common.Address;
 import io.weyoui.weyouiappcore.user.command.domain.User;
-import io.weyoui.weyouiappcore.user.command.domain.UserRepository;
+import io.weyoui.weyouiappcore.user.infrastructure.UserRepository;
 import io.weyoui.weyouiappcore.user.query.application.dto.CustomPageRequest;
 import io.weyoui.weyouiappcore.user.query.application.dto.UserSearchRequest;
 import org.junit.jupiter.api.DisplayName;
@@ -23,7 +23,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Import(TestConfig.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest
-class UserRepositoryCustomTest {
+class UserQueryRepositoryTest {
+
+    @Autowired
+    UserQueryRepository userQueryRepository;
 
     @Autowired
     UserRepository userRepository;
@@ -48,7 +51,7 @@ class UserRepositoryCustomTest {
 
 
         //when
-        Page<User> result = userRepository.searchAll(search, PageRequest.of(pageRequest.getPage(), pageRequest.getSize()));
+        Page<User> result = userQueryRepository.searchAll(search, PageRequest.of(pageRequest.getPage(), pageRequest.getSize()));
 
         //then
         assertThat(result.getTotalElements()).isEqualTo(1);

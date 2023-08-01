@@ -1,69 +1,54 @@
 package io.weyoui.weyouiappcore.user.command.application;
 
-import io.weyoui.weyouiappcore.user.command.domain.RefreshToken;
+import io.weyoui.weyouiappcore.user.command.domain.RoleType;
 import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
-import io.weyoui.weyouiappcore.user.exception.NotFoundUserException;
-import io.weyoui.weyouiappcore.user.infrastructure.JwtTokenProvider;
-import io.weyoui.weyouiappcore.user.command.domain.RefreshTokenRedisRepository;
-import io.weyoui.weyouiappcore.user.infrastructure.dto.UserSession;
-import io.weyoui.weyouiappcore.user.command.application.dto.LoginRequest;
+import io.weyoui.weyouiappcore.user.command.domain.UserState;
+import io.weyoui.weyouiappcore.user.infrastructure.UserRepository;
+import io.weyoui.weyouiappcore.user.command.application.dto.SignUpRequest;
 import io.weyoui.weyouiappcore.user.query.application.UserViewService;
-import io.weyoui.weyouiappcore.user.query.application.dto.UserResponse;
-import jakarta.transaction.Transactional;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-
+@Slf4j
 @Transactional
 @Service
 public class UserAuthService {
 
-    private final RefreshTokenRedisRepository refreshTokenRedisRepository;
-    private final JwtTokenProvider jwtTokenProvider;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final UserRepository userRepository;
     private final UserViewService userViewService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserAuthService(RefreshTokenRedisRepository refreshTokenRedisRepository
-            , JwtTokenProvider jwtTokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder, UserViewService userViewService)
+    public UserAuthService(UserRepository userRepository, UserViewService userViewService, PasswordEncoder passwordEncoder)
     {
-        this.refreshTokenRedisRepository = refreshTokenRedisRepository;
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.authenticationManagerBuilder = authenticationManagerBuilder;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
         this.userViewService = userViewService;
     }
 
+    public UserId signUp(SignUpRequest request) {
 
-    public UserResponse.Token login(LoginRequest loginRequest) {
+        singUpValidate(request);
 
-        UserSession userSession = UserSession.builder()
-                .email(loginRequest.getEmail())
-                .password(loginRequest.getPassword())
+        UserId userId = userRepository.nextUserId();
+        User user = User.builder()
+                .id(userId)
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .state(UserState.ACTIVE)
+                .role(RoleType.ROLE_USER)
                 .build();
+        userRepository.save(user);
 
-        UsernamePasswordAuthenticationToken authToken = userSession.toAuthentication();
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authToken);
-
-        User user = userViewService.findByEmail(authentication.getName());
-
-        UserResponse.Token token = jwtTokenProvider.generateToken(authentication,user.getId());
-
-        refreshTokenRedisRepository.save(token.getRefreshToken(), user.getId().getId());
-
-        return token;
+        return user.getId();
     }
 
-    public UserResponse.Token reissue(String token) {
+    private void singUpValidate(SignUpRequest signUpRequest) {
 
-        if(token == null) throw new NullPointerException("token은 필수값입니다.");
+        signUpRequest.isEqualPwAndPwConfirm();
+        userViewService.validationDuplicateUser(signUpRequest.getEmail());
 
-        jwtTokenProvider.validateToken(token);
-
-        RefreshToken tokenDto = refreshTokenRedisRepository.findById(token)
-                .orElseThrow(() -> new NotFoundUserException("유효한 refresh 토큰 정보를 찾을 수 없습니다."));
-
-        return jwtTokenProvider.reissue(tokenDto.getRefreshToken(), new UserId(tokenDto.getUserid()));
     }
 }

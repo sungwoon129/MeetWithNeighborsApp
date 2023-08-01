@@ -1,8 +1,8 @@
 package io.weyoui.weyouiappcore;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import io.weyoui.weyouiappcore.user.query.application.dao.UserRepositoryCustom;
-import io.weyoui.weyouiappcore.user.query.application.dao.UserRepositoryImpl;
+import io.weyoui.weyouiappcore.user.query.infrastructure.UserQueryRepositoryCustom;
+import io.weyoui.weyouiappcore.user.query.infrastructure.UserQueryRepositoryImpl;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -20,8 +20,8 @@ public class TestConfig {
     }
 
     @Bean(name = "userRepositoryImpl")
-    public UserRepositoryCustom UserRepositoryCustom() {
-        return new UserRepositoryImpl(jpaQueryFactory());
+    public UserQueryRepositoryCustom UserRepositoryCustom() {
+        return new UserQueryRepositoryImpl(jpaQueryFactory());
     }
 
 }

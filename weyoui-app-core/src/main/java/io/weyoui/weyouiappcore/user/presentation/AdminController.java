@@ -1,14 +1,12 @@
 package io.weyoui.weyouiappcore.user.presentation;
 
 import io.weyoui.weyouiappcore.common.CommonResponse;
-import io.weyoui.weyouiappcore.user.command.application.UserService;
 import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.user.query.application.dto.CustomPageRequest;
 import io.weyoui.weyouiappcore.user.query.application.dto.UserSearchRequest;
 import io.weyoui.weyouiappcore.user.query.application.dto.UserResponse;
 import io.weyoui.weyouiappcore.user.query.application.UserViewService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +20,7 @@ import java.util.List;
 @RestController
 public class AdminController {
 
-    private UserViewService userViewService;
+    private final UserViewService userViewService;
 
     public AdminController(UserViewService userViewService) {
         this.userViewService = userViewService;

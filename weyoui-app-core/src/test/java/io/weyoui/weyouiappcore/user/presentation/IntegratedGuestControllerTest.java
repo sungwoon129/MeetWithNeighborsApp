@@ -1,7 +1,7 @@
 package io.weyoui.weyouiappcore.user.presentation;
 
+import io.weyoui.weyouiappcore.user.command.application.UserTokenService;
 import io.weyoui.weyouiappcore.user.command.application.UserAuthService;
-import io.weyoui.weyouiappcore.user.command.application.UserService;
 import io.weyoui.weyouiappcore.user.command.application.dto.LoginRequest;
 import io.weyoui.weyouiappcore.user.command.application.dto.SignUpRequest;
 import io.weyoui.weyouiappcore.user.query.application.dto.UserResponse;
@@ -30,10 +30,10 @@ public class IntegratedGuestControllerTest {
     MockMvc mvc;
 
     @Autowired
-    UserAuthService userAuthService;
+    UserTokenService userTokenService;
 
     @Autowired
-    UserService userService;
+    UserAuthService userAuthService;
 
     @Autowired
     RedisTemplate<String,String> redisTemplate;
@@ -48,8 +48,8 @@ public class IntegratedGuestControllerTest {
                 .password("123456")
                 .passwordConfirm("123456")
                 .build();
-        userService.signUp(signUpRequest);
-        UserResponse.Token token = userAuthService.login(new LoginRequest(signUpRequest.getEmail(), signUpRequest.getPassword()));
+        userAuthService.signUp(signUpRequest);
+        UserResponse.Token token = userTokenService.login(new LoginRequest(signUpRequest.getEmail(), signUpRequest.getPassword()));
 
         ResultActions resultActions = mvc.perform(post("/api/v1/guest/reissue")
                 .header("Authorization",grantType + " " + token.getRefreshToken())

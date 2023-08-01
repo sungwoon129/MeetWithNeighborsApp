@@ -1,20 +1,16 @@
 package io.weyoui.weyouiappcore.user.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.weyoui.weyouiappcore.user.command.application.UserAuthService;
-import io.weyoui.weyouiappcore.user.command.application.UserService;
-import io.weyoui.weyouiappcore.user.infrastructure.JwtTokenProvider;
 import io.weyoui.weyouiappcore.config.app_config.SecurityConfig;
-
+import io.weyoui.weyouiappcore.user.command.application.UserAuthService;
+import io.weyoui.weyouiappcore.user.command.application.UserTokenService;
 import io.weyoui.weyouiappcore.user.command.application.dto.LoginRequest;
 import io.weyoui.weyouiappcore.user.command.application.dto.SignUpRequest;
-import io.weyoui.weyouiappcore.user.query.application.UserViewService;
+import io.weyoui.weyouiappcore.user.infrastructure.JwtTokenProvider;
 import io.weyoui.weyouiappcore.user.query.application.dto.UserResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,8 +20,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.MvcResult;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -43,9 +40,9 @@ class GuestControllerTest {
     MockMvc mvc;
 
     @MockBean
-    UserAuthService userAuthService;
+    UserTokenService userTokenService;
     @MockBean
-    UserService userService;
+    UserAuthService userAuthService;
     @MockBean
     JwtTokenProvider jwtTokenProvider;
     ObjectMapper objectMapper = new ObjectMapper();
@@ -63,12 +60,10 @@ class GuestControllerTest {
                 .build();
         String apiUrl = "/api/v1/guest/sign-up";
 
-        mvc.perform(
-                        post(apiUrl)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(request))
-                                .with(csrf())
-                )
+        mvc.perform(post(apiUrl)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
+                        .with(csrf()))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -88,23 +83,22 @@ class GuestControllerTest {
                 .grantType("Bearer")
                 .refreshTokenExpirationTime(12391034324L)
                 .build();
-        when(userAuthService.login(any(LoginRequest.class))).thenReturn(token);
+        when(userTokenService.login(any(LoginRequest.class))).thenReturn(token);
 
         //when
-        ResultActions resultActions = mvc.perform(post("/api/v1/guest/login")
+        MvcResult result = mvc.perform(post("/api/v1/guest/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
                         .with(csrf()))
+                .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(result -> result.getResponse().getContentAsString().contains("Bearer"));
+                .andReturn();
 
         //then
-        resultActions.andDo(print())
-                .andExpect(result -> result.getResponse().getContentAsString().contains("Bearer"))
-                .andExpect(result -> result.getResponse().getContentAsString().contains("accessToken"))
-                .andExpect(result -> result.getResponse().getContentAsString().contains("refreshToken"))
-                .andExpect(result -> result.getResponse().getContentAsString().contains("refreshTokenExpirationTime"));
+        assertTrue(result.getResponse().getContentAsString().contains("Bearer"));
+        assertTrue(result.getResponse().getContentAsString().contains("accessToken"));
+        assertTrue(result.getResponse().getContentAsString().contains("refreshToken"));
+        assertTrue(result.getResponse().getContentAsString().contains("refreshTokenExpirationTime"));
 
     }
-
 }

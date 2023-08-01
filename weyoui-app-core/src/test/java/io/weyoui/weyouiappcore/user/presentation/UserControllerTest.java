@@ -1,6 +1,6 @@
 package io.weyoui.weyouiappcore.user.presentation;
 
-import io.weyoui.weyouiappcore.user.command.application.UserService;
+import io.weyoui.weyouiappcore.user.command.application.UserAuthService;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import io.weyoui.weyouiappcore.user.command.application.dto.SignUpRequest;
 import jakarta.transaction.Transactional;
@@ -28,9 +28,9 @@ class UserControllerTest {
     int port;
 
     @Autowired
-    UserService userService;
+    UserAuthService userAuthService;
 
-    @WithMockUser(roles = {"USER"})
+    @WithMockUser
     @Test
     void findByIdTest() throws Exception {
         //given
@@ -40,7 +40,7 @@ class UserControllerTest {
                 .passwordConfirm("123456")
                 .build();
 
-        UserId id = userService.signUp(signUpRequest);
+        UserId id = userAuthService.signUp(signUpRequest);
         String uri = "http://localhost:" + port + "/api/v1/users/" + id.getId();
 
 

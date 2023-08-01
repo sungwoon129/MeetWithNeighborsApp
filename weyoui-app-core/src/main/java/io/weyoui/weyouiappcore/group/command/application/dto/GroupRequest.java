@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.group.command.dto;
+package io.weyoui.weyouiappcore.group.command.application.dto;
 
 import io.weyoui.weyouiappcore.common.Address;
 import io.weyoui.weyouiappcore.group.command.domain.GroupCategory;

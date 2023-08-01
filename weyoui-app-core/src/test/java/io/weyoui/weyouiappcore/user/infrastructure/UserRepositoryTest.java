@@ -3,9 +3,9 @@ package io.weyoui.weyouiappcore.user.infrastructure;
 import io.weyoui.weyouiappcore.user.command.domain.RoleType;
 import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.TestConfig;
-import io.weyoui.weyouiappcore.user.command.domain.UserRepository;
 import io.weyoui.weyouiappcore.user.query.application.dto.UserSearchRequest;
 import io.weyoui.weyouiappcore.user.command.application.dto.SignUpRequest;
+import io.weyoui.weyouiappcore.user.query.infrastructure.UserQueryRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +26,9 @@ class UserRepositoryTest {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    UserQueryRepository userQueryRepository;
+
     @DisplayName("회원 가입할 때 입력한 비밀번호가 암호화되어서 DB에 저장된다")
     @Test
     void encodePassword_success() {
@@ -45,7 +48,7 @@ class UserRepositoryTest {
 
         userRepository.save(user);
 
-        Page<User> users = userRepository.searchAll(new UserSearchRequest(), PageRequest.of(0,10));
+        Page<User> users = userQueryRepository.searchAll(new UserSearchRequest(), PageRequest.of(0,10));
         User findUser = users.stream().findFirst().orElseThrow(() -> new NullPointerException("불러올 회원이 존재하지 않습니다."));
 
         //then

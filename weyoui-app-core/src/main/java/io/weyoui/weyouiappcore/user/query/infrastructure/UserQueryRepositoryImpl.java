@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.user.query.application.dao;
+package io.weyoui.weyouiappcore.user.query.infrastructure;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -18,7 +18,7 @@ import static io.weyoui.weyouiappcore.user.command.domain.QUser.user;
 
 
 @RequiredArgsConstructor
-public class UserRepositoryImpl implements UserRepositoryCustom {
+public class UserQueryRepositoryImpl implements UserQueryRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 
