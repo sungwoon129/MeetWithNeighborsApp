@@ -9,7 +9,9 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Table(name = "groups")
@@ -23,7 +25,7 @@ public class Group extends BaseTimeEntity {
     @Column(name = "group_name")
     private String name;
 
-    @Embedded
+    @Enumerated(EnumType.STRING)
     private GroupCategory category;
 
     private Integer capacity;
@@ -50,7 +52,7 @@ public class Group extends BaseTimeEntity {
     private LocalDateTime endTime;
 
     @OneToMany(mappedBy = "group", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
-    private List<GroupMember> members = new ArrayList<>();
+    private Set<GroupMember> members = new HashSet<>();
 
 
     protected Group() {}
@@ -72,12 +74,12 @@ public class Group extends BaseTimeEntity {
     public void checkTimeAndChangeState() {
         LocalDateTime now = LocalDateTime.now();
 
-        if(this.startTime.isAfter(now) && this.endTime.isBefore(now)) {
-            this.state = GroupState.IN_ACTIVITY;
-        } else if (this.startTime.isBefore(now)) {
-            this.state = GroupState.BEFORE_ACTIVITY;
-        } else if (this.endTime.isBefore(now)) {
-            this.state = GroupState.END_ACTIVITY;
+        if(now.isAfter(startTime) && now.isBefore(endTime)) {
+            state = GroupState.IN_ACTIVITY;
+        } else if (now.isBefore(startTime)) {
+            state = GroupState.BEFORE_ACTIVITY;
+        } else if (now.isAfter(endTime)) {
+            state = GroupState.END_ACTIVITY;
         }
     }
 
@@ -87,6 +89,6 @@ public class Group extends BaseTimeEntity {
 
     public void addGroupMember(GroupMember groupMember) {
         members.add(groupMember);
-        groupMember.setGroup(this);
+
     }
 }

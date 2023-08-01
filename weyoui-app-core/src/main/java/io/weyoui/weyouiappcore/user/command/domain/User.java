@@ -52,14 +52,13 @@ public class User extends BaseTimeEntity {
     protected User() {}
 
     @Builder
-    public User(UserId id, String email, String nickname, String password, Address address, Set<GroupMember> groups, UserState state, DeviceInfo deviceInfo,
+    public User(UserId id, String email, String nickname, String password, Address address, UserState state, DeviceInfo deviceInfo,
                 RoleType role) {
         this.id = id;
         this.email = email;
         this.nickname = nickname;
         this.password = password;
         this.address = address;
-        this.groups = groups;
         this.state = state;
         this.deviceInfo = deviceInfo;
         this.role = role;
@@ -97,6 +96,6 @@ public class User extends BaseTimeEntity {
     }
 
     public void addGroupMember(GroupMember groupMember) {
-        this.groups.add(groupMember);
+        groups.add(groupMember);
     }
 }

@@ -36,6 +36,7 @@ public class UserQueryRepositoryImpl implements UserQueryRepositoryCustom {
     private JPAQuery<Long> getCountQuery(UserSearchRequest userSearchRequest) {
         return jpaQueryFactory
                 .select(user.count())
+                .from(user)
                 .where(
                         emailLike(userSearchRequest.getEmail()),
                         nicknameLike(userSearchRequest.getNickname()),

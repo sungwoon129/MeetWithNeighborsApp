@@ -25,9 +25,11 @@ public class LoginMemberIdArgumentResolver implements HandlerMethodArgumentResol
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+
         String bearerToken = webRequest.getHeader(AUTHORIZATION_HEADER);
-        if(StringUtils.isNullOrEmpty(bearerToken)) throw new SecurityException("토큰값이 null 이거나 비어있습니다.");
-        String token = bearerToken.substring(7);
+        //if(StringUtils.isNullOrEmpty(bearerToken)) throw new SecurityException("토큰값이 null 이거나 비어있습니다.");
+
+        String token = bearerToken != null ? bearerToken.substring(7) : "token";
         return tokenProvider.getUserIdByToken(token);
     }
 }

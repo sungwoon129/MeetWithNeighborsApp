@@ -29,6 +29,9 @@ dependencies {
     //redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+    //jackson
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.0'
+
 
     // lombok
     compileOnly 'org.projectlombok:lombok'

@@ -44,9 +44,11 @@ public class GroupMember extends BaseTimeEntity {
 
     public void setUser(User user) {
         this.user = user;
+        this.user.addGroupMember(this);
     }
 
     public void setGroup(Group group) {
         this.group = group;
+        this.group.addGroupMember(this);
     }
 }

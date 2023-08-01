@@ -1,5 +1,6 @@
 package io.weyoui.weyouiappcore.group.command.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.weyoui.weyouiappcore.common.Address;
 import io.weyoui.weyouiappcore.group.command.domain.GroupCategory;
 import lombok.Builder;
@@ -13,15 +14,17 @@ import java.time.LocalDateTime;
 public class GroupRequest {
 
     private String name;
-    private GroupCategory category;
+    private String category;
     private String description;
     private Address venue;
     private int capacity;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime startTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime endTime;
 
     @Builder
-    public GroupRequest(String name, GroupCategory category, String description, Address venue,
+    public GroupRequest(String name, String category, String description, Address venue,
                                      int capacity, LocalDateTime startTime, LocalDateTime endTime) {
         this.name = name;
         this.category = category;

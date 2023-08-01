@@ -2,6 +2,7 @@ package io.weyoui.weyouiappcore.group.command.application;
 
 import io.weyoui.weyouiappcore.group.command.application.dto.GroupRequest;
 import io.weyoui.weyouiappcore.group.command.domain.Group;
+import io.weyoui.weyouiappcore.group.command.domain.GroupCategory;
 import io.weyoui.weyouiappcore.group.command.domain.GroupId;
 import io.weyoui.weyouiappcore.group.infrastructure.GroupRepository;
 import org.springframework.stereotype.Service;
@@ -15,12 +16,12 @@ public class GroupService {
         this.groupRepository = groupRepository;
     }
 
-    public GroupId addGroup(GroupRequest groupRequest) {
+    public GroupId createGroup(GroupRequest groupRequest) {
         GroupId groupId = groupRepository.nextId();
         Group group = Group.builder()
                 .id(groupId)
                 .name(groupRequest.getName())
-                .category(groupRequest.getCategory())
+                .category(GroupCategory.findByName(groupRequest.getCategory()))
                 .capacity(groupRequest.getCapacity())
                 .description(groupRequest.getDescription())
                 .venue(groupRequest.getVenue())
@@ -28,9 +29,9 @@ public class GroupService {
                 .endTime(groupRequest.getEndTime())
                 .build();
 
-        groupRepository.save(group);
-
         group.checkTimeAndChangeState();
+
+        groupRepository.save(group);
 
         return groupId;
     }

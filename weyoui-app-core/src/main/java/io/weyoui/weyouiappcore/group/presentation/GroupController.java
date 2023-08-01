@@ -11,6 +11,7 @@ import io.weyoui.weyouiappcore.groupMember.command.GroupMemberService;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -25,8 +26,8 @@ public class GroupController {
     }
 
     @PostMapping("/api/v1/users/group")
-    public ResponseEntity<CommonResponse<GroupAddResponse>> createGroup(@LoginUserId UserId userId, GroupRequest groupRequest) {
-        GroupId groupId = groupService.addGroup(groupRequest);
+    public ResponseEntity<CommonResponse<GroupAddResponse>> createGroup(@LoginUserId UserId userId, @RequestBody GroupRequest groupRequest) {
+        GroupId groupId = groupService.createGroup(groupRequest);
         GroupMemberId groupMemberId = groupMemberService.addMemberToGroupAsLeader(userId, groupId);
 
         GroupAddResponse groupAddResponseBody = new GroupAddResponse(groupId.getId(), groupMemberId.getId());
@@ -34,9 +35,8 @@ public class GroupController {
         return ResponseEntity.ok().body(new CommonResponse<>(groupAddResponseBody));
     }
 
-    @PostMapping("/api/v1/users/group-member")
-    public ResponseEntity<CommonResponse<GroupAddResponse>> addMemberToGroup(@LoginUserId UserId userId, GroupRequest groupRequest) {
-        GroupId groupId = groupService.addGroup(groupRequest);
+    @PostMapping("/api/v1/users/group/group-member")
+    public ResponseEntity<CommonResponse<GroupAddResponse>> addMemberToGroup(@LoginUserId UserId userId, @RequestBody GroupId groupId) {
         GroupMemberId groupMemberId = groupMemberService.addMemberToGroupAsMember(userId, groupId);
 
         GroupAddResponse groupAddResponseBody = new GroupAddResponse(groupId.getId(), groupMemberId.getId());

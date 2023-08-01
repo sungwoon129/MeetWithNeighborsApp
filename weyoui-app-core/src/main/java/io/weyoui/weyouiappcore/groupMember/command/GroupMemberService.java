@@ -33,8 +33,8 @@ public class GroupMemberService {
         GroupMember groupMember = GroupMember.createGroupMember(groupMemberId, GroupRole.LEADER);
 
         groupMemberRepository.save(groupMember);
-        findGroup.addGroupMember(groupMember);
-        findUser.addGroupMember(groupMember);
+        groupMember.setUser(findUser);
+        groupMember.setGroup(findGroup);
 
         return groupMemberId;
     }
@@ -48,8 +48,10 @@ public class GroupMemberService {
         GroupMember groupMember = GroupMember.createGroupMember(groupMemberId, GroupRole.MEMBER);
 
         groupMemberRepository.save(groupMember);
-        findGroup.addGroupMember(groupMember);
-        findUser.addGroupMember(groupMember);
+        groupMember.setUser(findUser);
+        groupMember.setGroup(findGroup);
+        /*findGroup.addGroupMember(groupMember);
+        findUser.addGroupMember(groupMember);*/
 
         return groupMemberId;
     }
