@@ -1,7 +1,7 @@
 package io.weyoui.weyouiappcore.groupMember.infrastructure;
 
-import io.weyoui.weyouiappcore.group.command.domain.GroupMember;
-import io.weyoui.weyouiappcore.group.command.domain.GroupMemberId;
+import io.weyoui.weyouiappcore.groupMember.command.domain.GroupMember;
+import io.weyoui.weyouiappcore.groupMember.command.domain.GroupMemberId;
 import org.springframework.data.repository.Repository;
 
 import java.util.Date;

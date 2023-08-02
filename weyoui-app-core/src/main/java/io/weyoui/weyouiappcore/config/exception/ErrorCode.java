@@ -14,7 +14,8 @@ public enum ErrorCode implements EnumMapperType {
     NOT_FOUND_USER("E007", "Not found user."),
     DUPLICATION_EMAIL("E008", "이미 존재하는 이메일입니다."),
     VALIDATION_FAILED("E009", "유효성 검사에 실패하였습니다."),
-    TOKEN_ERROR("E010", "토큰 인증 과정에서 문제가 발생했습니다.");
+    TOKEN_ERROR("E010", "토큰 인증 과정에서 문제가 발생했습니다."),
+    NO_SUCH_ELEMENT_ERROR("E011", "컬렉션에서 요소를 찾을 수 없습니다");
 
     private String code;
     private String message;

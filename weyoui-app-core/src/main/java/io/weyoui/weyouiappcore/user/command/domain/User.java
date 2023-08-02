@@ -2,7 +2,7 @@ package io.weyoui.weyouiappcore.user.command.domain;
 
 import io.weyoui.weyouiappcore.common.Address;
 import io.weyoui.weyouiappcore.common.BaseTimeEntity;
-import io.weyoui.weyouiappcore.group.command.domain.GroupMember;
+import io.weyoui.weyouiappcore.groupMember.command.domain.GroupMember;
 import io.weyoui.weyouiappcore.user.infrastructure.dto.UserSession;
 import io.weyoui.weyouiappcore.user.query.application.dto.UserResponse;
 import jakarta.persistence.*;
@@ -10,7 +10,6 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter

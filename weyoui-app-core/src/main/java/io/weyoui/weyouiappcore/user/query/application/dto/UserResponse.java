@@ -1,7 +1,7 @@
 package io.weyoui.weyouiappcore.user.query.application.dto;
 
 import io.weyoui.weyouiappcore.common.Address;
-import io.weyoui.weyouiappcore.group.command.domain.GroupMember;
+import io.weyoui.weyouiappcore.groupMember.command.domain.GroupMember;
 import io.weyoui.weyouiappcore.user.command.domain.DeviceInfo;
 import io.weyoui.weyouiappcore.user.command.domain.RoleType;
 import io.weyoui.weyouiappcore.user.command.domain.UserState;
@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.List;
 import java.util.Set;
 
 @Builder

@@ -2,15 +2,15 @@ package io.weyoui.weyouiappcore.group.command.domain;
 
 import io.weyoui.weyouiappcore.common.Address;
 import io.weyoui.weyouiappcore.common.BaseTimeEntity;
-import io.weyoui.weyouiappcore.user.command.domain.User;
+import io.weyoui.weyouiappcore.groupMember.command.domain.GroupMember;
+import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 @Getter
@@ -88,7 +88,32 @@ public class Group extends BaseTimeEntity {
     }
 
     public void addGroupMember(GroupMember groupMember) {
+        if(getHeadCount() == capacity) throw new IndexOutOfBoundsException("구성원이 가득 차 더 이상 모임에 구성원을 추가할 수 없습니다. ");
         members.add(groupMember);
 
+    }
+
+    public void changeStartTime(LocalDateTime time) {
+        startTime = time;
+    }
+
+    public void changeEndTime(LocalDateTime time) {
+        endTime = time;
+    }
+
+    public void endActivity(UserId userId) {
+
+        GroupMember groupMember = members.stream().filter(member -> member.isGroupMemberByUserId(userId))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("모임의 구성원 중 일치하는 ID를 가진 회원이 존재하지 않습니다."));
+
+        groupMember.leaderCheck();
+
+        endTime = LocalDateTime.now();
+        state = GroupState.END_ACTIVITY;
+    }
+
+    public boolean isActive() {
+        return state.equals(GroupState.IN_ACTIVITY);
     }
 }

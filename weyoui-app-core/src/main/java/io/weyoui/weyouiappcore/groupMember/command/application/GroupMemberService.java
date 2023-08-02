@@ -1,8 +1,11 @@
-package io.weyoui.weyouiappcore.groupMember.command;
+package io.weyoui.weyouiappcore.groupMember.command.application;
 
 import io.weyoui.weyouiappcore.group.command.domain.*;
 import io.weyoui.weyouiappcore.group.query.application.GroupViewService;
+import io.weyoui.weyouiappcore.groupMember.command.domain.GroupMember;
+import io.weyoui.weyouiappcore.groupMember.command.domain.GroupMemberId;
 import io.weyoui.weyouiappcore.groupMember.infrastructure.GroupMemberRepository;
+import io.weyoui.weyouiappcore.groupMember.query.application.GroupMemberViewService;
 import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import io.weyoui.weyouiappcore.user.query.application.UserViewService;
@@ -17,11 +20,13 @@ public class GroupMemberService {
     private final UserViewService userViewService;
 
     private final GroupMemberRepository groupMemberRepository;
+    private final GroupMemberViewService groupMemberViewService;
 
-    public GroupMemberService(GroupViewService groupViewService, UserViewService userViewService, GroupMemberRepository groupMemberRepository) {
+    public GroupMemberService(GroupViewService groupViewService, UserViewService userViewService, GroupMemberRepository groupMemberRepository, GroupMemberViewService groupMemberViewService) {
         this.groupViewService = groupViewService;
         this.userViewService = userViewService;
         this.groupMemberRepository = groupMemberRepository;
+        this.groupMemberViewService = groupMemberViewService;
     }
 
     public GroupMemberId addMemberToGroupAsLeader(UserId userid, GroupId groupid) {
@@ -50,9 +55,12 @@ public class GroupMemberService {
         groupMemberRepository.save(groupMember);
         groupMember.setUser(findUser);
         groupMember.setGroup(findGroup);
-        /*findGroup.addGroupMember(groupMember);
-        findUser.addGroupMember(groupMember);*/
 
         return groupMemberId;
+    }
+
+    public void banishMember(GroupId groupId, UserId userId) {
+        GroupMember groupMember = groupMemberViewService.findByGroupIdAndUserId(groupId, userId);
+        groupMember.inactivateState();
     }
 }

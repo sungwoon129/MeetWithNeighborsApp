@@ -5,15 +5,19 @@ import io.weyoui.weyouiappcore.group.command.domain.Group;
 import io.weyoui.weyouiappcore.group.command.domain.GroupCategory;
 import io.weyoui.weyouiappcore.group.command.domain.GroupId;
 import io.weyoui.weyouiappcore.group.infrastructure.GroupRepository;
+import io.weyoui.weyouiappcore.group.query.application.GroupViewService;
+import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import org.springframework.stereotype.Service;
 
 @Service
 public class GroupService {
 
     private final GroupRepository groupRepository;
+    private final GroupViewService groupViewService;
 
-    public GroupService(GroupRepository groupRepository) {
+    public GroupService(GroupRepository groupRepository, GroupViewService groupViewService) {
         this.groupRepository = groupRepository;
+        this.groupViewService = groupViewService;
     }
 
     public GroupId createGroup(GroupRequest groupRequest) {
@@ -36,4 +40,8 @@ public class GroupService {
         return groupId;
     }
 
+    public void endActivity(GroupId groupId, UserId userId) {
+        Group group = groupViewService.findById(groupId);
+        group.endActivity(userId);
+    }
 }

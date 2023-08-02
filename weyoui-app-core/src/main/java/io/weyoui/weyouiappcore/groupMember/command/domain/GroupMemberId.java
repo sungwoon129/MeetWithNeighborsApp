@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.group.command.domain;
+package io.weyoui.weyouiappcore.groupMember.command.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -13,7 +13,6 @@ public class GroupMemberId implements Serializable {
 
     @Column(name = "group_member_id")
     private String id;
-
 
 
     protected GroupMemberId() {}
