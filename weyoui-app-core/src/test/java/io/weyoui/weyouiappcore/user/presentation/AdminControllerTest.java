@@ -1,6 +1,5 @@
 package io.weyoui.weyouiappcore.user.presentation;
 
-import io.weyoui.weyouiappcore.common.Address;
 import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.user.infrastructure.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -8,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.geo.Point;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -35,13 +33,15 @@ class AdminControllerTest {
     @DisplayName("회원을 여러가지 조건을 정해서 검색이 가능하다")
     @Test
     @WithMockUser(roles = {"ADMIN"})
-    void searchAllTest() throws Exception {
+    void findByConditionsTest() throws Exception {
         //given
         repository.save(User.builder()
                         .id(repository.nextUserId())
                         .nickname("test")
                         .email("test@weyoui.io")
-                        .address(new Address("경기도","정자동","123-456",new Point(123,456))).build());
+                        // TODO : Point 객체 생성해서 검색하는 테스트코드 작성필요
+                        //.address(new Address("경기도","정자동","123-456",new Point(123,456)))
+                         .build());
 
 
         //when,then

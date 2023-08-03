@@ -32,6 +32,9 @@ dependencies {
     //jackson
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.0'
 
+    //geometry processing
+    implementation 'org.hibernate:hibernate-spatial:5.6.2.Final'
+
 
     // lombok
     compileOnly 'org.projectlombok:lombok'

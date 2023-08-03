@@ -1,7 +1,6 @@
 package io.weyoui.weyouiappcore.user.query.infrastructure;
 
 import io.weyoui.weyouiappcore.TestConfig;
-import io.weyoui.weyouiappcore.common.Address;
 import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.user.infrastructure.UserRepository;
 import io.weyoui.weyouiappcore.user.query.application.dto.CustomPageRequest;
@@ -14,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.geo.Point;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -39,7 +37,8 @@ class UserQueryRepositoryTest {
                 .id(userRepository.nextUserId())
                 .nickname("test")
                 .email("test@weyoui.io")
-                .address(new Address("경기도","정자동","123-456", new Point(123,456)))
+                // TODO : Point 객체 생성해서 검색하는 테스트코드 작성필요
+                //.address(new Address("경기도","정자동","123-456", new Point(123,456)))
                 .build();
         userRepository.save(user);
 
@@ -51,7 +50,7 @@ class UserQueryRepositoryTest {
 
 
         //when
-        Page<User> result = userQueryRepository.searchAll(search, PageRequest.of(pageRequest.getPage(), pageRequest.getSize()));
+        Page<User> result = userQueryRepository.findByConditions(search, PageRequest.of(pageRequest.getPage(), pageRequest.getSize()));
 
         //then
         assertThat(result.getTotalElements()).isEqualTo(1);

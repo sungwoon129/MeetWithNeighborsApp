@@ -4,8 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import io.weyoui.weyouiappcore.JwtTestConfig;
-import io.weyoui.weyouiappcore.common.Address;
 import io.weyoui.weyouiappcore.common.CommonResponse;
 import io.weyoui.weyouiappcore.group.command.application.dto.GroupAddResponse;
 import io.weyoui.weyouiappcore.group.command.application.dto.GroupRequest;
@@ -35,7 +33,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.geo.Point;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -106,7 +103,8 @@ class GroupControllerTest {
                 .description("공원에서 운동해요!")
                 .startTime(LocalDateTime.now().minusMinutes(10))
                 .endTime(LocalDateTime.now().plusHours(1))
-                .venue(new Address("서울","한강","123-456",new Point(37.5650407,126.8858048)))
+                // TODO : Point 객체 생성해서 검색하는 테스트코드 작성필요
+                //.venue(new Address("서울","한강","123-456",new Point(37.5650407,126.8858048)))
                 .build();
 
         String apiUrl = "http://localhost:" + port + "/api/v1/users/group";
@@ -148,7 +146,7 @@ class GroupControllerTest {
     }
 
     private UserId getFirstUserIdFromDb() {
-        Page<User> result = userQueryRepository.searchAll(new UserSearchRequest(), PageRequest.of(0,1));
+        Page<User> result = userQueryRepository.findByConditions(new UserSearchRequest(), PageRequest.of(0,1));
         
         return result.getContent().stream().findFirst().orElseThrow(() -> new NotFoundUserException("no user")).getId();
     }

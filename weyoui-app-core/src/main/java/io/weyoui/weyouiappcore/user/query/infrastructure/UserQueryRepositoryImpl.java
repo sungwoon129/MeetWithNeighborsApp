@@ -1,9 +1,9 @@
 package io.weyoui.weyouiappcore.user.query.infrastructure;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.util.StringUtils;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import io.micrometer.common.util.StringUtils;
 import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.user.query.application.dto.UserSearchRequest;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +23,10 @@ public class UserQueryRepositoryImpl implements UserQueryRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Page<User> searchAll(UserSearchRequest userSearchRequest, Pageable pageable) {
+    public Page<User> findByConditions(UserSearchRequest userSearchRequest, Pageable pageable) {
 
 
-         List<User> content = getContent(userSearchRequest, pageable);
+         List<User> content = getContents(userSearchRequest, pageable);
          JPAQuery<Long> countQuery = getCountQuery(userSearchRequest);
 
          return PageableExecutionUtils.getPage(content,pageable, countQuery::fetchOne);
@@ -44,7 +44,7 @@ public class UserQueryRepositoryImpl implements UserQueryRepositoryCustom {
                 );
     }
 
-    private List<User> getContent(UserSearchRequest userSearchRequest, Pageable pageable) {
+    private List<User> getContents(UserSearchRequest userSearchRequest, Pageable pageable) {
         return jpaQueryFactory
                 .selectFrom(user)
                 .where(
@@ -58,15 +58,15 @@ public class UserQueryRepositoryImpl implements UserQueryRepositoryCustom {
     }
 
     private BooleanExpression addressLike(String address) {
-        return StringUtils.isBlank(address) ? null : user.address.address2.contains(address);
+        return StringUtils.isNullOrEmpty(address) ? null : user.address.address2.contains(address);
     }
 
 
     private BooleanExpression nicknameLike(String nickname) {
-        return StringUtils.isBlank(nickname) ? null : user.nickname.contains(nickname);
+        return StringUtils.isNullOrEmpty(nickname) ? null : user.nickname.contains(nickname);
     }
 
     private BooleanExpression emailLike(String email) {
-        return StringUtils.isBlank(email) ? null : user.email.contains(email);
+        return StringUtils.isNullOrEmpty(email) ? null : user.email.contains(email);
     }
 }

@@ -22,7 +22,7 @@ public class UserViewService {
 
 
     public Page<User> findAll(UserSearchRequest userSearchRequest, Pageable pageable) {
-        return userQueryRepository.searchAll(userSearchRequest, pageable);
+        return userQueryRepository.findByConditions(userSearchRequest, pageable);
     }
 
     public User findById(UserId id) {

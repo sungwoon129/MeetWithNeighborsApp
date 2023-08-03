@@ -48,7 +48,7 @@ class UserRepositoryTest {
 
         userRepository.save(user);
 
-        Page<User> users = userQueryRepository.searchAll(new UserSearchRequest(), PageRequest.of(0,10));
+        Page<User> users = userQueryRepository.findByConditions(new UserSearchRequest(), PageRequest.of(0,10));
         User findUser = users.stream().findFirst().orElseThrow(() -> new NullPointerException("불러올 회원이 존재하지 않습니다."));
 
         //then

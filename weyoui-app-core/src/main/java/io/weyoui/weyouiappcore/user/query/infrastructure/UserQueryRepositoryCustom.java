@@ -7,5 +7,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface UserQueryRepositoryCustom {
 
-    Page<User> searchAll(UserSearchRequest userSearchRequest, Pageable pageable);
+    Page<User> findByConditions(UserSearchRequest userSearchRequest, Pageable pageable);
 }

@@ -2,7 +2,10 @@ package io.weyoui.weyouiappcore.group.query.application;
 
 import io.weyoui.weyouiappcore.group.command.domain.Group;
 import io.weyoui.weyouiappcore.group.command.domain.GroupId;
+import io.weyoui.weyouiappcore.group.query.application.dto.GroupSearchRequest;
 import io.weyoui.weyouiappcore.group.query.infrastructure.GroupQueryRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,5 +19,10 @@ public class GroupViewService {
 
     public Group findById(GroupId groupId) {
         return groupQueryRepository.findById(groupId).orElseThrow(() -> new IllegalArgumentException("해당 ID와 일치하는 그룹이 존재하지 않습니다."));
+    }
+
+    public Page<Group> findByConditions(GroupSearchRequest groupSearchRequest, Pageable pageable) {
+
+        return groupQueryRepository.findByConditions(groupSearchRequest, pageable);
     }
 }
