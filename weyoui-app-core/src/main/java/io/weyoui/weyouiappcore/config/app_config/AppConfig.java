@@ -9,6 +9,7 @@ import io.weyoui.weyouiappcore.store.domain.StoreState;
 import io.weyoui.weyouiappcore.user.command.domain.UserState;
 import io.weyoui.weyouiappcore.user.infrastructure.JwtTokenProvider;
 import io.weyoui.weyouiappcore.util.EnumMapper;
+import org.n52.jackson.datatype.jts.JtsModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -38,6 +39,9 @@ public class AppConfig implements WebMvcConfigurer {
 
         return enumMapper;
     }
+
+    @Bean
+    public JtsModule jtsModule() {return new JtsModule();}
 
     @Override
     public void addArgumentResolvers(final List<HandlerMethodArgumentResolver> resolvers) {
