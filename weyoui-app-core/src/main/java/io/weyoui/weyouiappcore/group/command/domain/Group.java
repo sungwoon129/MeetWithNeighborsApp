@@ -2,6 +2,7 @@ package io.weyoui.weyouiappcore.group.command.domain;
 
 import io.weyoui.weyouiappcore.common.Address;
 import io.weyoui.weyouiappcore.common.BaseTimeEntity;
+import io.weyoui.weyouiappcore.group.query.application.dto.GroupViewResponse;
 import io.weyoui.weyouiappcore.groupMember.command.domain.GroupMember;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import jakarta.persistence.*;
@@ -69,6 +70,17 @@ public class Group extends BaseTimeEntity {
         this.venue = venue;
         this.startTime = startTime;
         this.endTime = endTime;
+    }
+
+    public GroupViewResponse toResponseDto() {
+        return GroupViewResponse.builder()
+                .groupId(id.getId())
+                .name(name)
+                .address(venue)
+                .headCount(getHeadCount())
+                .capacity(capacity)
+                .state(state)
+                .build();
     }
 
     public void checkTimeAndChangeState() {
