@@ -1,6 +1,6 @@
 package io.weyoui.weyouiappcore.user.query.infrastructure;
 
-import io.weyoui.weyouiappcore.TestConfig;
+import io.weyoui.weyouiappcore.TestQueryDSLConfig;
 import io.weyoui.weyouiappcore.common.Address;
 import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.user.infrastructure.UserRepository;
@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-@Import(TestConfig.class)
+@Import(TestQueryDSLConfig.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest
 class UserQueryRepositoryTest {

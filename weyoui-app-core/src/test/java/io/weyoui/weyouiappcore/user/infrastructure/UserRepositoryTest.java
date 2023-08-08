@@ -2,7 +2,7 @@ package io.weyoui.weyouiappcore.user.infrastructure;
 
 import io.weyoui.weyouiappcore.user.command.domain.RoleType;
 import io.weyoui.weyouiappcore.user.command.domain.User;
-import io.weyoui.weyouiappcore.TestConfig;
+import io.weyoui.weyouiappcore.TestQueryDSLConfig;
 import io.weyoui.weyouiappcore.user.query.application.dto.UserSearchRequest;
 import io.weyoui.weyouiappcore.user.command.application.dto.SignUpRequest;
 import io.weyoui.weyouiappcore.user.query.infrastructure.UserQueryRepository;
@@ -18,7 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Import(TestConfig.class)
+@Import(TestQueryDSLConfig.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest
 class UserRepositoryTest {
