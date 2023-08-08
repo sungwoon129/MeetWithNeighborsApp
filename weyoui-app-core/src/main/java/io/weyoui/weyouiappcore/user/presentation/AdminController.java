@@ -27,11 +27,11 @@ public class AdminController {
     }
 
     @GetMapping("/api/v1/admin/users")
-    public ResponseEntity<CommonResponse<List<UserResponse>>> list(UserSearchRequest usersearch, @Valid CustomPageRequest pageRequest) {
+    public ResponseEntity<CommonResponse<List<UserResponse>>> list(UserSearchRequest userSearch, @Valid CustomPageRequest pageRequest) {
 
         Pageable pageable = PageRequest.of(pageRequest.getPage(), pageRequest.getSize());
 
-        Page<User> result = userViewService.findAll(usersearch, pageable);
+        Page<User> result = userViewService.findAll(userSearch, pageable);
         List<UserResponse> responseContent = result.getContent().stream().map(User::toResponseDto).toList();
 
         return ResponseEntity.ok().body(new CommonResponse<>(responseContent, result.getTotalElements()));
