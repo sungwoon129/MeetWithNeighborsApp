@@ -1,12 +1,15 @@
 package io.weyoui.weyouiappcore.user.query.infrastructure;
 
 import io.weyoui.weyouiappcore.TestConfig;
+import io.weyoui.weyouiappcore.common.Address;
 import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.user.infrastructure.UserRepository;
 import io.weyoui.weyouiappcore.user.query.application.dto.CustomPageRequest;
 import io.weyoui.weyouiappcore.user.query.application.dto.UserSearchRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -37,8 +40,7 @@ class UserQueryRepositoryTest {
                 .id(userRepository.nextUserId())
                 .nickname("test")
                 .email("test@weyoui.io")
-                // TODO : Point 객체 생성해서 검색하는 테스트코드 작성필요
-                //.address(new Address("경기도","정자동","123-456", new Point(123,456)))
+                .address(new Address("경기도","정자동","123-456", new GeometryFactory().createPoint(new Coordinate(123d,456d))))
                 .build();
         userRepository.save(user);
 

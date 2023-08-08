@@ -1,9 +1,12 @@
 package io.weyoui.weyouiappcore.user.presentation;
 
+import io.weyoui.weyouiappcore.common.Address;
 import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.user.infrastructure.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -39,9 +42,8 @@ class AdminControllerTest {
                         .id(repository.nextUserId())
                         .nickname("test")
                         .email("test@weyoui.io")
-                        // TODO : Point 객체 생성해서 검색하는 테스트코드 작성필요
-                        //.address(new Address("경기도","정자동","123-456",new Point(123,456)))
-                         .build());
+                        .address(new Address("경기도","정자동","123-456",new GeometryFactory().createPoint(new Coordinate(123d,456d))))
+                        .build());
 
 
         //when,then

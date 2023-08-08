@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.weyoui.weyouiappcore.common.Address;
 import io.weyoui.weyouiappcore.common.CommonResponse;
 import io.weyoui.weyouiappcore.group.command.application.dto.GroupAddResponse;
 import io.weyoui.weyouiappcore.group.command.application.dto.GroupRequest;
@@ -26,6 +27,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -95,7 +100,6 @@ class GroupControllerTest {
         UserResponse.Token token = jwtTokenProvider.generateToken(new UsernamePasswordAuthenticationToken(userId,"",
                 Collections.singleton(new SimpleGrantedAuthority(RoleType.ROLE_USER.name()))),userId);
 
-
         GroupRequest groupRequest = GroupRequest.builder()
                 .name("운동 모임")
                 .category(GroupCategory.WORKOUT.name())
@@ -103,8 +107,11 @@ class GroupControllerTest {
                 .description("공원에서 운동해요!")
                 .startTime(LocalDateTime.now().minusMinutes(10))
                 .endTime(LocalDateTime.now().plusHours(1))
-                // TODO : Point 객체 생성해서 검색하는 테스트코드 작성필요
-                //.venue(new Address("서울","한강","123-456",new Point(37.5650407,126.8858048)))
+                .venue(new Address(
+                        "서울",
+                        "한강",
+                        "123-456",
+                        new GeometryFactory().createPoint(new Coordinate(123d,456d))))
                 .build();
 
         String apiUrl = "http://localhost:" + port + "/api/v1/users/group";
