@@ -12,6 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class EntryPointUnauthorizedHandler implements AuthenticationEntryPoint {
     @Override
@@ -21,7 +22,7 @@ public class EntryPointUnauthorizedHandler implements AuthenticationEntryPoint {
         responseBody.setDetail("인증되지 않은 사용자의 요청입니다.");
 
         response.setHeader("Content-Type", MediaType.APPLICATION_JSON.toString());
-        response.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.getWriter().write(new ObjectMapper().writeValueAsString(responseBody));
         response.getWriter().flush();

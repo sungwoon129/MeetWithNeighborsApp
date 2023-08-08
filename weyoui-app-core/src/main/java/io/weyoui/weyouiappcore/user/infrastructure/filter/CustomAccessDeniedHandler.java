@@ -12,6 +12,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     @Override
@@ -22,7 +23,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         responseBody.setDetail("인가받지 못한 자원에 접근할 수 없습니다.");
 
         response.setHeader("Content-Type", MediaType.APPLICATION_JSON.toString());
-        response.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.getWriter().write(new ObjectMapper().writeValueAsString(responseBody));
         response.getWriter().flush();
