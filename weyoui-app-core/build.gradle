@@ -29,16 +29,11 @@ dependencies {
     //redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
-    //jackson - java8 new type parser
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.0'
-
-    // geojson processing
+    // geojson JSON parser
     implementation group: 'org.n52.jackson', name: 'jackson-datatype-jts', version: '1.2.10'
 
-
-    //geometry processing
-    implementation 'org.hibernate:hibernate-spatial:5.6.2.Final'
-
+    // geometry with hibernate processing
+    implementation "org.hibernate:hibernate-spatial:${dependencyManagement.importedProperties['hibernate.version']}"
 
     // lombok
     compileOnly 'org.projectlombok:lombok'
