@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.weyoui.weyouiappcore.MessageConverterTestConfig;
 import io.weyoui.weyouiappcore.common.Address;
 import io.weyoui.weyouiappcore.common.CommonResponse;
 import io.weyoui.weyouiappcore.group.command.application.dto.GroupAddResponse;
@@ -12,6 +13,8 @@ import io.weyoui.weyouiappcore.group.command.domain.Group;
 import io.weyoui.weyouiappcore.group.command.domain.GroupCategory;
 import io.weyoui.weyouiappcore.group.command.domain.GroupId;
 import io.weyoui.weyouiappcore.group.command.domain.GroupState;
+import io.weyoui.weyouiappcore.group.infrastructure.GroupRepository;
+import io.weyoui.weyouiappcore.group.query.application.dto.GroupViewResponse;
 import io.weyoui.weyouiappcore.group.query.infrastructure.GroupQueryRepository;
 import io.weyoui.weyouiappcore.user.command.application.exception.NotFoundUserException;
 import io.weyoui.weyouiappcore.user.command.domain.RoleType;
@@ -29,33 +32,37 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.n52.jackson.datatype.jts.JtsModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
+@Import(MessageConverterTestConfig.class)
 @Transactional
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -72,6 +79,9 @@ class GroupControllerTest {
     GroupQueryRepository groupQueryRepository;
 
     @Autowired
+    GroupRepository groupRepository;
+
+    @Autowired
     JwtTokenProvider jwtTokenProvider;
 
     @Autowired
@@ -80,15 +90,47 @@ class GroupControllerTest {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    JtsModule jtsModule;
+
     ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     void setup() {
+        objectMapper.registerModule(jtsModule);
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
     }
 
 
+    @WithMockUser
+    @DisplayName("조건에 맞는 모임을 검색한다")
+    @Test
+    void searchGroupTest() throws Exception {
+        //given
+        String expectedName = "테스트 그룹";
+
+        groupRepository.save(Group.builder()
+                        .id(groupRepository.nextId())
+                        .name(expectedName)
+                        //.venue(new Address("경기도","서울특별시","123-456",new GeometryFactory().createPoint(new Coordinate(123.9,454.3))))
+                        .category(GroupCategory.WORKOUT)
+                        .build());
+        String uri = "http://localhost:" + port + "/api/v1/users/groups";
+
+        //when
+
+
+        MvcResult result = mvc.perform(get(uri))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        //then
+        CommonResponse<List<GroupViewResponse>> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
+        assertEquals(expectedName, response.getData().get(0).getName());
+
+    }
 
     @DisplayName("클라이언트의 요청대로 그룹이 생성된다")
     @Test
