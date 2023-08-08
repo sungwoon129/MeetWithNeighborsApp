@@ -14,12 +14,12 @@ public class GroupViewResponse {
     private String groupId;
     private String name;
     private Address address;
-    private long headCount;
-    private long capacity;
+    private int headCount;
+    private int capacity;
     private GroupState state;
 
     @Builder
-    public GroupViewResponse(String groupId, String name, Address address, long headCount, long capacity, GroupState state) {
+    public GroupViewResponse(String groupId, String name, Address address, int headCount, int capacity, GroupState state) {
         this.groupId = groupId;
         this.name = name;
         this.address = address;

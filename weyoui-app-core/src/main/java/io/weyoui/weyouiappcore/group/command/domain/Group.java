@@ -29,7 +29,7 @@ public class Group extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private GroupCategory category;
 
-    private Integer capacity;
+    private int capacity;
 
 
     @Lob
@@ -59,7 +59,7 @@ public class Group extends BaseTimeEntity {
     protected Group() {}
 
     @Builder
-    public Group(GroupId id, String name, GroupCategory category, Integer capacity, String description, GroupState state,
+    public Group(GroupId id, String name, GroupCategory category, int capacity, String description, GroupState state,
                  Address venue, LocalDateTime startTime, LocalDateTime endTime) {
         this.id = id;
         this.name = name;
