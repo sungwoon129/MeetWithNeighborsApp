@@ -70,14 +70,14 @@ public class GroupController {
     }
 
     @GetMapping("/api/v1/users/groups")
-    public ResponseEntity<CommonResponse<List<GroupViewResponse>>> banishMember(@RequestBody GroupSearchRequest groupSearchRequest, CustomPageRequest pageRequest) {
+    public ResponseEntity<CommonResponse<List<GroupViewResponse>>> banishMember(GroupSearchRequest groupSearchRequest, CustomPageRequest pageRequest) {
 
         Pageable pageable = PageRequest.of(pageRequest.getPage(), pageRequest.getSize());
         Page<Group> result = groupViewService.findByConditions(groupSearchRequest,pageable);
 
         List<GroupViewResponse> groups = result.stream().map(Group::toResponseDto).toList();
 
-        return ResponseEntity.ok().body(new CommonResponse<>(groups));
+        return ResponseEntity.ok().body(new CommonResponse<>(groups,result.getTotalElements()));
     }
 
 }
