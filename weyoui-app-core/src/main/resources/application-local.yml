@@ -10,15 +10,15 @@ spring:
   jpa:
     open-in-view: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
-    format-sql: true
-    use_sql_comments: true
     properties:
       hibernate.format_sql: true
       dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+      hibernate:
+        dialect: org.hibernate.spatial.dialect.mysql.MySQL56InnoDBSpatialDialect
   data:
     redis:
       host: localhost
