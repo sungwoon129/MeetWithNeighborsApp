@@ -2,6 +2,7 @@ package io.weyoui.weyouiappcore.user.command.domain;
 
 import io.weyoui.weyouiappcore.common.Address;
 import io.weyoui.weyouiappcore.common.BaseTimeEntity;
+import io.weyoui.weyouiappcore.common.BooleanToYNConverter;
 import io.weyoui.weyouiappcore.groupMember.command.domain.GroupMember;
 import io.weyoui.weyouiappcore.user.infrastructure.dto.UserSession;
 import io.weyoui.weyouiappcore.user.query.application.dto.UserResponse;
@@ -9,6 +10,8 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,6 +50,12 @@ public class User extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private RoleType role;
+
+    @Column(length = 1)
+    @Convert(converter = BooleanToYNConverter.class)
+    private boolean isIdentifiedYourself;
+
+    private LocalDateTime identificationDate;
 
     protected User() {}
 
@@ -96,5 +105,14 @@ public class User extends BaseTimeEntity {
 
     public void addGroupMember(GroupMember groupMember) {
         groups.add(groupMember);
+    }
+
+    public void resetPassword(String password) {
+
+        Period diff = Period.between(LocalDateTime.now().toLocalDate(), identificationDate.toLocalDate());
+        boolean over3Month = diff.getDays() > 90;
+        if(!isIdentifiedYourself || over3Month) throw new IllegalStateException("본인인증을 하지 않았거나, 인증일로부터 90일이 지난 경우 비밀번호 변경이 불가능합니다.");
+
+        this.password = password;
     }
 }

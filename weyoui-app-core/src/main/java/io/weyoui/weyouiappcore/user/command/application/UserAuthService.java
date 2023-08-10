@@ -1,5 +1,6 @@
 package io.weyoui.weyouiappcore.user.command.application;
 
+import io.weyoui.weyouiappcore.user.command.application.dto.PasswordResetRequest;
 import io.weyoui.weyouiappcore.user.command.domain.RoleType;
 import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
@@ -50,5 +51,12 @@ public class UserAuthService {
         signUpRequest.isEqualPwAndPwConfirm();
         userViewService.validationDuplicateUser(signUpRequest.getEmail());
 
+    }
+
+    public void resetPassword(PasswordResetRequest passwordResetRequest) {
+
+        User user = userViewService.findByEmail(passwordResetRequest.getEmail());
+
+        user.resetPassword(passwordEncoder.encode(passwordResetRequest.getUpdatePassword()));
     }
 }
