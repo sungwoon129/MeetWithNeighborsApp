@@ -53,7 +53,7 @@ public class User extends BaseTimeEntity {
 
     @Column(length = 1)
     @Convert(converter = BooleanToYNConverter.class)
-    private boolean isIdentifiedYourself;
+    private boolean isIdentified;
 
     private LocalDateTime identificationDate;
 
@@ -111,7 +111,7 @@ public class User extends BaseTimeEntity {
 
         Period diff = Period.between(LocalDateTime.now().toLocalDate(), identificationDate.toLocalDate());
         boolean over3Month = diff.getDays() > 90;
-        if(!isIdentifiedYourself || over3Month) throw new IllegalStateException("본인인증을 하지 않았거나, 인증일로부터 90일이 지난 경우 비밀번호 변경이 불가능합니다.");
+        if(!isIdentified || over3Month) throw new IllegalStateException("본인인증을 하지 않았거나, 인증일로부터 90일이 지난 경우 비밀번호 변경이 불가능합니다.");
 
         this.password = password;
     }
