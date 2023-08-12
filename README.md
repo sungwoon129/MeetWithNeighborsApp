@@ -100,17 +100,21 @@ WeYouI(가제)는 SNS를 통해서 전 세계 사람들과 소통할 수 있지�
 
 
 ### UML ###
-![UML](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/c52c7e8b-6595-4a00-88c0-2700968ffb5a)
+![UML](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/9c5e5fd5-bf60-4fbf-8cf0-77644b20fdf4)
+
 
 
 ### 스토리보드 ###
 전체 스토리보드는 [WeYou,I.pdf](https://github.com/sungwoon129/MeetWithNeighborsApp/files/11898676/WeYou.I.pdf) 에서 확인할 수 있습니다.
 아래는 전체 스토리보드 중 일부입니다.
 
-![크기변환_홈 _ 로그인 정보가 없는 경우](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/e00a1402-4932-495f-acf9-57683f916199)
-![크기변환_홈(모임) - 메인 - 목록 _ 로그인 정보가 있는 경우](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/be127780-d5f6-4f78-b591-db97e3c151a8)
-![크기변환_홈- 모임활동 상세](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/f7a3122e-e8e4-4827-9b46-14061798569f)
-![크기변환_My - 나의 가게 - 가게관리](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/de5bd6cc-19d6-4df8-b201-4c64f8acc631)
+![크기변환_홈 _ 로그인 정보가 없는 경우](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/c81e2c87-7f32-4310-a76f-5ef717e8e31b)
+![크기변환_홈(모임) - 메인 - 목록 _ 로그인 정보가 있는 경우](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/daf4e810-e1a8-430d-8c99-71d9addd5b2e)
+![크기변환_홈- 모임활동 상세](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/c1f0a7e8-7eb7-4f7c-ac5e-df9afaa4adcb)
+![크기변환_My - 나의 가게 - 가게관리](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/b52dea4e-786f-463b-bef9-48d49ce59c03)
 
-![WeYou,I - 전체](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/8684f1c7-e0bc-4ee6-a88c-469136b604f9)
+
+![WeYou,I - 전체](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/7f8bf7d8-7685-4815-b78a-c93ff381a993)
+
+
 
