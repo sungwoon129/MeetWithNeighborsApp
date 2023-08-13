@@ -114,16 +114,23 @@ class GroupControllerTest {
         groupRepository.save(Group.builder()
                         .id(groupRepository.nextId())
                         .name(expectedName)
-                        //.venue(new Address("경기도","서울특별시","123-456",new GeometryFactory().createPoint(new Coordinate(123.9,454.3))))
+                        .state(GroupState.BEFORE_ACTIVITY)
+                        .venue(new Address("경기도","서울특별시","123-456",new GeometryFactory().createPoint(new Coordinate(37.37369668919236,127.11314527061833))))
                         .category(GroupCategory.WORKOUT)
                         .build());
+
         String uri = "http://localhost:" + port + "/api/v1/users/groups";
 
         //when
-
-
-        MvcResult result = mvc.perform(get(uri))
+        MvcResult result = mvc.perform(get(uri)
+                        .queryParam("size","10")
+                        .queryParam("name","테스트")
+                        .queryParam("state","B")
+                        .queryParam("location.longitude","37.37369668919236")
+                        .queryParam("location.latitude","127.11314527061833")
+                )
                 .andExpect(status().isOk())
+                .andDo(print())
                 .andReturn();
 
         //then
