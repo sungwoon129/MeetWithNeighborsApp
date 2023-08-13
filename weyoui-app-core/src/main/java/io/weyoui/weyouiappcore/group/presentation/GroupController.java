@@ -1,6 +1,7 @@
 package io.weyoui.weyouiappcore.group.presentation;
 
 import io.weyoui.weyouiappcore.common.CommonResponse;
+import io.weyoui.weyouiappcore.common.ResultYnType;
 import io.weyoui.weyouiappcore.config.app_config.LoginUserId;
 import io.weyoui.weyouiappcore.group.command.application.GroupService;
 import io.weyoui.weyouiappcore.group.command.application.dto.GroupAddResponse;
@@ -14,6 +15,7 @@ import io.weyoui.weyouiappcore.groupMember.command.application.GroupMemberServic
 import io.weyoui.weyouiappcore.groupMember.command.domain.GroupMemberId;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import io.weyoui.weyouiappcore.user.query.application.dto.CustomPageRequest;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -69,15 +71,15 @@ public class GroupController {
         return ResponseEntity.ok().body(new CommonResponse<>("success"));
     }
 
-    @GetMapping("/api/v1/users/groups")
-    public ResponseEntity<CommonResponse<List<GroupViewResponse>>> banishMember(GroupSearchRequest groupSearchRequest, CustomPageRequest pageRequest) {
+    @GetMapping(value = "/api/v1/users/groups")
+    public ResponseEntity<CommonResponse<List<GroupViewResponse>>> search(GroupSearchRequest groupSearchRequest, @Valid CustomPageRequest pageRequest) {
 
         Pageable pageable = PageRequest.of(pageRequest.getPage(), pageRequest.getSize());
         Page<Group> result = groupViewService.findByConditions(groupSearchRequest,pageable);
 
         List<GroupViewResponse> groups = result.stream().map(Group::toResponseDto).toList();
 
-        return ResponseEntity.ok().body(new CommonResponse<>(groups,result.getTotalElements()));
+        return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y,groups,result.getTotalElements()));
     }
 
 }

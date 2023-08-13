@@ -3,6 +3,7 @@ package io.weyoui.weyouiappcore.user.presentation;
 import io.weyoui.weyouiappcore.common.CommonResponse;
 import io.weyoui.weyouiappcore.user.command.application.UserTokenService;
 import io.weyoui.weyouiappcore.user.command.application.UserAuthService;
+import io.weyoui.weyouiappcore.user.command.application.dto.PasswordResetRequest;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import io.weyoui.weyouiappcore.user.command.application.dto.LoginRequest;
 import io.weyoui.weyouiappcore.user.command.application.dto.SignUpRequest;
@@ -12,6 +13,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -59,5 +61,14 @@ public class GuestController {
         UserResponse.Token newToken = userTokenService.reissue(refreshToken);
 
         return ResponseEntity.ok().body(new CommonResponse<>(newToken));
+    }
+
+    @PutMapping("/api/v1/guest/password-reset")
+    public ResponseEntity<CommonResponse<String>> resetPassword(PasswordResetRequest passwordResetRequest) {
+
+        userAuthService.resetPassword(passwordResetRequest);
+
+        return ResponseEntity.ok().body(new CommonResponse<>("success"));
+
     }
 }

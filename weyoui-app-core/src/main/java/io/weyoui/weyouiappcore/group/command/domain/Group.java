@@ -8,6 +8,7 @@ import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -29,8 +30,8 @@ public class Group extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private GroupCategory category;
 
+    @ColumnDefault("1")
     private int capacity;
-
 
     @Lob
     private String description;
