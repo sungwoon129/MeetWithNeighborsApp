@@ -107,11 +107,11 @@ public class Group extends BaseTimeEntity {
     }
 
     public void changeStartTime(LocalDateTime time) {
-        startTime = time;
+        if(time != null) startTime = time;
     }
 
     public void changeEndTime(LocalDateTime time) {
-        endTime = time;
+        if(time != null) endTime = time;
     }
 
     public void endActivity(UserId userId) {
@@ -128,5 +128,12 @@ public class Group extends BaseTimeEntity {
 
     public boolean isActive() {
         return state.equals(GroupState.IN_ACTIVITY);
+    }
+
+    public void checkActivityTimeValidation() {
+
+        if (startTime == null || endTime == null) throw new NullPointerException("시작시간 혹은 종료시간이 null 입니다.");
+        else if(startTime.isAfter(endTime)) throw new IllegalStateException("시작시간은 종료시간 이후가 될 수 없습니다.");
+
     }
 }

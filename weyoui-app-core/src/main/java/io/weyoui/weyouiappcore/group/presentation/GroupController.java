@@ -71,7 +71,7 @@ public class GroupController {
         return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
     }
 
-    @GetMapping(value = "/api/v1/users/groups")
+    @GetMapping("/api/v1/users/groups")
     public ResponseEntity<CommonResponse<List<GroupViewResponse>>> search(GroupSearchRequest groupSearchRequest, @Valid CustomPageRequest pageRequest) {
 
         Pageable pageable = PageRequest.of(pageRequest.getPage(), pageRequest.getSize());
@@ -80,6 +80,14 @@ public class GroupController {
         List<GroupViewResponse> groups = result.stream().map(Group::toResponseDto).toList();
 
         return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y,groups,result.getTotalElements()));
+    }
+
+    @PutMapping("/api/v1/users/groups/{groupId}/activity-time")
+    public ResponseEntity<CommonResponse<CommonResponse<String>>> changeActivityTime(@PathVariable GroupId groupId, @RequestBody GroupRequest groupRequest ) {
+
+        groupService.changeActivityTime(groupId, groupRequest);
+
+        return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
     }
 
 }

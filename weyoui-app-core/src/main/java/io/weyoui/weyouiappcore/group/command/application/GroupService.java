@@ -44,4 +44,13 @@ public class GroupService {
         Group group = groupViewService.findById(groupId);
         group.endActivity(userId);
     }
+
+    public void changeActivityTime(GroupId groupId, GroupRequest groupRequest) {
+        Group group = groupViewService.findById(groupId);
+
+        group.changeStartTime(groupRequest.getStartTime());
+        group.changeEndTime(groupRequest.getEndTime());
+
+        group.checkActivityTimeValidation();
+    }
 }
