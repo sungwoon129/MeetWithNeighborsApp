@@ -33,7 +33,7 @@ public class GroupService {
                 .endTime(groupRequest.getEndTime())
                 .build();
 
-        group.checkTimeAndChangeState();
+        group.changeStateByCurrentTime();
 
         groupRepository.save(group);
 
@@ -52,5 +52,6 @@ public class GroupService {
         group.changeEndTime(groupRequest.getEndTime());
 
         group.checkActivityTimeValidation();
+        group.changeStateByCurrentTime();
     }
 }

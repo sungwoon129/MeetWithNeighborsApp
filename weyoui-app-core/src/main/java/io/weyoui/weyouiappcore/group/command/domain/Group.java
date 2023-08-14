@@ -84,7 +84,7 @@ public class Group extends BaseTimeEntity {
                 .build();
     }
 
-    public void checkTimeAndChangeState() {
+    public void changeStateByCurrentTime() {
         LocalDateTime now = LocalDateTime.now();
 
         if(now.isAfter(startTime) && now.isBefore(endTime)) {
@@ -134,6 +134,7 @@ public class Group extends BaseTimeEntity {
 
         if (startTime == null || endTime == null) throw new NullPointerException("시작시간 혹은 종료시간이 null 입니다.");
         else if(startTime.isAfter(endTime)) throw new IllegalStateException("시작시간은 종료시간 이후가 될 수 없습니다.");
+        else if(startTime.isBefore(LocalDateTime.now().minusHours(12))) throw new IllegalStateException("모임 활동 시작시간은 현재 시각으로부터 12시간 이전이 될 수 없습니다.");
 
     }
 }
