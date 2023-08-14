@@ -1,6 +1,7 @@
 package io.weyoui.weyouiappcore.user.presentation;
 
 import io.weyoui.weyouiappcore.common.CommonResponse;
+import io.weyoui.weyouiappcore.common.ResultYnType;
 import io.weyoui.weyouiappcore.user.command.application.UserTokenService;
 import io.weyoui.weyouiappcore.user.command.application.UserAuthService;
 import io.weyoui.weyouiappcore.user.command.application.dto.PasswordResetRequest;
@@ -68,7 +69,7 @@ public class GuestController {
 
         userAuthService.resetPassword(passwordResetRequest);
 
-        return ResponseEntity.ok().body(new CommonResponse<>("success"));
+        return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
 
     }
 }

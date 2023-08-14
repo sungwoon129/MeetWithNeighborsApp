@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CommonResponse<T>  {
 
-    private ResultYnType resultYn;
+    private ResultYnType resultYn = ResultYnType.N;
     private T data;
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     private long total;
@@ -21,12 +21,18 @@ public class CommonResponse<T>  {
     }
 
     public CommonResponse(T data, long count) {
+        this.resultYn = ResultYnType.Y;
         this.data = data;
         this.total = count;
     }
 
     public CommonResponse(T data) {
+        this.resultYn = ResultYnType.Y;
         this.data = data;
 
+    }
+
+    public CommonResponse(ResultYnType resultYn) {
+        this.resultYn = resultYn;
     }
 }

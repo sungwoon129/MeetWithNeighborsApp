@@ -61,14 +61,14 @@ public class GroupController {
 
         groupService.endActivity(groupId,userId);
 
-        return ResponseEntity.ok().body(new CommonResponse<>("success"));
+        return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
     }
 
     @PutMapping("/api/v1/users/group/{groupId}/group-member/state")
     public ResponseEntity<CommonResponse<String>> banishMember(@LoginUserId UserId userId, @PathVariable GroupId groupId) {
         groupMemberService.banishMember(groupId, userId);
 
-        return ResponseEntity.ok().body(new CommonResponse<>("success"));
+        return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
     }
 
     @GetMapping(value = "/api/v1/users/groups")
