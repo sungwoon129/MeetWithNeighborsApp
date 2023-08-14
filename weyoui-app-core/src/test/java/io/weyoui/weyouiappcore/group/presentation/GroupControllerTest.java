@@ -56,8 +56,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -191,6 +190,51 @@ class GroupControllerTest {
 
         assertEquals(group.getState(), GroupState.IN_ACTIVITY);
 
+    }
+
+    @WithMockUser
+    @DisplayName("모임 활동시간을 변경한다")
+    @Test
+    void  changeActivityTime() throws Exception {
+        //given
+        GroupId groupId = insertAnyGroup();
+        LocalDateTime expectedStartTime = LocalDateTime.now().plusMinutes(10);
+        LocalDateTime expectedEndTime = expectedStartTime.plusMinutes(30);
+        GroupRequest groupRequest = GroupRequest.builder()
+                .startTime(expectedStartTime)
+                .endTime(expectedEndTime)
+                .build();
+
+        String apiUrl = "/api/v1/users/groups/" + groupId.getId() + "/activity-time";
+
+        //when
+        mvc.perform(put(apiUrl)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(groupRequest)))
+            .andDo(print())
+            .andExpect(status().isOk());
+
+        //then
+        Group group = groupQueryRepository.findById(groupId).orElseThrow(() -> new NullPointerException("해당 id를 가진 모임이 존재하지 않습니다."));
+        assertEquals(group.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd E HH:mm:ss:SSS")),expectedStartTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd E HH:mm:ss:SSS")));
+        assertEquals(group.getEndTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd E HH:mm:ss:SSS")),expectedEndTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd E HH:mm:ss:SSS")));
+
+    }
+
+    private GroupId insertAnyGroup() {
+        GroupId nextId = groupRepository.nextId();
+        groupRepository.save(
+                Group.builder()
+                        .id(nextId)
+                        .name("임의의 모임")
+                        .state(GroupState.IN_ACTIVITY)
+                        .venue(new Address("경기도","성남시","123-456",new GeometryFactory().createPoint(new Coordinate(37.37369668919236,127.11314527061833))))
+                        .category(GroupCategory.MEAL)
+                        .startTime(LocalDateTime.now())
+                        .endTime(LocalDateTime.now().plusHours(1))
+                        .build()
+        );
+        return nextId;
     }
 
     private void insertAnyUser() {
