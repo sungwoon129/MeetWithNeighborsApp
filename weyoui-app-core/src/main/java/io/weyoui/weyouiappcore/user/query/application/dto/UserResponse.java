@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Builder
@@ -28,6 +29,10 @@ public class UserResponse {
     private UserState state;
 
     private RoleType role;
+
+    private boolean isIdentified;
+
+    private LocalDateTime identificationDate;
 
     private DeviceInfo deviceInfo;
 

@@ -89,6 +89,8 @@ public class User extends BaseTimeEntity {
                 .groups(groups)
                 .role(role)
                 .state(state)
+                .isIdentified(isIdentified)
+                .identificationDate(identificationDate)
                 .deviceInfo(deviceInfo)
                 .build();
 
