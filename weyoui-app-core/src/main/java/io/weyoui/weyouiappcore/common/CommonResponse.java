@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class CommonResponse<T>  {
 
     private ResultYnType resultYn = ResultYnType.N;
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     private T data;
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     private long total;
