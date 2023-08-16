@@ -33,7 +33,7 @@ class GroupServiceTest {
                 .description("공원에서 운동해요!")
                 .startTime(LocalDateTime.now().minusMinutes(10))
                 .endTime(LocalDateTime.now().plusHours(1))
-                .venue(new Address(
+                .place(new Address(
                         "서울",
                         "한강",
                         "123-456",

@@ -32,6 +32,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.n52.jackson.datatype.jts.JtsModule;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,7 +115,7 @@ class GroupControllerTest {
                         .id(groupRepository.nextId())
                         .name(expectedName)
                         .state(GroupState.BEFORE_ACTIVITY)
-                        .venue(new Address("경기도","서울특별시","123-456",new GeometryFactory().createPoint(new Coordinate(37.37369668919236,127.11314527061833))))
+                        .place(new Address("경기도","서울특별시","123-456",new GeometryFactory().createPoint(new Coordinate(37.37369668919236,127.11314527061833))))
                         .category(GroupCategory.WORKOUT)
                         .build());
 
@@ -155,7 +156,7 @@ class GroupControllerTest {
                 .description("공원에서 운동해요!")
                 .startTime(LocalDateTime.now().minusMinutes(10))
                 .endTime(LocalDateTime.now().plusHours(1))
-                .venue(new Address(
+                .place(new Address(
                         "서울",
                         "한강",
                         "123-456",
@@ -181,10 +182,10 @@ class GroupControllerTest {
         assertEquals(group.getName(),groupRequest.getName());
         assertEquals(group.getCapacity(),groupRequest.getCapacity());
         assertEquals(group.getDescription(),groupRequest.getDescription());
-        assertEquals(group.getVenue().getFullAddress(),groupRequest.getVenue().getFullAddress());
-        assertEquals(group.getVenue().getZipCode(),groupRequest.getVenue().getZipCode());
-        assertEquals(group.getVenue().getPoint().getX(),groupRequest.getVenue().getPoint().getX());
-        assertEquals(group.getVenue().getPoint().getY(),groupRequest.getVenue().getPoint().getY());
+        assertEquals(group.getPlace().getFullAddress(),groupRequest.getPlace().getFullAddress());
+        assertEquals(group.getPlace().getZipCode(),groupRequest.getPlace().getZipCode());
+        assertEquals(group.getPlace().getPoint().getX(),groupRequest.getPlace().getPoint().getX());
+        assertEquals(group.getPlace().getPoint().getY(),groupRequest.getPlace().getPoint().getY());
         assertEquals(group.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd E HH:mm")),groupRequest.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd E HH:mm")));
         assertEquals(group.getEndTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd E HH:mm")),groupRequest.getEndTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd E HH:mm")));
 
@@ -221,6 +222,34 @@ class GroupControllerTest {
 
     }
 
+    @WithMockUser
+    @DisplayName("모임 활동장소를 변경한다")
+    @Test
+    void changeActivityPlace() throws Exception {
+        //given
+        GroupId groupId = insertAnyGroup();
+        String expectedFullAddress = "서울특별시 강남구 서초대로";
+        Point expectedLocation = new GeometryFactory().createPoint(new Coordinate(38.37369668919236, 128.11314527061833));
+        GroupRequest groupRequest = GroupRequest.builder()
+                .place(new Address("서울특별시","강남구 서초대로","123-456",expectedLocation))
+                .build();
+
+        String apiUrl = "/api/v1/users/groups/" + groupId.getId() + "/activity-place";
+
+        //when
+        mvc.perform(put(apiUrl)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(groupRequest)))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        //then
+        Group group = groupQueryRepository.findById(groupId).orElseThrow(() -> new NullPointerException("해당 id를 가진 모임이 존재하지 않습니다."));
+        assertEquals(expectedFullAddress, group.getPlace().getFullAddress());
+        assertEquals((double) Math.round(expectedLocation.getX() * 10000) / 10000, (double) Math.round(group.getPlace().getPoint().getX() * 10000) / 10000);
+        assertEquals((double) Math.round(expectedLocation.getY() * 10000) / 10000, (double) Math.round(group.getPlace().getPoint().getY() * 10000) / 10000);
+    }
+
     private GroupId insertAnyGroup() {
         GroupId nextId = groupRepository.nextId();
         groupRepository.save(
@@ -228,7 +257,7 @@ class GroupControllerTest {
                         .id(nextId)
                         .name("임의의 모임")
                         .state(GroupState.IN_ACTIVITY)
-                        .venue(new Address("경기도","성남시","123-456",new GeometryFactory().createPoint(new Coordinate(37.37369668919236,127.11314527061833))))
+                        .place(new Address("경기도","성남시","123-456",new GeometryFactory().createPoint(new Coordinate(37.37369668919236,127.11314527061833))))
                         .category(GroupCategory.MEAL)
                         .startTime(LocalDateTime.now())
                         .endTime(LocalDateTime.now().plusHours(1))
