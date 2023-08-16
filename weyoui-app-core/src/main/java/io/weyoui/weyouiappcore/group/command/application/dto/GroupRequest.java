@@ -16,7 +16,7 @@ public class GroupRequest {
     private String name;
     private String category;
     private String description;
-    private Address venue;
+    private Address place;
     private int capacity;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss:SSS", timezone = "Asia/Seoul")
     private LocalDateTime startTime;
@@ -24,12 +24,12 @@ public class GroupRequest {
     private LocalDateTime endTime;
 
     @Builder
-    public GroupRequest(String name, String category, String description, Address venue,
+    public GroupRequest(String name, String category, String description, Address place,
                                      int capacity, LocalDateTime startTime, LocalDateTime endTime) {
         this.name = name;
         this.category = category;
         this.description = description;
-        this.venue = venue;
+        this.place = place;
         this.capacity = capacity;
         this.startTime = startTime;
         this.endTime = endTime;

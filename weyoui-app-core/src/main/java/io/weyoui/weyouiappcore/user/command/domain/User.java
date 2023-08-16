@@ -51,6 +51,7 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private RoleType role;
 
+
     @Column(length = 1)
     @Convert(converter = BooleanToYNConverter.class)
     private boolean isIdentified;

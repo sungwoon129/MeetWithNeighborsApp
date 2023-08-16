@@ -71,6 +71,13 @@ public class GroupController {
         return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
     }
 
+    @GetMapping("/api/v1/users/groups/{groupId}")
+    public ResponseEntity<CommonResponse<GroupViewResponse>> findById(@PathVariable GroupId groupId) {
+        GroupViewResponse groupViewResponse = groupViewService.findById(groupId).toResponseDto();
+
+        return ResponseEntity.ok().body(new CommonResponse<>(groupViewResponse));
+    }
+
     @GetMapping("/api/v1/users/groups")
     public ResponseEntity<CommonResponse<List<GroupViewResponse>>> search(GroupSearchRequest groupSearchRequest, @Valid CustomPageRequest pageRequest) {
 
@@ -83,9 +90,17 @@ public class GroupController {
     }
 
     @PutMapping("/api/v1/users/groups/{groupId}/activity-time")
-    public ResponseEntity<CommonResponse<CommonResponse<String>>> changeActivityTime(@PathVariable GroupId groupId, @RequestBody GroupRequest groupRequest ) {
+    public ResponseEntity<CommonResponse<String>> changeActivityTime(@PathVariable GroupId groupId, @RequestBody GroupRequest groupRequest) {
 
         groupService.changeActivityTime(groupId, groupRequest);
+
+        return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
+    }
+
+    @PutMapping("/api/v1/users/groups/{groupId}/activity-place")
+    public ResponseEntity<CommonResponse<?>> changeActivityPlace(@PathVariable GroupId groupId, @RequestBody GroupRequest groupRequest) {
+
+        groupService.changeActivityPlace(groupId,groupRequest);
 
         return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
     }

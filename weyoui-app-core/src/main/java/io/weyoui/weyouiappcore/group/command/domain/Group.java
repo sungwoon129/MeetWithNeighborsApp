@@ -45,7 +45,7 @@ public class Group extends BaseTimeEntity {
             @AttributeOverride(name = "address2", column = @Column(name = "group_activity_address2")),
             @AttributeOverride(name = "zipCode", column = @Column(name = "group_activity_zipCode"))
     })
-    private Address venue;
+    private Address place;
 
     @Column(name = "start_time")
     private LocalDateTime startTime;
@@ -61,14 +61,14 @@ public class Group extends BaseTimeEntity {
 
     @Builder
     public Group(GroupId id, String name, GroupCategory category, int capacity, String description, GroupState state,
-                 Address venue, LocalDateTime startTime, LocalDateTime endTime) {
+                 Address place, LocalDateTime startTime, LocalDateTime endTime) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.capacity = capacity;
         this.description = description;
         this.state = state;
-        this.venue = venue;
+        this.place = place;
         this.startTime = startTime;
         this.endTime = endTime;
     }
@@ -77,7 +77,7 @@ public class Group extends BaseTimeEntity {
         return GroupViewResponse.builder()
                 .groupId(id.getId())
                 .name(name)
-                .address(venue)
+                .address(place)
                 .headCount(getHeadCount())
                 .capacity(capacity)
                 .state(state)
@@ -85,6 +85,9 @@ public class Group extends BaseTimeEntity {
     }
 
     public void changeStateByCurrentTime() {
+
+        checkStateIsEnd();
+
         LocalDateTime now = LocalDateTime.now();
 
         if(now.isAfter(startTime) && now.isBefore(endTime)) {
@@ -101,6 +104,9 @@ public class Group extends BaseTimeEntity {
     }
 
     public void addGroupMember(GroupMember groupMember) {
+
+        checkStateIsEnd();
+
         if(getHeadCount() == capacity) throw new IndexOutOfBoundsException("구성원이 가득 차 더 이상 모임에 구성원을 추가할 수 없습니다. ");
         members.add(groupMember);
 
@@ -136,5 +142,16 @@ public class Group extends BaseTimeEntity {
         else if(startTime.isAfter(endTime)) throw new IllegalStateException("시작시간은 종료시간 이후가 될 수 없습니다.");
         else if(startTime.isBefore(LocalDateTime.now().minusHours(12))) throw new IllegalStateException("모임 활동 시작시간은 현재 시각으로부터 12시간 이전이 될 수 없습니다.");
 
+    }
+
+    public void checkStateIsEnd() {
+        if(state.equals(GroupState.END_ACTIVITY))  throw new IllegalStateException("활동이 종료된 모임에서는 할 수 없는 요청입니다.");
+    }
+
+    public void changePlace(Address place) {
+
+        checkStateIsEnd();
+
+        this.place = place;
     }
 }

@@ -28,7 +28,7 @@ public class GroupService {
                 .category(GroupCategory.findByName(groupRequest.getCategory()))
                 .capacity(groupRequest.getCapacity())
                 .description(groupRequest.getDescription())
-                .venue(groupRequest.getVenue())
+                .place(groupRequest.getPlace())
                 .startTime(groupRequest.getStartTime())
                 .endTime(groupRequest.getEndTime())
                 .build();
@@ -53,5 +53,11 @@ public class GroupService {
 
         group.checkActivityTimeValidation();
         group.changeStateByCurrentTime();
+    }
+
+    public void changeActivityPlace(GroupId groupId, GroupRequest groupRequest) {
+        Group group = groupViewService.findById(groupId);
+
+        group.changePlace(groupRequest.getPlace());
     }
 }

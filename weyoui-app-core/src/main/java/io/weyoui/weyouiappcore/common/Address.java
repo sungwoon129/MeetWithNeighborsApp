@@ -29,6 +29,6 @@ public class Address {
     private Point point;
 
     public String getFullAddress() {
-        return address1 + address2;
+        return address1 + " " + address2;
     }
 }

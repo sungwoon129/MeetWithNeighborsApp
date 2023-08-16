@@ -76,7 +76,7 @@ public class GroupQueryRepositoryImpl implements GroupQueryRepositoryCustom {
         Location southWest = GeometryUtil.calculate(currentLocation.getLongitude(), currentLocation.getLatitude(), distance, Direction.SOUTHWEST.getBearing());
 
         return nativeSQLGenerator.generateMBRContainsSQL(northEastLocation.getLatitude(), northEastLocation.getLongitude(), southWest.getLatitude(),southWest.getLongitude()
-                , group.venue.point);
+                , group.place.point);
     }
 
     private BooleanExpression equalsState(String stateCode) {
