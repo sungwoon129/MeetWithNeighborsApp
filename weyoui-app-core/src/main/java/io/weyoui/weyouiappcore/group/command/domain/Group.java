@@ -154,4 +154,8 @@ public class Group extends BaseTimeEntity {
 
         this.place = place;
     }
+
+    public void invalidate() {
+        this.state = GroupState.DELETED;
+    }
 }

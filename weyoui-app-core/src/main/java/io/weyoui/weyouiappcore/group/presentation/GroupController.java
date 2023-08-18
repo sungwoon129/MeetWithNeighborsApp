@@ -90,7 +90,7 @@ public class GroupController {
     }
 
     @PutMapping("/api/v1/users/groups/{groupId}/activity-time")
-    public ResponseEntity<CommonResponse<String>> changeActivityTime(@PathVariable GroupId groupId, @RequestBody GroupRequest groupRequest) {
+    public ResponseEntity<CommonResponse<?>> changeActivityTime(@PathVariable GroupId groupId, @RequestBody GroupRequest groupRequest) {
 
         groupService.changeActivityTime(groupId, groupRequest);
 
@@ -104,5 +104,14 @@ public class GroupController {
 
         return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
     }
+
+    @PutMapping("/api/v1/groups/{groupId}/state")
+    public ResponseEntity<CommonResponse<?>> invalidateGroup(@PathVariable GroupId groupId) {
+        groupService.invalidateGroup(groupId);
+
+        return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
+    }
+
+
 
 }

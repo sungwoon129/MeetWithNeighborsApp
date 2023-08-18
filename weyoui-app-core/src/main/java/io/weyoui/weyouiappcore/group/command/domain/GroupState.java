@@ -8,7 +8,9 @@ import java.util.NoSuchElementException;
 public enum GroupState implements EnumMapperType {
     BEFORE_ACTIVITY("활동 전","B"),
     IN_ACTIVITY("활동 중","I"),
-    END_ACTIVITY("활동 종료","E");
+    END_ACTIVITY("활동 종료","E"),
+
+    DELETED("삭제", "D");
 
     private String title;
     private String code;

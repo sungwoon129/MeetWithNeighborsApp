@@ -60,4 +60,10 @@ public class GroupService {
 
         group.changePlace(groupRequest.getPlace());
     }
+
+    public void invalidateGroup(GroupId groupId) {
+        Group group = groupViewService.findById(groupId);
+
+        group.invalidate();
+    }
 }
