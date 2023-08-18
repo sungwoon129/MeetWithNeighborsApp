@@ -122,14 +122,18 @@ public class Group extends BaseTimeEntity {
 
     public void endActivity(UserId userId) {
 
-        GroupMember groupMember = members.stream().filter(member -> member.isGroupMemberByUserId(userId))
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("모임의 구성원 중 일치하는 ID를 가진 회원이 존재하지 않습니다."));
+        GroupMember groupMember = getGroupMember(userId);
 
         groupMember.leaderCheck();
 
         endTime = LocalDateTime.now();
         state = GroupState.END_ACTIVITY;
+    }
+
+    public GroupMember getGroupMember(UserId userId) {
+        return members.stream().filter(member -> member.isGroupMemberByUserId(userId))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("모임의 구성원 중 일치하는 ID를 가진 회원이 존재하지 않습니다."));
     }
 
     public boolean isActive() {
@@ -157,5 +161,21 @@ public class Group extends BaseTimeEntity {
 
     public void invalidate() {
         this.state = GroupState.DELETED;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCategory(GroupCategory category) {
+        this.category = category;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
 }

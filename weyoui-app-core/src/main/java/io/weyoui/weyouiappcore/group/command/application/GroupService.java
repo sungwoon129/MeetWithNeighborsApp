@@ -6,6 +6,7 @@ import io.weyoui.weyouiappcore.group.command.domain.GroupCategory;
 import io.weyoui.weyouiappcore.group.command.domain.GroupId;
 import io.weyoui.weyouiappcore.group.infrastructure.GroupRepository;
 import io.weyoui.weyouiappcore.group.query.application.GroupViewService;
+import io.weyoui.weyouiappcore.groupMember.command.domain.GroupMember;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,8 @@ public class GroupService {
     public void endActivity(GroupId groupId, UserId userId) {
         Group group = groupViewService.findById(groupId);
         group.endActivity(userId);
+
+        groupRepository.save(group);
     }
 
     public void changeActivityTime(GroupId groupId, GroupRequest groupRequest) {
@@ -55,17 +58,43 @@ public class GroupService {
 
         group.checkActivityTimeValidation();
         group.changeStateByCurrentTime();
+
+        groupRepository.save(group);
     }
 
     public void changeActivityPlace(GroupId groupId, GroupRequest groupRequest) {
         Group group = groupViewService.findById(groupId);
 
         group.changePlace(groupRequest.getPlace());
+
+        groupRepository.save(group);
     }
 
     public void invalidateGroup(GroupId groupId) {
         Group group = groupViewService.findById(groupId);
 
         group.invalidate();
+    }
+
+
+    public void updateGroup(UserId userId, GroupId groupId, GroupRequest groupRequest) {
+
+        Group group = groupViewService.findById(groupId);
+
+        GroupMember groupMember = group.getGroupMember(userId);
+        groupMember.leaderCheck();
+
+        group.setName(groupRequest.getName());
+        group.setDescription(groupRequest.getDescription());
+        group.setCategory(GroupCategory.findByName(groupRequest.getCategory()));
+        group.setCapacity(groupRequest.getCapacity());
+        group.changeStartTime(groupRequest.getStartTime());
+        group.changeEndTime(groupRequest.getEndTime());
+        group.changePlace(groupRequest.getPlace());
+
+        group.checkActivityTimeValidation();
+        group.changeStateByCurrentTime();
+
+        groupRepository.save(group);
     }
 }

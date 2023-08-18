@@ -47,26 +47,10 @@ public class GroupController {
         return ResponseEntity.ok().body(new CommonResponse<>(groupAddResponseBody));
     }
 
-    @PostMapping("/api/v1/users/group/group-member")
-    public ResponseEntity<CommonResponse<GroupAddResponse>> addMemberToGroup(@LoginUserId UserId userId, @RequestBody GroupId groupId) {
-        GroupMemberId groupMemberId = groupMemberService.addMemberToGroupAsMember(userId, groupId);
-
-        GroupAddResponse groupAddResponseBody = new GroupAddResponse(groupId.getId(), groupMemberId.getId());
-
-        return ResponseEntity.ok().body(new CommonResponse<>(groupAddResponseBody));
-    }
-
     @PutMapping("/api/v1/users/group/{groupId}/state")
     public ResponseEntity<CommonResponse<String>> endActivity(@LoginUserId UserId userId, @PathVariable GroupId groupId) {
 
         groupService.endActivity(groupId,userId);
-
-        return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
-    }
-
-    @PutMapping("/api/v1/users/group/{groupId}/group-member/state")
-    public ResponseEntity<CommonResponse<String>> banishMember(@LoginUserId UserId userId, @PathVariable GroupId groupId) {
-        groupMemberService.banishMember(groupId, userId);
 
         return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
     }
@@ -105,7 +89,15 @@ public class GroupController {
         return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
     }
 
-    @PutMapping("/api/v1/groups/{groupId}/state")
+    @PutMapping("/api/v1/users/groups/{groupId}")
+    public ResponseEntity<CommonResponse<?>> changeGroupInfo(@LoginUserId UserId userId, @PathVariable GroupId groupId, @RequestBody GroupRequest groupRequest) {
+
+        groupService.updateGroup(userId,groupId,groupRequest);
+
+        return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
+    }
+
+    @PutMapping("/api/v1/users/groups/{groupId}/state")
     public ResponseEntity<CommonResponse<?>> invalidateGroup(@PathVariable GroupId groupId) {
         groupService.invalidateGroup(groupId);
 
