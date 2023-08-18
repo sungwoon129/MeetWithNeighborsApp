@@ -60,7 +60,6 @@ public class GroupMember extends BaseTimeEntity {
     }
 
     public void inactivateState() {
-        if(!this.group.isActive()) throw new IllegalStateException("구성원의 상태를 변경하기 위해서는 반드시 모임의 상태가 활성화되어있어야합니다.");
         state = GroupMemberState.INACTIVE;
     }
 
@@ -70,5 +69,9 @@ public class GroupMember extends BaseTimeEntity {
 
     public void leaderCheck() {
         if(!role.equals(GroupRole.LEADER)) throw new GroupAuthException("이 구성원은 모임장이 아닙니다.");
+    }
+
+    public void hasAuth(GroupMemberId targetId) {
+        if(!(role.equals(GroupRole.LEADER)) && !this.groupMemberId.equals(targetId)) throw new GroupAuthException("요청을 처리할 권한이 존재하지 않습니다.");
     }
 }

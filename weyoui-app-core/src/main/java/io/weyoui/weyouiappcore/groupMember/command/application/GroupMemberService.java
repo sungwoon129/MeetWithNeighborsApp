@@ -59,8 +59,22 @@ public class GroupMemberService {
         return groupMemberId;
     }
 
-    public void banishMember(GroupId groupId, UserId userId) {
-        GroupMember groupMember = groupMemberViewService.findByGroupIdAndUserId(groupId, userId);
+    public void kickOutMember(GroupMemberId groupMemberId, UserId userId) {
+
+        GroupMember toBeKickedOutgroupMember = groupMemberViewService.findById(groupMemberId);
+
+        GroupMember requester = groupMemberViewService.findByGroupIdAndUserId(toBeKickedOutgroupMember.getGroup().getId(), userId);
+        requester.hasAuth(requester.getGroupMemberId());
+
+        toBeKickedOutgroupMember.inactivateState();
+
+        groupMemberRepository.save(toBeKickedOutgroupMember);
+    }
+
+    public void leave(GroupMemberId groupMemberId, UserId userId) {
+        GroupMember groupMember = groupMemberViewService.findById(groupMemberId);
+        if(!groupMember.getUser().getId().equals(userId)) throw new IllegalArgumentException("모임에서 나갈 회원의 id와 요청한 사람의 id가 일치하지 않습니다.");
         groupMember.inactivateState();
     }
+
 }
