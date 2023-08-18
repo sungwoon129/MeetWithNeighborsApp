@@ -7,8 +7,10 @@ import io.weyoui.weyouiappcore.group.command.domain.GroupId;
 import io.weyoui.weyouiappcore.group.infrastructure.GroupRepository;
 import io.weyoui.weyouiappcore.group.query.application.GroupViewService;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+@Transactional
 @Service
 public class GroupService {
 
