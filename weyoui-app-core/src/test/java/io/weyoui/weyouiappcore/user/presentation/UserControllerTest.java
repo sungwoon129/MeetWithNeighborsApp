@@ -36,6 +36,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -123,7 +124,7 @@ class UserControllerTest {
         //then
         User user = userQueryRepository.findById(userId).orElseThrow(() -> new NotFoundUserException("회원이 존재하지 않습니다."));
         assertEquals(expectedIdentificationDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS")), user.getIdentificationDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS")));
-        assertEquals(true, user.isIdentified());
+        assertTrue(user.isIdentified());
 
     }
 
