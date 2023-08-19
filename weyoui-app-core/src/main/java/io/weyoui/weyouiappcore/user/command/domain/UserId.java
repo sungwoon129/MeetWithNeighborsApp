@@ -20,6 +20,10 @@ public class UserId implements Serializable {
         this.id = id;
     }
 
+    public static UserId of(String id) {
+        return new UserId(id);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
