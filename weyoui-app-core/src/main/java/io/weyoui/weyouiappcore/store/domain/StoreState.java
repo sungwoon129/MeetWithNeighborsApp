@@ -2,21 +2,33 @@ package io.weyoui.weyouiappcore.store.domain;
 
 import io.weyoui.weyouiappcore.util.EnumMapperType;
 
+import java.util.Arrays;
+import java.util.NoSuchElementException;
+
 public enum StoreState implements EnumMapperType {
 
-    OPEN("운영 중"),
-    BANNED("운영 일시중지"),
-    NOT_OPEN("비운영");
+    OPEN("운영 중","O"),
+    BANNED("운영 일시중지","B"),
+    NOT_OPEN("비운영","N");
 
     private String title;
+    private String code;
 
-    StoreState(String title) {
+    StoreState(String title, String code) {
         this.title = title;
+        this.code = code;
+    }
+
+    public static StoreState findByCode(String code) {
+        return Arrays.stream(StoreState.values())
+                .filter(state -> state.name().equals(code))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("해당 code를 가진 StoreState가 존재하지 않습니다. StoreState는 O, B, N 중에 하나의 값이어야합니다."));
     }
 
     @Override
     public String getCode() {
-        return "";
+        return code;
     }
 
     @Override
