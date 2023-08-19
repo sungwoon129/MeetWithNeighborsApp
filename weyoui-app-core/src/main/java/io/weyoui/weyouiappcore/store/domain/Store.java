@@ -3,6 +3,7 @@ package io.weyoui.weyouiappcore.store.domain;
 import io.weyoui.weyouiappcore.common.Address;
 import io.weyoui.weyouiappcore.common.BaseTimeEntity;
 import jakarta.persistence.*;
+import lombok.Builder;
 
 import java.util.Set;
 
@@ -15,6 +16,9 @@ public class Store extends BaseTimeEntity {
 
     @Column(name = "store_name")
     private String name;
+
+    @Embedded
+    private Owner owner;
 
     @Embedded
     private Address address;
@@ -30,5 +34,20 @@ public class Store extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private StoreState state;
+
+    protected Store() {}
+
+
+    @Builder
+    public Store(StoreId storeId, String name, Address address, Owner owner,StoreCategory category, StoreState state) {
+        this.id = storeId;
+        this.name = name;
+        this.address =address;
+        this.owner = owner;
+        this.category = category;
+        this.state = state;
+    }
+
+
 
 }
