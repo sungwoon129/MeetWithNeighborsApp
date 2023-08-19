@@ -10,13 +10,11 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public interface GroupRepository extends Repository<Group, GroupId> {
 
-
+    void save(Group group);
 
     default GroupId nextId() {
         int randomNum = ThreadLocalRandom.current().nextInt(90000) + 10000;
         String number = String.format("%tY%<tm%<td%<tH-%d", new Date(), randomNum);
         return new GroupId(number);
     }
-
-    void save(Group group);
 }
