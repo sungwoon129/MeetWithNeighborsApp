@@ -1,24 +1,26 @@
 package io.weyoui.weyouiappcore.user.presentation;
 
 import io.weyoui.weyouiappcore.common.CommonResponse;
+import io.weyoui.weyouiappcore.common.ResultYnType;
 import io.weyoui.weyouiappcore.config.app_config.LoginUserId;
+import io.weyoui.weyouiappcore.user.command.application.UpdateUserInfoService;
+import io.weyoui.weyouiappcore.user.command.application.dto.UserUpdateRequest;
 import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import io.weyoui.weyouiappcore.user.query.application.UserViewService;
 import io.weyoui.weyouiappcore.user.query.application.dto.UserResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserController {
 
     private final UserViewService userViewService;
+    private final UpdateUserInfoService updateUserInfoService;
 
-    public UserController(UserViewService userViewService) {
+    public UserController(UserViewService userViewService, UpdateUserInfoService updateUserInfoService) {
         this.userViewService = userViewService;
+        this.updateUserInfoService = updateUserInfoService;
     }
 
 
@@ -37,5 +39,27 @@ public class UserController {
 
         return ResponseEntity.ok().body(new CommonResponse<>(user.toResponseDto()));
     }
+
+    @PutMapping("/api/v1/users/me/nickname")
+    public ResponseEntity<CommonResponse<?>> changeNickname(@LoginUserId UserId userId, @RequestBody UserUpdateRequest userUpdateRequest) {
+        updateUserInfoService.changeNickname(userId, userUpdateRequest);
+
+        return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
+    }
+
+    @PutMapping("/api/v1/users/me/identification")
+    public ResponseEntity<CommonResponse<?>> identify(@LoginUserId UserId userId, @RequestBody UserUpdateRequest userUpdateRequest) {
+        updateUserInfoService.identify(userId, userUpdateRequest);
+
+        return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
+    }
+
+    @PutMapping("/api/v1/users/me/address")
+    public ResponseEntity<CommonResponse<?>> changeAddress(@LoginUserId UserId userId, @RequestBody UserUpdateRequest userUpdateRequest) {
+        updateUserInfoService.changeAddress(userId, userUpdateRequest);
+
+        return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
+    }
+
 
 }

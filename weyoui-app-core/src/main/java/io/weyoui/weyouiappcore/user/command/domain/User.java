@@ -1,5 +1,6 @@
 package io.weyoui.weyouiappcore.user.command.domain;
 
+import com.querydsl.core.util.StringUtils;
 import io.weyoui.weyouiappcore.common.Address;
 import io.weyoui.weyouiappcore.common.BaseTimeEntity;
 import io.weyoui.weyouiappcore.common.BooleanToYNConverter;
@@ -51,6 +52,8 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private RoleType role;
 
+    private LocalDateTime lastLoginDate;
+
 
     @Column(length = 1)
     @Convert(converter = BooleanToYNConverter.class)
@@ -71,14 +74,6 @@ public class User extends BaseTimeEntity {
         this.state = state;
         this.deviceInfo = deviceInfo;
         this.role = role;
-    }
-
-    public void changeAddress(Address address) {
-        this.address = address;
-    }
-
-    public void changeNickName(String nickname) {
-        this.nickname = nickname;
     }
 
     public UserResponse toResponseDto() {
@@ -117,5 +112,28 @@ public class User extends BaseTimeEntity {
         if(!isIdentified || over3Month) throw new IllegalStateException("본인인증을 하지 않았거나, 인증일로부터 90일이 지난 경우 비밀번호 변경이 불가능합니다.");
 
         this.password = password;
+    }
+
+    public void setNickname(String nickname) {
+        if(!StringUtils.isNullOrEmpty(nickname)) {
+            this.nickname = nickname;
+        }
+    }
+
+    public void setAddress(Address address) {
+        if(address != null) {
+            this.address = address;
+        }
+    }
+
+    public void setDeviceInfo(DeviceInfo deviceInfo) {
+        this.deviceInfo = deviceInfo;
+    }
+
+    public void identify(String isIdentified, LocalDateTime identificationDate) {
+        if("Y".equals(isIdentified)) {
+            this.isIdentified = true;
+            this.identificationDate = identificationDate;
+        }
     }
 }
