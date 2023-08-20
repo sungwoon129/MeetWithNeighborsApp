@@ -1,12 +1,14 @@
-package io.weyoui.weyouiappcore.store.domain;
+package io.weyoui.weyouiappcore.store.command.domain;
 
 import io.weyoui.weyouiappcore.common.Address;
 import io.weyoui.weyouiappcore.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Getter;
 
 import java.util.Set;
 
+@Getter
 @Entity
 public class Store extends BaseTimeEntity {
 
