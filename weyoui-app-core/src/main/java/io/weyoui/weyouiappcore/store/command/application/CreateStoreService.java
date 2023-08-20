@@ -1,7 +1,7 @@
 package io.weyoui.weyouiappcore.store.command.application;
 
 import io.weyoui.weyouiappcore.store.command.application.dto.StoreRequest;
-import io.weyoui.weyouiappcore.store.domain.*;
+import io.weyoui.weyouiappcore.store.command.domain.*;
 import io.weyoui.weyouiappcore.store.infrastructure.StoreRepository;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import org.springframework.stereotype.Service;

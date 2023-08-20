@@ -1,7 +1,7 @@
 package io.weyoui.weyouiappcore.store.infrastructure;
 
-import io.weyoui.weyouiappcore.store.domain.Owner;
-import io.weyoui.weyouiappcore.store.domain.OwnerService;
+import io.weyoui.weyouiappcore.store.command.domain.Owner;
+import io.weyoui.weyouiappcore.store.command.domain.OwnerService;
 import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import io.weyoui.weyouiappcore.user.query.application.UserViewService;

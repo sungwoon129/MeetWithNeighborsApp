@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.store.domain;
+package io.weyoui.weyouiappcore.store.command.domain;
 
 import io.weyoui.weyouiappcore.util.EnumMapperType;
 
@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 public enum StoreCategory implements EnumMapperType {
-    RESTAURANT_FOOD("음식","FOOD"),
+    RESTAURANT("음식","FOOD"),
     AGRICULTURE("농수산물","AGRICULTURE"),
     SPORTS_EQUIPMENT("운동 기구","SPORTS_EQUIPMENT"),
     SERVICE("서비스","SERVICE"),

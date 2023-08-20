@@ -1,6 +1,6 @@
 package io.weyoui.weyouiappcore.product.domain;
 
-import io.weyoui.weyouiappcore.store.domain.StoreId;
+import io.weyoui.weyouiappcore.store.command.domain.StoreId;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
