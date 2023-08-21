@@ -2,6 +2,7 @@ package io.weyoui.weyouiappcore.store.command.domain;
 
 import io.weyoui.weyouiappcore.common.Address;
 import io.weyoui.weyouiappcore.common.BaseTimeEntity;
+import io.weyoui.weyouiappcore.store.query.application.dto.StoreViewResponse;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -48,6 +49,19 @@ public class Store extends BaseTimeEntity {
         this.owner = owner;
         this.category = category;
         this.state = state;
+    }
+
+    public StoreViewResponse toResponseDto() {
+        return StoreViewResponse.builder()
+                .storeId(id.getId())
+                .name(name)
+                .owner(owner)
+                .address(address)
+                .productInfos(productInfos)
+                .rating(rating)
+                .category(category.getTitle())
+                .state(state.getTitle())
+                .build();
     }
 
 
