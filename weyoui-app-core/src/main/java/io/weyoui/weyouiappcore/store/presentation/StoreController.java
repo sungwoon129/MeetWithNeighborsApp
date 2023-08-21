@@ -7,10 +7,17 @@ import io.weyoui.weyouiappcore.store.command.application.dto.StoreRequest;
 import io.weyoui.weyouiappcore.store.command.domain.Store;
 import io.weyoui.weyouiappcore.store.command.domain.StoreId;
 import io.weyoui.weyouiappcore.store.query.application.StoreViewService;
+import io.weyoui.weyouiappcore.store.query.application.dto.StoreSearchRequest;
 import io.weyoui.weyouiappcore.store.query.application.dto.StoreViewResponse;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
+import io.weyoui.weyouiappcore.user.query.application.dto.CustomPageRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class StoreController {
@@ -38,6 +45,16 @@ public class StoreController {
         Store store = storeViewService.findById(storeId);
 
         return ResponseEntity.ok().body(new CommonResponse<>(store.toResponseDto()));
+    }
+
+    @GetMapping("/api/v1/users/stores")
+    public ResponseEntity<CommonResponse<List<StoreViewResponse>>> search(StoreSearchRequest storeSearchRequest, CustomPageRequest customPageRequest) {
+
+        Pageable pageable = PageRequest.of(customPageRequest.getPage(), customPageRequest.getSize());
+
+        Page<Store> result = storeViewService.findByConditions(storeSearchRequest,pageable);
+
+        return ResponseEntity.ok().body(new CommonResponse<>(result.getContent().stream().map(Store::toResponseDto).toList()));
     }
 
 }
