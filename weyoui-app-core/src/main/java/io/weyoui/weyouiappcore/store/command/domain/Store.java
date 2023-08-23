@@ -1,5 +1,6 @@
 package io.weyoui.weyouiappcore.store.command.domain;
 
+import com.querydsl.core.util.StringUtils;
 import io.weyoui.weyouiappcore.common.model.Address;
 import io.weyoui.weyouiappcore.common.model.BaseTimeEntity;
 import io.weyoui.weyouiappcore.store.query.application.dto.StoreViewResponse;
@@ -65,5 +66,23 @@ public class Store extends BaseTimeEntity {
     }
 
 
+    public void setName(String name) {
+        if(!StringUtils.isNullOrEmpty(name)) this.name = name;
+    }
 
+    public void setCategory(String category) {
+        if(!StringUtils.isNullOrEmpty(category)) {
+            this.category = StoreCategory.findByCode(category);
+        }
+    }
+
+    public void setAddress(Address address) {
+        if(address != null) this.address = address;
+    }
+
+    public void setState(String state) {
+        if(!StringUtils.isNullOrEmpty(state)) {
+            this.state = StoreState.findByCode(state);
+        }
+    }
 }
