@@ -68,7 +68,6 @@ public class GroupMemberService {
 
         toBeKickedOutgroupMember.inactivateState();
 
-        groupMemberRepository.save(toBeKickedOutgroupMember);
     }
 
     public void leave(GroupMemberId groupMemberId, UserId userId) {

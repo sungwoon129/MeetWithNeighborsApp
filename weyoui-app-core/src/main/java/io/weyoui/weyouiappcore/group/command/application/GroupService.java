@@ -47,7 +47,6 @@ public class GroupService {
         Group group = groupViewService.findById(groupId);
         group.endActivity(userId);
 
-        groupRepository.save(group);
     }
 
     public void changeActivityTime(GroupId groupId, GroupRequest groupRequest) {
@@ -59,7 +58,6 @@ public class GroupService {
         group.checkActivityTimeValidation();
         group.changeStateByCurrentTime();
 
-        groupRepository.save(group);
     }
 
     public void changeActivityPlace(GroupId groupId, GroupRequest groupRequest) {
@@ -67,7 +65,6 @@ public class GroupService {
 
         group.changePlace(groupRequest.getPlace());
 
-        groupRepository.save(group);
     }
 
     public void invalidateGroup(GroupId groupId) {
@@ -95,6 +92,5 @@ public class GroupService {
         group.checkActivityTimeValidation();
         group.changeStateByCurrentTime();
 
-        groupRepository.save(group);
     }
 }

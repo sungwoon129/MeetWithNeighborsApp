@@ -27,7 +27,6 @@ public class UpdateUserInfoService {
 
         user.setNickname(userUpdateRequest.getNickname());
 
-        userRepository.save(user);
     }
 
     public void changeAddress(UserId userId, UserUpdateRequest userUpdateRequest) {
@@ -35,7 +34,6 @@ public class UpdateUserInfoService {
 
         user.setAddress(userUpdateRequest.getAddress());
 
-        userRepository.save(user);
     }
 
     public void identify(UserId userId, UserUpdateRequest userUpdateRequest) {
@@ -43,6 +41,5 @@ public class UpdateUserInfoService {
 
         user.identify(userUpdateRequest.getIsIdentified(), userUpdateRequest.getIdentificationDate());
 
-        userRepository.save(user);
     }
 }
