@@ -21,9 +21,13 @@ public enum StoreState implements EnumMapperType {
 
     public static StoreState findByCode(String code) {
         return Arrays.stream(StoreState.values())
-                .filter(state -> state.name().equals(code))
+                .filter(state -> state.hasCode(code))
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("해당 code를 가진 StoreState가 존재하지 않습니다. StoreState는 O, B, N 중에 하나의 값이어야합니다."));
+    }
+
+    private boolean hasCode(String code) {
+        return this.code.equals(code);
     }
 
     @Override
