@@ -36,8 +36,8 @@ jwt:
     #expiration-in-refresh-token: 1800000
     # 7일
     #expiration-in-access-token: 604800000 7일
-    expiration-in-refresh-token: 240000
-    expiration-in-access-token: 180000
+    expiration-in-refresh-token: 1200000
+    expiration-in-access-token: 600000
     secret-key: we3y6o54ui134nsndnfenGR34zcR3kiKM5MVz3po5zer10Ge5fKqI98vRCbLiqpz40t1t5ef9Zc
 
 baseUrl: http://localhost:8080
