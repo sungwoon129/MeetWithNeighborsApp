@@ -1,8 +1,7 @@
 package io.weyoui.weyouiappcore.group.command.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.weyoui.weyouiappcore.common.Address;
-import io.weyoui.weyouiappcore.group.command.domain.GroupCategory;
+import io.weyoui.weyouiappcore.common.model.Address;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

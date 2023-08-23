@@ -1,7 +1,7 @@
 package io.weyoui.weyouiappcore.user.query.infrastructure;
 
 import io.weyoui.weyouiappcore.TestQueryDSLConfig;
-import io.weyoui.weyouiappcore.common.Address;
+import io.weyoui.weyouiappcore.common.model.Address;
 import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.user.infrastructure.UserRepository;
 import io.weyoui.weyouiappcore.user.query.application.dto.CustomPageRequest;

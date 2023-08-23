@@ -1,6 +1,6 @@
 package io.weyoui.weyouiappcore.user.presentation;
 
-import io.weyoui.weyouiappcore.common.CommonResponse;
+import io.weyoui.weyouiappcore.common.model.CommonResponse;
 import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.user.query.application.dto.CustomPageRequest;
 import io.weyoui.weyouiappcore.user.query.application.dto.UserSearchRequest;

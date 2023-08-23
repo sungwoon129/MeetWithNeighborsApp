@@ -1,6 +1,6 @@
 package io.weyoui.weyouiappcore.store.query.application.dto;
 
-import io.weyoui.weyouiappcore.common.Address;
+import io.weyoui.weyouiappcore.common.model.Address;
 import io.weyoui.weyouiappcore.store.command.domain.Owner;
 import io.weyoui.weyouiappcore.store.command.domain.ProductInfo;
 import lombok.Builder;

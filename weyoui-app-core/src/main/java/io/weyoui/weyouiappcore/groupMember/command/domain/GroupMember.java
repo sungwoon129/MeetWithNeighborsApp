@@ -1,6 +1,6 @@
 package io.weyoui.weyouiappcore.groupMember.command.domain;
 
-import io.weyoui.weyouiappcore.common.BaseTimeEntity;
+import io.weyoui.weyouiappcore.common.model.BaseTimeEntity;
 import io.weyoui.weyouiappcore.group.command.domain.Group;
 import io.weyoui.weyouiappcore.group.command.domain.GroupRole;
 import io.weyoui.weyouiappcore.groupMember.command.application.exception.GroupAuthException;

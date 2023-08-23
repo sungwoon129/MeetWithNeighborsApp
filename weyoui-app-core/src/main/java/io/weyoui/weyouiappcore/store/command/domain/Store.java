@@ -1,7 +1,7 @@
 package io.weyoui.weyouiappcore.store.command.domain;
 
-import io.weyoui.weyouiappcore.common.Address;
-import io.weyoui.weyouiappcore.common.BaseTimeEntity;
+import io.weyoui.weyouiappcore.common.model.Address;
+import io.weyoui.weyouiappcore.common.model.BaseTimeEntity;
 import io.weyoui.weyouiappcore.store.query.application.dto.StoreViewResponse;
 import jakarta.persistence.*;
 import lombok.Builder;

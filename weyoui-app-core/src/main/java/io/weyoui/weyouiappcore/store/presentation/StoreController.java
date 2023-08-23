@@ -1,6 +1,6 @@
 package io.weyoui.weyouiappcore.store.presentation;
 
-import io.weyoui.weyouiappcore.common.CommonResponse;
+import io.weyoui.weyouiappcore.common.model.CommonResponse;
 import io.weyoui.weyouiappcore.config.app_config.LoginUserId;
 import io.weyoui.weyouiappcore.store.command.application.CreateStoreService;
 import io.weyoui.weyouiappcore.store.command.application.dto.StoreRequest;

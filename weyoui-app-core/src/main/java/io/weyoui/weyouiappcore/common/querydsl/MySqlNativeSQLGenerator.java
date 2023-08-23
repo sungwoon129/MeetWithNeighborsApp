@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.group.query.infrastructure;
+package io.weyoui.weyouiappcore.common.querydsl;
 
 import com.querydsl.core.types.dsl.ComparablePath;
 import com.querydsl.core.types.dsl.Expressions;

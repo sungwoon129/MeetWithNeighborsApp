@@ -1,7 +1,7 @@
 package io.weyoui.weyouiappcore.user.command.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.weyoui.weyouiappcore.common.Address;
+import io.weyoui.weyouiappcore.common.model.Address;
 import io.weyoui.weyouiappcore.user.command.domain.DeviceInfo;
 import lombok.Builder;
 import lombok.Getter;

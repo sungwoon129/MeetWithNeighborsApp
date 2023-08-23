@@ -1,7 +1,7 @@
 package io.weyoui.weyouiappcore.groupMember.presentation;
 
-import io.weyoui.weyouiappcore.common.CommonResponse;
-import io.weyoui.weyouiappcore.common.ResultYnType;
+import io.weyoui.weyouiappcore.common.model.CommonResponse;
+import io.weyoui.weyouiappcore.common.model.ResultYnType;
 import io.weyoui.weyouiappcore.config.app_config.LoginUserId;
 import io.weyoui.weyouiappcore.group.command.domain.GroupId;
 import io.weyoui.weyouiappcore.groupMember.command.application.GroupMemberService;

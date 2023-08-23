@@ -1,6 +1,6 @@
 package io.weyoui.weyouiappcore.group.query.application.dto;
 
-import io.weyoui.weyouiappcore.common.Address;
+import io.weyoui.weyouiappcore.common.model.Address;
 import io.weyoui.weyouiappcore.group.command.domain.GroupState;
 import io.weyoui.weyouiappcore.groupMember.query.application.dto.GroupMemberViewResponse;
 import lombok.Builder;

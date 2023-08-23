@@ -1,6 +1,6 @@
 package io.weyoui.weyouiappcore.group.command.application;
 
-import io.weyoui.weyouiappcore.common.Address;
+import io.weyoui.weyouiappcore.common.model.Address;
 import io.weyoui.weyouiappcore.group.command.application.dto.GroupRequest;
 import io.weyoui.weyouiappcore.group.command.domain.GroupCategory;
 import io.weyoui.weyouiappcore.group.command.domain.GroupId;

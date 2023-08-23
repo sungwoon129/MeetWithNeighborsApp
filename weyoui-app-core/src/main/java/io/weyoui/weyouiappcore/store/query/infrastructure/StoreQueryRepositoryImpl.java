@@ -8,7 +8,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.weyoui.weyouiappcore.group.query.application.Direction;
 import io.weyoui.weyouiappcore.group.query.application.GeometryUtil;
 import io.weyoui.weyouiappcore.group.query.application.dto.Location;
-import io.weyoui.weyouiappcore.group.query.infrastructure.NativeSQLGenerator;
+import io.weyoui.weyouiappcore.common.querydsl.NativeSQLGenerator;
 import io.weyoui.weyouiappcore.store.command.domain.Store;
 import io.weyoui.weyouiappcore.store.command.domain.StoreState;
 import io.weyoui.weyouiappcore.store.query.application.dto.StoreSearchRequest;

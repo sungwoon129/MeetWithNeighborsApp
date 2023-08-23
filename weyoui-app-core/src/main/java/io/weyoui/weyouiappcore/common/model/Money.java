@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.common;
+package io.weyoui.weyouiappcore.common.model;
 
 import lombok.Getter;
 

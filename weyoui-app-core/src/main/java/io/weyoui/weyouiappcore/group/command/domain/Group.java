@@ -1,7 +1,7 @@
 package io.weyoui.weyouiappcore.group.command.domain;
 
-import io.weyoui.weyouiappcore.common.Address;
-import io.weyoui.weyouiappcore.common.BaseTimeEntity;
+import io.weyoui.weyouiappcore.common.model.Address;
+import io.weyoui.weyouiappcore.common.model.BaseTimeEntity;
 import io.weyoui.weyouiappcore.group.query.application.dto.GroupViewResponse;
 import io.weyoui.weyouiappcore.groupMember.command.domain.GroupMember;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;

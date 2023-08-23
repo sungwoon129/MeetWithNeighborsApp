@@ -1,9 +1,9 @@
 package io.weyoui.weyouiappcore.user.command.domain;
 
 import com.querydsl.core.util.StringUtils;
-import io.weyoui.weyouiappcore.common.Address;
-import io.weyoui.weyouiappcore.common.BaseTimeEntity;
-import io.weyoui.weyouiappcore.common.BooleanToYNConverter;
+import io.weyoui.weyouiappcore.common.model.Address;
+import io.weyoui.weyouiappcore.common.model.BaseTimeEntity;
+import io.weyoui.weyouiappcore.common.jpa.BooleanToYNConverter;
 import io.weyoui.weyouiappcore.groupMember.command.domain.GroupMember;
 import io.weyoui.weyouiappcore.user.infrastructure.dto.UserSession;
 import io.weyoui.weyouiappcore.user.query.application.dto.UserResponse;

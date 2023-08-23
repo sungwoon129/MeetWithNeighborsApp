@@ -1,7 +1,7 @@
 package io.weyoui.weyouiappcore.user.presentation;
 
-import io.weyoui.weyouiappcore.common.CommonResponse;
-import io.weyoui.weyouiappcore.common.ResultYnType;
+import io.weyoui.weyouiappcore.common.model.CommonResponse;
+import io.weyoui.weyouiappcore.common.model.ResultYnType;
 import io.weyoui.weyouiappcore.user.command.application.UserTokenService;
 import io.weyoui.weyouiappcore.user.command.application.UserAuthService;
 import io.weyoui.weyouiappcore.user.command.application.dto.PasswordResetRequest;

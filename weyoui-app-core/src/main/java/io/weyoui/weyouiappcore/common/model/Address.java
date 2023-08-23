@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.common;
+package io.weyoui.weyouiappcore.common.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;

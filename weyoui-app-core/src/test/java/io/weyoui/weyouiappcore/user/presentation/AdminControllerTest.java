@@ -1,6 +1,6 @@
 package io.weyoui.weyouiappcore.user.presentation;
 
-import io.weyoui.weyouiappcore.common.Address;
+import io.weyoui.weyouiappcore.common.model.Address;
 import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.user.infrastructure.UserRepository;
 import org.junit.jupiter.api.DisplayName;

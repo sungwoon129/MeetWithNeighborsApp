@@ -1,6 +1,6 @@
 package io.weyoui.weyouiappcore.store.command.application.dto;
 
-import io.weyoui.weyouiappcore.common.Address;
+import io.weyoui.weyouiappcore.common.model.Address;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

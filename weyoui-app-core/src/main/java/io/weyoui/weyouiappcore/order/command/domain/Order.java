@@ -1,8 +1,8 @@
 package io.weyoui.weyouiappcore.order.command.domain;
 
-import io.weyoui.weyouiappcore.common.BaseTimeEntity;
-import io.weyoui.weyouiappcore.common.Money;
-import io.weyoui.weyouiappcore.common.MoneyConverter;
+import io.weyoui.weyouiappcore.common.model.BaseTimeEntity;
+import io.weyoui.weyouiappcore.common.model.Money;
+import io.weyoui.weyouiappcore.common.jpa.MoneyConverter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 

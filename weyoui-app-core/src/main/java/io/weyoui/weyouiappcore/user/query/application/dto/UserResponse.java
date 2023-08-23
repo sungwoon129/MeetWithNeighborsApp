@@ -1,6 +1,6 @@
 package io.weyoui.weyouiappcore.user.query.application.dto;
 
-import io.weyoui.weyouiappcore.common.Address;
+import io.weyoui.weyouiappcore.common.model.Address;
 import io.weyoui.weyouiappcore.groupMember.command.domain.GroupMember;
 import io.weyoui.weyouiappcore.user.command.domain.DeviceInfo;
 import io.weyoui.weyouiappcore.user.command.domain.RoleType;
