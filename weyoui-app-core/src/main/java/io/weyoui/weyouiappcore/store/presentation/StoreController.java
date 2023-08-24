@@ -12,9 +12,7 @@ import io.weyoui.weyouiappcore.store.query.application.StoreViewService;
 import io.weyoui.weyouiappcore.store.query.application.dto.StoreSearchRequest;
 import io.weyoui.weyouiappcore.store.query.application.dto.StoreViewResponse;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
-import io.weyoui.weyouiappcore.user.query.application.dto.CustomPageRequest;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,9 +50,7 @@ public class StoreController {
     }
 
     @GetMapping("/api/v1/users/stores")
-    public ResponseEntity<CommonResponse<List<StoreViewResponse>>> search(StoreSearchRequest storeSearchRequest, CustomPageRequest customPageRequest) {
-
-        Pageable pageable = PageRequest.of(customPageRequest.getPage(), customPageRequest.getSize());
+    public ResponseEntity<CommonResponse<List<StoreViewResponse>>> search(StoreSearchRequest storeSearchRequest, Pageable pageable) {
 
         Page<Store> result = storeViewService.findByConditions(storeSearchRequest,pageable);
 
