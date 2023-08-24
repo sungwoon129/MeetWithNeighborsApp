@@ -4,7 +4,6 @@ import io.weyoui.weyouiappcore.TestQueryDSLConfig;
 import io.weyoui.weyouiappcore.common.model.Address;
 import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.user.infrastructure.UserRepository;
-import io.weyoui.weyouiappcore.user.query.application.dto.CustomPageRequest;
 import io.weyoui.weyouiappcore.user.query.application.dto.UserSearchRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -48,11 +47,10 @@ class UserQueryRepositoryTest {
                 .email("test")
                 .nickname("test")
                 .build();
-        CustomPageRequest pageRequest = new CustomPageRequest();
 
 
         //when
-        Page<User> result = userQueryRepository.findByConditions(search, PageRequest.of(pageRequest.getPage(), pageRequest.getSize()));
+        Page<User> result = userQueryRepository.findByConditions(search, PageRequest.of(0,10));
 
         //then
         assertThat(result.getTotalElements()).isEqualTo(1);

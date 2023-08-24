@@ -1,6 +1,8 @@
 package io.weyoui.weyouiappcore;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import io.weyoui.weyouiappcore.common.querydsl.MySqlNativeSQLGenerator;
+import io.weyoui.weyouiappcore.common.querydsl.NativeSQLGenerator;
 import io.weyoui.weyouiappcore.user.query.infrastructure.UserQueryRepositoryCustom;
 import io.weyoui.weyouiappcore.user.query.infrastructure.UserQueryRepositoryImpl;
 import jakarta.persistence.EntityManager;
@@ -23,5 +25,8 @@ public class TestQueryDSLConfig {
     public UserQueryRepositoryCustom UserRepositoryCustom() {
         return new UserQueryRepositoryImpl(jpaQueryFactory());
     }
+
+    @Bean(name = "mySqlNativeSQLGenerator")
+    public NativeSQLGenerator NativeSQLGenerator() {return new MySqlNativeSQLGenerator(); }
 
 }
