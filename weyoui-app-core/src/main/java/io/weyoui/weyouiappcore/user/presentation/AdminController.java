@@ -2,13 +2,10 @@ package io.weyoui.weyouiappcore.user.presentation;
 
 import io.weyoui.weyouiappcore.common.model.CommonResponse;
 import io.weyoui.weyouiappcore.user.command.domain.User;
-import io.weyoui.weyouiappcore.user.query.application.dto.CustomPageRequest;
-import io.weyoui.weyouiappcore.user.query.application.dto.UserSearchRequest;
-import io.weyoui.weyouiappcore.user.query.application.dto.UserResponse;
 import io.weyoui.weyouiappcore.user.query.application.UserViewService;
-import jakarta.validation.Valid;
+import io.weyoui.weyouiappcore.user.query.application.dto.UserResponse;
+import io.weyoui.weyouiappcore.user.query.application.dto.UserSearchRequest;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,9 +24,7 @@ public class AdminController {
     }
 
     @GetMapping("/api/v1/admin/users")
-    public ResponseEntity<CommonResponse<List<UserResponse>>> list(UserSearchRequest userSearch, @Valid CustomPageRequest pageRequest) {
-
-        Pageable pageable = PageRequest.of(pageRequest.getPage(), pageRequest.getSize());
+    public ResponseEntity<CommonResponse<List<UserResponse>>> list(UserSearchRequest userSearch, Pageable pageable) {
 
         Page<User> result = userViewService.findAll(userSearch, pageable);
         List<UserResponse> responseContent = result.getContent().stream().map(User::toResponseDto).toList();
