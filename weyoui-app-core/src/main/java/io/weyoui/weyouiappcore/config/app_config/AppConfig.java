@@ -46,5 +46,6 @@ public class AppConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(final List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new LoginMemberIdArgumentResolver(tokenProvider));
+        resolvers.add(new CustomPageableHandlerMethodArgumentResolver());
     }
 }
