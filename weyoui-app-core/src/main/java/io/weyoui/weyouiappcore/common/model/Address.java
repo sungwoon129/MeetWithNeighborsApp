@@ -1,8 +1,8 @@
 package io.weyoui.weyouiappcore.common.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,6 +28,7 @@ public class Address {
 
     private Point point;
 
+    @JsonIgnore
     public String getFullAddress() {
         return address1 + " " + address2;
     }
