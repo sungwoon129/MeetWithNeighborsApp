@@ -46,7 +46,7 @@ public class Store extends BaseTimeEntity {
     public Store(StoreId storeId, String name, Address address, Owner owner,StoreCategory category, StoreState state) {
         this.id = storeId;
         this.name = name;
-        this.address =address;
+        this.address = address;
         this.owner = owner;
         this.category = category;
         this.state = state;
