@@ -3,6 +3,8 @@ package io.weyoui.weyouiappcore.product.domain;
 import io.weyoui.weyouiappcore.common.model.BaseTimeEntity;
 import io.weyoui.weyouiappcore.common.model.Money;
 import io.weyoui.weyouiappcore.common.jpa.MoneyConverter;
+import io.weyoui.weyouiappcore.product.query.application.dto.ProductViewResponse;
+import io.weyoui.weyouiappcore.store.command.domain.Store;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -13,10 +15,11 @@ public class Product extends BaseTimeEntity {
 
     @EmbeddedId
     @Column(name = "product_id")
-    private ProductId productId;
+    private ProductId id;
 
-    @Embedded
-    private StoreInfo storeInfo;
+    @ManyToOne
+    @JoinColumn(name = "store_id")
+    private Store storeInfo;
 
     @Column(name = "product_name")
     private String name;
@@ -32,6 +35,15 @@ public class Product extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "product_state")
     private ProductState state;
+
+    public ProductViewResponse toResponseDto() {
+        return ProductViewResponse.builder()
+                .id(id)
+                .name(name)
+                .price(price)
+                .state(state)
+                .build();
+    }
 
 
 

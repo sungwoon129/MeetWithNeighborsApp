@@ -3,12 +3,14 @@ package io.weyoui.weyouiappcore.store.command.domain;
 import com.querydsl.core.util.StringUtils;
 import io.weyoui.weyouiappcore.common.model.Address;
 import io.weyoui.weyouiappcore.common.model.BaseTimeEntity;
+import io.weyoui.weyouiappcore.product.domain.Product;
 import io.weyoui.weyouiappcore.store.query.application.dto.StoreViewResponse;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Entity
@@ -27,9 +29,8 @@ public class Store extends BaseTimeEntity {
     @Embedded
     private Address address;
 
-    @ElementCollection
-    @CollectionTable(name = "store_product", joinColumns = @JoinColumn(name = "store_id"))
-    private Set<ProductInfo> productInfos;
+    @OneToMany(cascade = {CascadeType.REMOVE,CascadeType.REFRESH}, orphanRemoval = true, mappedBy = "storeInfo")
+    private Set<Product> productInfos;
 
     private Float rating;
 
@@ -54,14 +55,14 @@ public class Store extends BaseTimeEntity {
 
     public StoreViewResponse toResponseDto() {
         return StoreViewResponse.builder()
-                .storeId(id.getId())
+                .storeId(id)
                 .name(name)
                 .owner(owner)
                 .address(address)
-                .productInfos(productInfos)
+                .productInfos(productInfos.stream().map(Product::toResponseDto).collect(Collectors.toSet()))
                 .rating(rating)
-                .category(category.getTitle())
-                .state(state.getTitle())
+                .category(category)
+                .state(state)
                 .build();
     }
 
