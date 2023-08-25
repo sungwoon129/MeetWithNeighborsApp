@@ -1,5 +1,6 @@
 package io.weyoui.weyouiappcore;
 
+import com.querydsl.jpa.JPQLTemplates;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.weyoui.weyouiappcore.common.querydsl.MySqlNativeSQLGenerator;
 import io.weyoui.weyouiappcore.common.querydsl.NativeSQLGenerator;
@@ -18,7 +19,7 @@ public class TestQueryDSLConfig {
 
     @Bean
     public JPAQueryFactory jpaQueryFactory() {
-        return new JPAQueryFactory(entityManager);
+        return new JPAQueryFactory(JPQLTemplates.DEFAULT, entityManager);
     }
 
     @Bean(name = "userRepositoryImpl")

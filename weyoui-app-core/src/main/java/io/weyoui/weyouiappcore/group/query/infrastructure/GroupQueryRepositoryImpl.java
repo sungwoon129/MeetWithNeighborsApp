@@ -98,8 +98,8 @@ public class GroupQueryRepositoryImpl implements GroupQueryRepositoryCustom {
     }
 
     private NumberExpression<Double> generateMBRContainsSQL(Location currentLocation, double distance) {
-        Location northEastLocation = GeometryUtil.calculate(currentLocation.getLongitude(), currentLocation.getLatitude(), distance, Direction.NORTHEAST.getBearing());
-        Location southWest = GeometryUtil.calculate(currentLocation.getLongitude(), currentLocation.getLatitude(), distance, Direction.SOUTHWEST.getBearing());
+        Location northEastLocation = GeometryUtil.calculate(currentLocation.getLatitude(), currentLocation.getLongitude(), distance, Direction.NORTHEAST.getBearing());
+        Location southWest = GeometryUtil.calculate(currentLocation.getLatitude(), currentLocation.getLongitude(), distance, Direction.SOUTHWEST.getBearing());
 
         return nativeSQLGenerator.generateMBRContainsSQL(northEastLocation.getLatitude(), northEastLocation.getLongitude(), southWest.getLatitude(),southWest.getLongitude()
                 , group.place.point);
