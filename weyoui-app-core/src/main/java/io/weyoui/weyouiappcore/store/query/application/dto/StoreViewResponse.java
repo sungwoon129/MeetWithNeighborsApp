@@ -1,8 +1,12 @@
 package io.weyoui.weyouiappcore.store.query.application.dto;
 
+import com.querydsl.core.annotations.QueryProjection;
 import io.weyoui.weyouiappcore.common.model.Address;
+import io.weyoui.weyouiappcore.product.query.application.dto.ProductViewResponse;
 import io.weyoui.weyouiappcore.store.command.domain.Owner;
-import io.weyoui.weyouiappcore.store.command.domain.ProductInfo;
+import io.weyoui.weyouiappcore.store.command.domain.StoreCategory;
+import io.weyoui.weyouiappcore.store.command.domain.StoreId;
+import io.weyoui.weyouiappcore.store.command.domain.StoreState;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,18 +18,19 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 public class StoreViewResponse {
-    private String storeId;
+    private StoreId storeId;
     private String name;
     private Owner owner;
     private Address address;
-    private Set<ProductInfo> productInfos;
+    private Set<ProductViewResponse> productInfos;
     private Float rating;
-    private String category;
-    private String state;
+    private StoreCategory category;
+    private StoreState state;
 
 
+    @QueryProjection
     @Builder
-    public StoreViewResponse(String storeId, String name, Owner owner, Address address,Set<ProductInfo> productInfos, Float rating, String category, String state) {
+    public StoreViewResponse(StoreId storeId, String name, Owner owner, Address address, Set<ProductViewResponse> productInfos, Float rating, StoreCategory category, StoreState state) {
         this.storeId = storeId;
         this.name = name;
         this.owner = owner;

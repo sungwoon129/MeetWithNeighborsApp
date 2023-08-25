@@ -52,9 +52,9 @@ public class StoreController {
     @GetMapping("/api/v1/users/stores")
     public ResponseEntity<CommonResponse<List<StoreViewResponse>>> search(StoreSearchRequest storeSearchRequest, Pageable pageable) {
 
-        Page<Store> result = storeViewService.findByConditions(storeSearchRequest,pageable);
+        Page<StoreViewResponse> result = storeViewService.findByConditions(storeSearchRequest,pageable);
 
-        return ResponseEntity.ok().body(new CommonResponse<>(result.getContent().stream().map(Store::toResponseDto).toList()));
+        return ResponseEntity.ok().body(new CommonResponse<>(result.getContent(), result.getTotalElements()));
     }
 
     @PutMapping("/api/v1/users/store/{storeId}")

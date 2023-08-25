@@ -1,5 +1,6 @@
 package io.weyoui.weyouiappcore.store.query.infrastructure;
 
+import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -12,10 +13,12 @@ import io.weyoui.weyouiappcore.common.querydsl.NativeSQLGenerator;
 import io.weyoui.weyouiappcore.group.query.application.Direction;
 import io.weyoui.weyouiappcore.group.query.application.GeometryUtil;
 import io.weyoui.weyouiappcore.group.query.application.dto.Location;
+import io.weyoui.weyouiappcore.product.query.application.dto.QProductViewResponse;
 import io.weyoui.weyouiappcore.store.command.domain.Store;
 import io.weyoui.weyouiappcore.store.command.domain.StoreState;
+import io.weyoui.weyouiappcore.store.query.application.dto.QStoreViewResponse;
 import io.weyoui.weyouiappcore.store.query.application.dto.StoreSearchRequest;
-import io.weyoui.weyouiappcore.user.command.domain.User;
+import io.weyoui.weyouiappcore.store.query.application.dto.StoreViewResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -24,10 +27,11 @@ import org.springframework.data.support.PageableExecutionUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.weyoui.weyouiappcore.group.command.domain.QGroup.group;
+import static com.querydsl.core.group.GroupBy.groupBy;
+import static io.weyoui.weyouiappcore.product.domain.QProduct.product;
 import static io.weyoui.weyouiappcore.store.command.domain.QStore.store;
 
-public class StoreQueryRepositoryImpl implements StoreQueryRepositoryCustom{
+public class StoreQueryRepositoryImpl implements StoreQueryRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
     private final NativeSQLGenerator nativeSQLGenerator;
@@ -38,37 +42,56 @@ public class StoreQueryRepositoryImpl implements StoreQueryRepositoryCustom{
     }
 
     @Override
-    public Page<Store> findByConditions(StoreSearchRequest storeSearchRequest, Pageable pageable) {
-        List<Store> contents = getContents(storeSearchRequest, pageable);
+    public Page<StoreViewResponse> findByConditions(StoreSearchRequest storeSearchRequest, Pageable pageable) {
+        List<StoreViewResponse> contents = getContents(storeSearchRequest, pageable);
         JPAQuery<Long> countQuery = getCountQuery(storeSearchRequest);
 
-        return PageableExecutionUtils.getPage(contents,pageable,countQuery::fetchOne);
+        return PageableExecutionUtils.getPage(contents, pageable, countQuery::fetchOne);
     }
 
     private JPAQuery<Long> getCountQuery(StoreSearchRequest storeSearchRequest) {
         return jpaQueryFactory
                 .select(store.count())
                 .from(store)
+                .leftJoin(store.productInfos, product)
                 .where(
                         nameLike(storeSearchRequest.getName()),
                         equalsState(storeSearchRequest.getState()),
-                        isWithInDistance(storeSearchRequest.getLocation(),storeSearchRequest.getDistance())
+                        isWithInDistance(storeSearchRequest.getLocation(), storeSearchRequest.getDistance())
                 );
     }
 
-    private List<Store> getContents(StoreSearchRequest storeSearchRequest, Pageable pageable) {
+    private List<StoreViewResponse> getContents(StoreSearchRequest storeSearchRequest, Pageable pageable) {
         return jpaQueryFactory
-                .select(store)
                 .from(store)
+                .leftJoin(store.productInfos, product)
                 .where(
                         nameLike(storeSearchRequest.getName()),
                         equalsState(storeSearchRequest.getState()),
-                        isWithInDistance(storeSearchRequest.getLocation(),storeSearchRequest.getDistance())
+                        isWithInDistance(storeSearchRequest.getLocation(), storeSearchRequest.getDistance())
                 )
                 .orderBy(getOrderSpecifier(pageable.getSort()))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .fetch();
+                .transform(
+                        groupBy(store.id)
+                                .list(
+                                        new QStoreViewResponse(
+                                                store.id,
+                                                store.name,
+                                                store.owner,
+                                                store.address,
+                                                GroupBy.set(new QProductViewResponse(
+                                                        product.id,
+                                                        product.name,
+                                                        product.price,
+                                                        product.state
+                                                )),
+                                                store.rating,
+                                                store.category,
+                                                store.state
+                                        )
+                                ));
     }
 
     private OrderSpecifier<?>[] getOrderSpecifier(Sort sort) {
@@ -90,17 +113,17 @@ public class StoreQueryRepositoryImpl implements StoreQueryRepositoryCustom{
 
     private BooleanExpression isWithInDistance(Location location, double distance) {
 
-        if(location == null) return null;
+        if (location == null) return null;
 
-        return generateMBRContainsSQL(location,distance).eq(1d);
+        return generateMBRContainsSQL(location, distance).eq(1d);
     }
 
     private NumberExpression<Double> generateMBRContainsSQL(Location currentLocation, double distance) {
-        Location northEastLocation = GeometryUtil.calculate(currentLocation.getLongitude(), currentLocation.getLatitude(), distance, Direction.NORTHEAST.getBearing());
-        Location southWest = GeometryUtil.calculate(currentLocation.getLongitude(), currentLocation.getLatitude(), distance, Direction.SOUTHWEST.getBearing());
+        Location northEastLocation = GeometryUtil.calculate(currentLocation.getLatitude(), currentLocation.getLongitude(), distance, Direction.NORTHEAST.getBearing());
+        Location southWest = GeometryUtil.calculate(currentLocation.getLatitude(), currentLocation.getLongitude(), distance, Direction.SOUTHWEST.getBearing());
 
-        return nativeSQLGenerator.generateMBRContainsSQL(northEastLocation.getLatitude(), northEastLocation.getLongitude(), southWest.getLatitude(),southWest.getLongitude()
-                , group.place.point);
+        return nativeSQLGenerator.generateMBRContainsSQL(northEastLocation.getLatitude(), northEastLocation.getLongitude(), southWest.getLatitude(), southWest.getLongitude()
+                , store.address.point);
     }
 
     private BooleanExpression equalsState(String stateCode) {
