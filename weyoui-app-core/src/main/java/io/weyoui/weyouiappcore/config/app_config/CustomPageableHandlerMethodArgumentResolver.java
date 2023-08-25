@@ -25,7 +25,7 @@ public class CustomPageableHandlerMethodArgumentResolver extends PageableHandler
     }
 
     private void validate(final String pageSize) {
-        if (Integer.parseInt(pageSize) > 999) {
+        if (pageSize != null && Integer.parseInt(pageSize) > 999) {
             throw new PageSizeOutOfBoundsException("size는 최대 999이하의 값을 가져야합니다.");
         }
     }
