@@ -188,7 +188,6 @@ class StoreControllerTest {
         assertEquals(storeRequest.getState(), store.getState().getCode());
         assertEquals(storeRequest.getCategory(), store.getCategory().getCode());
 
-
     }
 
     private UserId insertAnyUser() {

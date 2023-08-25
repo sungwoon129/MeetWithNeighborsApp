@@ -1,7 +1,10 @@
 package io.weyoui.weyouiappcore.group.query.infrastructure;
 
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.core.util.StringUtils;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -12,13 +15,17 @@ import io.weyoui.weyouiappcore.group.query.application.Direction;
 import io.weyoui.weyouiappcore.group.query.application.GeometryUtil;
 import io.weyoui.weyouiappcore.group.query.application.dto.GroupSearchRequest;
 import io.weyoui.weyouiappcore.group.query.application.dto.Location;
+import io.weyoui.weyouiappcore.store.command.domain.Store;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static io.weyoui.weyouiappcore.group.command.domain.QGroup.group;
+import static io.weyoui.weyouiappcore.store.command.domain.QStore.store;
 
 public class GroupQueryRepositoryImpl implements GroupQueryRepositoryCustom {
 
@@ -60,9 +67,27 @@ public class GroupQueryRepositoryImpl implements GroupQueryRepositoryCustom {
                     equalsState(groupSearchRequest.getState()),
                     isWithInDistance(groupSearchRequest.getLocation(),groupSearchRequest.getDistance())
                 )
+                .orderBy(getOrderSpecifier(pageable.getSort()))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
+    }
+
+    private OrderSpecifier<?>[] getOrderSpecifier(Sort sort) {
+
+        List<OrderSpecifier<?>> orders = new ArrayList<>();
+
+        sort.stream()
+                .forEach(order -> {
+                    PathBuilder<Group> pathBuilder = new PathBuilder<>(group.getType(), group.getMetadata());
+                    orders.add(new OrderSpecifier(toQuerydslDirection(order.getDirection()), pathBuilder.get(order.getProperty())));
+                });
+
+        return orders.toArray(OrderSpecifier[]::new);
+    }
+
+    private Order toQuerydslDirection(Sort.Direction direction) {
+        return direction.isAscending() ? Order.ASC : Order.DESC;
     }
 
     private BooleanExpression isWithInDistance(Location location, double distance) {
