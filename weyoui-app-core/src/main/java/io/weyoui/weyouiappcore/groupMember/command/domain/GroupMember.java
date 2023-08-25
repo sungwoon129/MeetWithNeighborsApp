@@ -1,9 +1,9 @@
 package io.weyoui.weyouiappcore.groupMember.command.domain;
 
+import io.weyoui.weyouiappcore.common.exception.NoAuthException;
 import io.weyoui.weyouiappcore.common.model.BaseTimeEntity;
 import io.weyoui.weyouiappcore.group.command.domain.Group;
 import io.weyoui.weyouiappcore.group.command.domain.GroupRole;
-import io.weyoui.weyouiappcore.groupMember.command.application.exception.GroupAuthException;
 import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import jakarta.persistence.*;
@@ -68,10 +68,10 @@ public class GroupMember extends BaseTimeEntity {
     }
 
     public void leaderCheck() {
-        if(!role.equals(GroupRole.LEADER)) throw new GroupAuthException("이 구성원은 모임장이 아닙니다.");
+        if(!role.equals(GroupRole.LEADER)) throw new NoAuthException("이 구성원은 모임장이 아닙니다.");
     }
 
     public void hasAuth(GroupMemberId targetId) {
-        if(!(role.equals(GroupRole.LEADER)) && !this.groupMemberId.equals(targetId)) throw new GroupAuthException("요청을 처리할 권한이 존재하지 않습니다.");
+        if(!(role.equals(GroupRole.LEADER)) && !this.groupMemberId.equals(targetId)) throw new NoAuthException("요청을 처리할 권한이 존재하지 않습니다.");
     }
 }

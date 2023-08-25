@@ -2,7 +2,7 @@ package io.weyoui.weyouiappcore.config.exception;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
-import io.weyoui.weyouiappcore.groupMember.command.application.exception.GroupAuthException;
+import io.weyoui.weyouiappcore.common.exception.NoAuthException;
 import io.weyoui.weyouiappcore.user.command.application.exception.DuplicateEmailException;
 import io.weyoui.weyouiappcore.user.command.application.exception.NotFoundUserException;
 import lombok.extern.slf4j.Slf4j;
@@ -73,13 +73,13 @@ public class CustomExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(value = GroupAuthException.class)
-    protected ResponseEntity<ErrorResponse> handleGroupAuthException(GroupAuthException e) {
+    @ExceptionHandler(value = NoAuthException.class)
+    protected ResponseEntity<ErrorResponse> handleNoQualificationException(NoAuthException e) {
         ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INVALID_RESOURCE_ACCESS);
         errorResponse.setHttpStatus(HttpStatus.BAD_REQUEST);
         errorResponse.setDetail(e.getMessage());
         log.error(e.getMessage());
-        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
 
