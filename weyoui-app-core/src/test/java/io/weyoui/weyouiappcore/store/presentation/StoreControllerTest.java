@@ -4,9 +4,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.weyoui.weyouiappcore.common.model.Address;
 import io.weyoui.weyouiappcore.common.model.CommonResponse;
+import io.weyoui.weyouiappcore.group.query.application.dto.Location;
 import io.weyoui.weyouiappcore.store.command.application.dto.StoreRequest;
 import io.weyoui.weyouiappcore.store.command.domain.*;
 import io.weyoui.weyouiappcore.store.infrastructure.StoreRepository;
+import io.weyoui.weyouiappcore.store.query.application.dto.StoreSearchRequest;
+import io.weyoui.weyouiappcore.store.query.application.dto.StoreViewResponse;
 import io.weyoui.weyouiappcore.store.query.infrastructure.StoreQueryRepository;
 import io.weyoui.weyouiappcore.user.command.application.exception.NotFoundUserException;
 import io.weyoui.weyouiappcore.user.command.domain.RoleType;
@@ -34,15 +37,17 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -190,6 +195,38 @@ class StoreControllerTest {
 
     }
 
+    @WithMockUser
+    @DisplayName("이름,상태,주소,거리를 가지고 가게를 검색하여 목록을 반환한다.")
+    @Test
+    void getStoreViewListTest() throws Exception{
+
+        //given
+        UserId storeOwnerId = insertAnyUser();
+
+        StoreId storeId = insertAnyStore(ownerService.createOwner(storeOwnerId));
+        StoreSearchRequest storeSearchRequest = new StoreSearchRequest();
+        storeSearchRequest.setName("any");
+        storeSearchRequest.setState(StoreState.OPEN.getCode());
+        storeSearchRequest.setLocation(new Location( 37.37362247078315, 127.11302379211246 ));
+        storeSearchRequest.setDistance(3);
+
+        String api = "http://localhost:" + port + "/api/v1/users/stores?page=0&size=100&name=any&state=O&location.latitude=37.37362247078315&location.longitude=127.11302379211246&distance=3&sort=id,desc";
+
+        //when
+        MvcResult result = mvc.perform(get(api))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
+
+        //then
+        CommonResponse<List<StoreViewResponse>> list = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
+        Store store = storeQueryRepository.findById(storeId).orElseThrow(() -> new IllegalArgumentException("일치하는 가게가 존재하지 않습니다."));
+
+        assertTrue("검색결과내에 ID가 일치하는 가게가 존재하지 ㅇ낳습니다.", list.getData().stream().anyMatch(storeViewResponse -> storeViewResponse.getStoreId().equals(store.getId())));
+
+
+    }
+
     private UserId insertAnyUser() {
         UserId userId = userRepository.nextUserId();
         userRepository.save(
@@ -208,7 +245,9 @@ class StoreControllerTest {
                         .storeId(storeId)
                         .name("any store")
                         .category(StoreCategory.SERVICE)
+                        .state(StoreState.OPEN)
                         .owner(owner)
+                        .address(new Address("경기도","성남시","123-456",new GeometryFactory().createPoint(new Coordinate(37.37720712440026,127.11215415764482))))
                         .build()
         );
 
