@@ -81,7 +81,7 @@ public class StoreQueryRepositoryImpl implements StoreQueryRepositoryCustom {
                                                 store.name,
                                                 store.owner,
                                                 store.address,
-                                                GroupBy.set(new QProductViewResponse(
+                                                GroupBy.list(new QProductViewResponse(
                                                         product.id,
                                                         product.name,
                                                         product.price,

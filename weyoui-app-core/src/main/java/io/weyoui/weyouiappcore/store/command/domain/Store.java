@@ -59,7 +59,7 @@ public class Store extends BaseTimeEntity {
                 .name(name)
                 .owner(owner)
                 .address(address)
-                .productInfos(productInfos.stream().map(Product::toResponseDto).collect(Collectors.toSet()))
+                .productInfos(productInfos.stream().map(Product::toResponseDto).collect(Collectors.toList()))
                 .rating(rating)
                 .category(category)
                 .state(state)

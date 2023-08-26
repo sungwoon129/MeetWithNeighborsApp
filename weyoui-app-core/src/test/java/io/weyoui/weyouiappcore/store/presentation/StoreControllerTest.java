@@ -222,7 +222,7 @@ class StoreControllerTest {
         CommonResponse<List<StoreViewResponse>> list = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
         Store store = storeQueryRepository.findById(storeId).orElseThrow(() -> new IllegalArgumentException("일치하는 가게가 존재하지 않습니다."));
 
-        assertTrue("검색결과내에 ID가 일치하는 가게가 존재하지 ㅇ낳습니다.", list.getData().stream().anyMatch(storeViewResponse -> storeViewResponse.getStoreId().equals(store.getId())));
+        assertTrue("검색결과내에 ID가 일치하는 가게가 존재하지 않습니다.", list.getData().stream().anyMatch(storeViewResponse -> storeViewResponse.getStoreId().equals(store.getId())));
 
 
     }

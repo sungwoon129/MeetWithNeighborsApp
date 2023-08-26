@@ -12,7 +12,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Setter
 @Getter
@@ -22,7 +23,7 @@ public class StoreViewResponse {
     private String name;
     private Owner owner;
     private Address address;
-    private Set<ProductViewResponse> productInfos;
+    private List<ProductViewResponse> productInfos;
     private Float rating;
     private StoreCategory category;
     private StoreState state;
@@ -30,16 +31,15 @@ public class StoreViewResponse {
 
     @QueryProjection
     @Builder
-    public StoreViewResponse(StoreId storeId, String name, Owner owner, Address address, Set<ProductViewResponse> productInfos, Float rating, StoreCategory category, StoreState state) {
+    public StoreViewResponse(StoreId storeId, String name, Owner owner, Address address, List<ProductViewResponse> productInfos, Float rating, StoreCategory category, StoreState state) {
         this.storeId = storeId;
         this.name = name;
         this.owner = owner;
         this.address = address;
-        this.productInfos = productInfos;
+        this.productInfos = productInfos.stream().filter(productViewResponse -> productViewResponse.getId() != null).collect(Collectors.toList());
         this.rating = rating;
         this.category = category;
         this.state = state;
 
     }
-
 }
