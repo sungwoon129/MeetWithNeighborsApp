@@ -204,16 +204,20 @@ class StoreControllerTest {
         UserId storeOwnerId = insertAnyUser();
 
         StoreId storeId = insertAnyStore(ownerService.createOwner(storeOwnerId));
-        StoreSearchRequest storeSearchRequest = new StoreSearchRequest();
-        storeSearchRequest.setName("any");
-        storeSearchRequest.setState(StoreState.OPEN.getCode());
-        storeSearchRequest.setLocation(new Location( 37.37362247078315, 127.11302379211246 ));
-        storeSearchRequest.setDistance(3);
 
-        String api = "http://localhost:" + port + "/api/v1/users/stores?page=0&size=100&name=any&state=O&location.latitude=37.37362247078315&location.longitude=127.11302379211246&distance=3&sort=id,desc";
+        String api = "http://localhost:" + port + "/api/v1/users/stores";
 
         //when
-        MvcResult result = mvc.perform(get(api))
+        MvcResult result = mvc.perform(get(api)
+                        .queryParam("page","0")
+                        .queryParam("size","100")
+                        .queryParam("name","any")
+                        .queryParam("state","O")
+                        .queryParam("location.latitude","37.37362247078315")
+                        .queryParam("location.longitude","127.11302379211246")
+                        .queryParam("distance","3")
+                        .queryParam("sort","id,desc")
+                )
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
@@ -223,8 +227,6 @@ class StoreControllerTest {
         Store store = storeQueryRepository.findById(storeId).orElseThrow(() -> new IllegalArgumentException("일치하는 가게가 존재하지 않습니다."));
 
         assertTrue("검색결과내에 ID가 일치하는 가게가 존재하지 않습니다.", list.getData().stream().anyMatch(storeViewResponse -> storeViewResponse.getStoreId().equals(store.getId())));
-
-
     }
 
     private UserId insertAnyUser() {
