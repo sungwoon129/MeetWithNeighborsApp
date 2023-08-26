@@ -107,7 +107,7 @@ public class Group extends BaseTimeEntity {
 
         checkStateIsEnd();
 
-        if(getHeadCount() == capacity) throw new IndexOutOfBoundsException("구성원이 가득 차 더 이상 모임에 구성원을 추가할 수 없습니다. ");
+        if(getHeadCount() == capacity) throw new IndexOutOfBoundsException("구성원이 가득 차 더 이상 모임에 구성원을 추가할 수 없습니다.");
         members.add(groupMember);
 
     }
