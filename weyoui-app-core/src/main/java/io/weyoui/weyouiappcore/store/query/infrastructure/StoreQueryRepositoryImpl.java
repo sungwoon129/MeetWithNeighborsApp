@@ -1,6 +1,5 @@
 package io.weyoui.weyouiappcore.store.query.infrastructure;
 
-import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -24,10 +23,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.querydsl.core.group.GroupBy.groupBy;
+import static com.querydsl.core.group.GroupBy.list;
 import static io.weyoui.weyouiappcore.product.domain.QProduct.product;
 import static io.weyoui.weyouiappcore.store.command.domain.QStore.store;
 
@@ -81,7 +80,7 @@ public class StoreQueryRepositoryImpl implements StoreQueryRepositoryCustom {
                                                 store.name,
                                                 store.owner,
                                                 store.address,
-                                                GroupBy.list(new QProductViewResponse(
+                                                list(new QProductViewResponse(
                                                         product.id,
                                                         product.name,
                                                         product.price,
@@ -95,16 +94,11 @@ public class StoreQueryRepositoryImpl implements StoreQueryRepositoryCustom {
     }
 
     private OrderSpecifier<?>[] getOrderSpecifier(Sort sort) {
-
-        List<OrderSpecifier<?>> orders = new ArrayList<>();
-
-        sort.stream()
-                .forEach(order -> {
+        return sort.stream()
+                .map(order -> {
                     PathBuilder<Store> pathBuilder = new PathBuilder<>(store.getType(), store.getMetadata());
-                    orders.add(new OrderSpecifier(toQuerydslDirection(order.getDirection()), pathBuilder.get(order.getProperty())));
-                });
-
-        return orders.toArray(OrderSpecifier[]::new);
+                    return new OrderSpecifier(toQuerydslDirection(order.getDirection()), pathBuilder.get(order.getProperty()));
+                }).toArray(OrderSpecifier[]::new);
     }
 
     private Order toQuerydslDirection(Sort.Direction direction) {
