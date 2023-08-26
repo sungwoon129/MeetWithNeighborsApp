@@ -2,6 +2,7 @@ package io.weyoui.weyouiappcore.group.presentation;
 
 import io.weyoui.weyouiappcore.common.model.CommonResponse;
 import io.weyoui.weyouiappcore.common.model.ResultYnType;
+import io.weyoui.weyouiappcore.config.app_config.LimitedPageSize;
 import io.weyoui.weyouiappcore.config.app_config.LoginUserId;
 import io.weyoui.weyouiappcore.group.command.application.GroupService;
 import io.weyoui.weyouiappcore.group.command.application.dto.GroupAddResponse;
@@ -60,7 +61,7 @@ public class GroupController {
     }
 
     @GetMapping("/api/v1/users/groups")
-    public ResponseEntity<CommonResponse<List<GroupViewResponse>>> search(GroupSearchRequest groupSearchRequest, Pageable pageable) {
+    public ResponseEntity<CommonResponse<List<GroupViewResponse>>> search(GroupSearchRequest groupSearchRequest, @LimitedPageSize Pageable pageable) {
 
         Page<Group> result = groupViewService.findByConditions(groupSearchRequest,pageable);
 

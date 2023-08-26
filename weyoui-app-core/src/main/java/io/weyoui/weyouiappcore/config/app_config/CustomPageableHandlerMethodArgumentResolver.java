@@ -13,20 +13,24 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 public class CustomPageableHandlerMethodArgumentResolver extends PageableHandlerMethodArgumentResolver {
 
-
     @NonNull
     @Override
     public Pageable resolveArgument(@NonNull MethodParameter methodParameter, @Nullable ModelAndViewContainer mavContainer,
                                     @NotNull NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory) {
 
-        String pageSize = webRequest.getParameter(getParameterNameToUse(getSizeParameterName(), methodParameter));
-        validate(pageSize);
-        return super.resolveArgument(methodParameter, mavContainer, webRequest, binderFactory);
+        final Pageable pageable = super.resolveArgument(methodParameter, mavContainer, webRequest, binderFactory);
+
+        if(methodParameter.hasParameterAnnotation(LimitedPageSize.class)) {
+            final int maxSize = methodParameter.getParameterAnnotation(LimitedPageSize.class).maxSize();
+            validate(pageable, maxSize);
+        }
+
+        return pageable;
     }
 
-    private void validate(final String pageSize) {
-        if (pageSize != null && Integer.parseInt(pageSize) > 999) {
-            throw new PageSizeOutOfBoundsException("size는 최대 999이하의 값을 가져야합니다.");
+    private void validate(final Pageable pageable, final int maxSize) {
+        if(pageable.getPageSize() > maxSize) {
+            throw new PageSizeOutOfBoundsException("page size는 최대 " +  maxSize + "이하의 값을 가져야합니다.");
         }
     }
 }

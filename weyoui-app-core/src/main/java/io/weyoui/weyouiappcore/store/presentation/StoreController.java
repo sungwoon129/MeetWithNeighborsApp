@@ -2,6 +2,7 @@ package io.weyoui.weyouiappcore.store.presentation;
 
 import io.weyoui.weyouiappcore.common.model.CommonResponse;
 import io.weyoui.weyouiappcore.common.model.ResultYnType;
+import io.weyoui.weyouiappcore.config.app_config.LimitedPageSize;
 import io.weyoui.weyouiappcore.config.app_config.LoginUserId;
 import io.weyoui.weyouiappcore.store.command.application.CreateStoreService;
 import io.weyoui.weyouiappcore.store.command.application.StoreService;
@@ -50,7 +51,7 @@ public class StoreController {
     }
 
     @GetMapping("/api/v1/users/stores")
-    public ResponseEntity<CommonResponse<List<StoreViewResponse>>> search(StoreSearchRequest storeSearchRequest, Pageable pageable) {
+    public ResponseEntity<CommonResponse<List<StoreViewResponse>>> search(StoreSearchRequest storeSearchRequest, @LimitedPageSize Pageable pageable) {
 
         Page<StoreViewResponse> result = storeViewService.findByConditions(storeSearchRequest,pageable);
 
