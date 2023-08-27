@@ -23,13 +23,13 @@ public enum UserState implements EnumMapperType {
 
     public static UserState findByCode(String code) {
         return Arrays.stream(UserState.values())
-                .filter(state -> state.hasCode(code.toUpperCase()))
+                .filter(state -> state.hasCode(code))
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("해당 code를 가진 UserState 존재하지 않습니다. states는 A, B, S, IA 중에 하나의 값이어야합니다."));
     }
 
     private boolean hasCode(String code) {
-        return this.code.equals(code);
+        return this.code.equals(code.toUpperCase());
     }
 
     @Override

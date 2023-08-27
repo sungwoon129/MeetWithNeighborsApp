@@ -22,13 +22,13 @@ public enum StoreState implements EnumMapperType {
 
     public static StoreState findByCode(String code) {
         return Arrays.stream(StoreState.values())
-                .filter(state -> state.hasCode(code.toUpperCase()))
+                .filter(state -> state.hasCode(code))
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("해당 code를 가진 StoreState가 존재하지 않습니다. StoreState는 O, B, N, D 중에 하나의 값이어야합니다."));
     }
 
     public boolean hasCode(String code) {
-        return this.code.equals(code);
+        return this.code.equals(code.toUpperCase());
     }
 
     @Override
