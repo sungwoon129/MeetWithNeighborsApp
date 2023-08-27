@@ -23,9 +23,13 @@ public enum GroupState implements EnumMapperType {
 
     public static GroupState findByCode(String code) {
         return Arrays.stream(GroupState.values())
-                .filter(state -> state.code.equals(code))
+                .filter(state -> state.hasCode(code))
                 .findAny()
                 .orElseThrow(() -> new NoSuchElementException("일치하는 모임 상태가 존재하지 않습니다."));
+    }
+
+    public boolean hasCode(String code) {
+        return this.code.equals(code.toUpperCase());
     }
 
 

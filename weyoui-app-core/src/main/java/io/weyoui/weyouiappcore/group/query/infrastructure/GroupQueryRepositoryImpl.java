@@ -15,17 +15,16 @@ import io.weyoui.weyouiappcore.group.query.application.Direction;
 import io.weyoui.weyouiappcore.group.query.application.GeometryUtil;
 import io.weyoui.weyouiappcore.group.query.application.dto.GroupSearchRequest;
 import io.weyoui.weyouiappcore.group.query.application.dto.Location;
-import io.weyoui.weyouiappcore.store.command.domain.Store;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static io.weyoui.weyouiappcore.group.command.domain.QGroup.group;
-import static io.weyoui.weyouiappcore.store.command.domain.QStore.store;
 
 public class GroupQueryRepositoryImpl implements GroupQueryRepositoryCustom {
 
@@ -53,7 +52,7 @@ public class GroupQueryRepositoryImpl implements GroupQueryRepositoryCustom {
                 .from(group)
                 .where(
                   nameLike(groupSearchRequest.getName()),
-                  equalsState(groupSearchRequest.getState()),
+                  isInState(groupSearchRequest.getStates()),
                   isWithInDistance(groupSearchRequest.getLocation(),groupSearchRequest.getDistance())
                 );
     }
@@ -64,7 +63,7 @@ public class GroupQueryRepositoryImpl implements GroupQueryRepositoryCustom {
                 .from(group)
                 .where(
                     nameLike(groupSearchRequest.getName()),
-                    equalsState(groupSearchRequest.getState()),
+                    isInState(groupSearchRequest.getStates()),
                     isWithInDistance(groupSearchRequest.getLocation(),groupSearchRequest.getDistance())
                 )
                 .orderBy(getOrderSpecifier(pageable.getSort()))
@@ -105,8 +104,8 @@ public class GroupQueryRepositoryImpl implements GroupQueryRepositoryCustom {
                 , group.place.point);
     }
 
-    private BooleanExpression equalsState(String stateCode) {
-        return stateCode == null ? null : group.state.eq(GroupState.findByCode(stateCode));
+    private BooleanExpression isInState(String ... stateCode) {
+        return stateCode == null ? null : group.state.in(Arrays.stream(stateCode).map(GroupState::findByCode).toList());
     }
 
     private BooleanExpression nameLike(String name) {
