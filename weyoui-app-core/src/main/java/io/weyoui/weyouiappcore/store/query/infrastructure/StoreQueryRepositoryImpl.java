@@ -121,9 +121,6 @@ public class StoreQueryRepositoryImpl implements StoreQueryRepositoryCustom {
                 , store.address.point);
     }
 
-    private BooleanExpression equalsState(String stateCode) {
-        return stateCode == null ? null : store.state.eq(StoreState.findByCode(stateCode));
-    }
 
     private BooleanExpression isInState(String ... stateCode) {
         return stateCode == null ? null : store.state.in(Arrays.stream(stateCode).map(StoreState::findByCode).toList());
