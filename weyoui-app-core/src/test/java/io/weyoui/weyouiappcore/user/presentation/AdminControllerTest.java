@@ -35,7 +35,7 @@ class AdminControllerTest {
     @Autowired
     UserRepository repository;
 
-    @DisplayName("회원을 여러가지 조건을 정해서 size 999이하의 검색이 가능하다")
+    @DisplayName("회원을 여러가지 조건을 정해서 size 100이하의 검색이 가능하다")
     @Test
     @WithMockUser(roles = {"ADMIN"})
     void findByConditionsTest() throws Exception {
@@ -58,7 +58,7 @@ class AdminControllerTest {
 
     }
 
-    @DisplayName("회원 검색 API 요청시 페이징 size의 값이 1000이상이면 예외를 반환한다.")
+    @DisplayName("회원 검색 API 요청시 페이징 size의 값이 101이상이면 예외를 반환한다.")
     @Test
     @WithMockUser(roles = {"ADMIN"})
     void findByConditionsTest_fail() {
@@ -66,13 +66,10 @@ class AdminControllerTest {
         repository.save(User.builder()
                 .id(repository.nextUserId())
                 .nickname("test")
-                .email("test@weyoui.io")
-                .address(new Address("경기도","정자동","123-456",new GeometryFactory().createPoint(new Coordinate(123d,456d))))
                 .build());
 
-
         //when,then
-        assertThrows(ServletException.class, () -> mvc.perform(get("/api/v1/admin/users?email=test&size=1000&sort=id,desc")).andDo(print()));
+        assertThrows(ServletException.class, () -> mvc.perform(get("/api/v1/admin/users?size=101&sort=id,desc")).andDo(print()));
     }
 
 }
