@@ -212,7 +212,7 @@ class StoreControllerTest {
                         .queryParam("page","0")
                         .queryParam("size","100")
                         .queryParam("name","any")
-                        .queryParam("state","O")
+                        .queryParam("states","O")
                         .queryParam("location.latitude","37.37362247078315")
                         .queryParam("location.longitude","127.11302379211246")
                         .queryParam("distance","3")
