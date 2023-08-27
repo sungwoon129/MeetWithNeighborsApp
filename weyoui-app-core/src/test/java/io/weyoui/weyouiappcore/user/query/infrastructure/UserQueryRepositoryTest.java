@@ -3,6 +3,7 @@ package io.weyoui.weyouiappcore.user.query.infrastructure;
 import io.weyoui.weyouiappcore.TestQueryDSLConfig;
 import io.weyoui.weyouiappcore.common.model.Address;
 import io.weyoui.weyouiappcore.user.command.domain.User;
+import io.weyoui.weyouiappcore.user.command.domain.UserState;
 import io.weyoui.weyouiappcore.user.infrastructure.UserRepository;
 import io.weyoui.weyouiappcore.user.query.application.dto.UserSearchRequest;
 import org.junit.jupiter.api.DisplayName;
@@ -40,12 +41,14 @@ class UserQueryRepositoryTest {
                 .nickname("test")
                 .email("test@weyoui.io")
                 .address(new Address("경기도","정자동","123-456", new GeometryFactory().createPoint(new Coordinate(123d,456d))))
+                .state(UserState.ACTIVE)
                 .build();
         userRepository.save(user);
 
         UserSearchRequest search = UserSearchRequest.builder()
                 .email("test")
                 .nickname("test")
+                .states(new String[]{UserState.ACTIVE.getCode()})
                 .build();
 
 

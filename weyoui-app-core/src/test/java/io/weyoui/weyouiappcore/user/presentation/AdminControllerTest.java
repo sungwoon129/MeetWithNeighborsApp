@@ -2,6 +2,7 @@ package io.weyoui.weyouiappcore.user.presentation;
 
 import io.weyoui.weyouiappcore.common.model.Address;
 import io.weyoui.weyouiappcore.user.command.domain.User;
+import io.weyoui.weyouiappcore.user.command.domain.UserState;
 import io.weyoui.weyouiappcore.user.infrastructure.UserRepository;
 import jakarta.servlet.ServletException;
 import org.junit.jupiter.api.DisplayName;
@@ -45,11 +46,12 @@ class AdminControllerTest {
                         .nickname("test")
                         .email("test@weyoui.io")
                         .address(new Address("경기도","정자동","123-456",new GeometryFactory().createPoint(new Coordinate(123d,456d))))
+                        .state(UserState.ACTIVE)
                         .build());
 
 
         //when,then
-        ResultActions resultActions = mvc.perform(get("/api/v1/admin/users?email=test&size=999&sort=id,desc")
+        ResultActions resultActions = mvc.perform(get("/api/v1/admin/users?email=test&size=100&sort=id,desc&states=a")
                     )
                 .andDo(print())
                 .andExpect(status().isOk());
