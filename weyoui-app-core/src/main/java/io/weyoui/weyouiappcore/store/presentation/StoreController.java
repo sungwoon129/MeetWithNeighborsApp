@@ -65,4 +65,11 @@ public class StoreController {
         return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
     }
 
+    @PutMapping("/api/v1/users/store/{storeId}/delete")
+    public ResponseEntity<CommonResponse<?>> deleteStore(@LoginUserId UserId userId, @PathVariable StoreId storeId) {
+        storeService.deleteStore(userId,storeId);
+
+        return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
+    }
+
 }

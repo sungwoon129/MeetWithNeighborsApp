@@ -9,7 +9,8 @@ public enum StoreState implements EnumMapperType {
 
     OPEN("운영 중","O"),
     BANNED("운영 일시중지","B"),
-    NOT_OPEN("비운영","N");
+    NOT_OPEN("비운영","N"),
+    DELETED("삭제","D");
 
     private String title;
     private String code;
@@ -23,7 +24,7 @@ public enum StoreState implements EnumMapperType {
         return Arrays.stream(StoreState.values())
                 .filter(state -> state.hasCode(code))
                 .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("해당 code를 가진 StoreState가 존재하지 않습니다. StoreState는 O, B, N 중에 하나의 값이어야합니다."));
+                .orElseThrow(() -> new NoSuchElementException("해당 code를 가진 StoreState가 존재하지 않습니다. StoreState는 O, B, N, D 중에 하나의 값이어야합니다."));
     }
 
     private boolean hasCode(String code) {
