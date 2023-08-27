@@ -23,11 +23,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.group.GroupBy.list;
-import static io.weyoui.weyouiappcore.product.domain.QProduct.product;
+import static io.weyoui.weyouiappcore.product.command.domain.QProduct.product;
 import static io.weyoui.weyouiappcore.store.command.domain.QStore.store;
 
 public class StoreQueryRepositoryImpl implements StoreQueryRepositoryCustom {
@@ -55,7 +56,7 @@ public class StoreQueryRepositoryImpl implements StoreQueryRepositoryCustom {
                 .leftJoin(store.productInfos, product)
                 .where(
                         nameLike(storeSearchRequest.getName()),
-                        equalsState(storeSearchRequest.getState()),
+                        isInState(storeSearchRequest.getStates()),
                         isWithInDistance(storeSearchRequest.getLocation(), storeSearchRequest.getDistance())
                 );
     }
@@ -66,7 +67,7 @@ public class StoreQueryRepositoryImpl implements StoreQueryRepositoryCustom {
                 .leftJoin(store.productInfos, product)
                 .where(
                         nameLike(storeSearchRequest.getName()),
-                        equalsState(storeSearchRequest.getState()),
+                        isInState(storeSearchRequest.getStates()),
                         isWithInDistance(storeSearchRequest.getLocation(), storeSearchRequest.getDistance())
                 )
                 .orderBy(getOrderSpecifier(pageable.getSort()))
@@ -122,6 +123,10 @@ public class StoreQueryRepositoryImpl implements StoreQueryRepositoryCustom {
 
     private BooleanExpression equalsState(String stateCode) {
         return stateCode == null ? null : store.state.eq(StoreState.findByCode(stateCode));
+    }
+
+    private BooleanExpression isInState(String ... stateCode) {
+        return stateCode == null ? null : store.state.in(Arrays.stream(stateCode).map(StoreState::findByCode).toList());
     }
 
     private BooleanExpression nameLike(String name) {

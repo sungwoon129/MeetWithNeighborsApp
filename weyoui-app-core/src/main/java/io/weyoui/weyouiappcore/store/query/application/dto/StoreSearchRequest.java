@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class StoreSearchRequest {
     private String name;
-    private String state;
+    private String[] states = new String[]{"O","N"};
     private Location location;
     private long distance = 3;
 
