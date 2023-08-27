@@ -25,7 +25,7 @@ public class AdminController {
     }
 
     @GetMapping("/api/v1/admin/users")
-    public ResponseEntity<CommonResponse<List<UserResponse>>> list(UserSearchRequest userSearch, @LimitedPageSize Pageable pageable) {
+    public ResponseEntity<CommonResponse<List<UserResponse>>> list(UserSearchRequest userSearch, @LimitedPageSize(maxSize = 100) Pageable pageable) {
 
         Page<User> result = userViewService.findAll(userSearch, pageable);
         List<UserResponse> responseContent = result.getContent().stream().map(User::toResponseDto).toList();
