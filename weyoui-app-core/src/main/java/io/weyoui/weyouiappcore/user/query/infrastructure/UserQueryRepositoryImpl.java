@@ -8,6 +8,7 @@ import com.querydsl.core.util.StringUtils;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.weyoui.weyouiappcore.user.command.domain.User;
+import io.weyoui.weyouiappcore.user.command.domain.UserState;
 import io.weyoui.weyouiappcore.user.query.application.dto.UserSearchRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static io.weyoui.weyouiappcore.user.command.domain.QUser.user;
@@ -45,7 +47,8 @@ public class UserQueryRepositoryImpl implements UserQueryRepositoryCustom {
                 .where(
                         emailLike(userSearchRequest.getEmail()),
                         nicknameLike(userSearchRequest.getNickname()),
-                        addressLike(userSearchRequest.getAddress())
+                        addressLike(userSearchRequest.getAddress()),
+                        isInState(userSearchRequest.getStates())
                 );
     }
 
@@ -55,7 +58,8 @@ public class UserQueryRepositoryImpl implements UserQueryRepositoryCustom {
                 .where(
                         emailLike(userSearchRequest.getEmail()),
                         nicknameLike(userSearchRequest.getNickname()),
-                        addressLike(userSearchRequest.getAddress())
+                        addressLike(userSearchRequest.getAddress()),
+                        isInState(userSearchRequest.getStates())
                 )
                 .orderBy(getOrderSpecifier(pageable.getSort()))
                 .offset(pageable.getOffset())
@@ -92,5 +96,9 @@ public class UserQueryRepositoryImpl implements UserQueryRepositoryCustom {
 
     private BooleanExpression emailLike(String email) {
         return StringUtils.isNullOrEmpty(email) ? null : user.email.contains(email);
+    }
+
+    private BooleanExpression isInState(String ... stateCode) {
+        return stateCode == null ? null : user.state.in(Arrays.stream(stateCode).map(UserState::findByCode).toList());
     }
 }
