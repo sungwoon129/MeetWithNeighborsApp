@@ -2,7 +2,7 @@ package io.weyoui.weyouiappcore.order.command.domain;
 
 import io.weyoui.weyouiappcore.common.model.Money;
 import io.weyoui.weyouiappcore.common.jpa.MoneyConverter;
-import io.weyoui.weyouiappcore.product.domain.ProductId;
+import io.weyoui.weyouiappcore.product.command.domain.ProductId;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;

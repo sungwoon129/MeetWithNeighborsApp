@@ -2,8 +2,8 @@ package io.weyoui.weyouiappcore.product.query.application.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 import io.weyoui.weyouiappcore.common.model.Money;
-import io.weyoui.weyouiappcore.product.domain.ProductId;
-import io.weyoui.weyouiappcore.product.domain.ProductState;
+import io.weyoui.weyouiappcore.product.command.domain.ProductId;
+import io.weyoui.weyouiappcore.product.command.domain.ProductState;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

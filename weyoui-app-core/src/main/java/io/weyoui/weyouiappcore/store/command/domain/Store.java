@@ -3,7 +3,7 @@ package io.weyoui.weyouiappcore.store.command.domain;
 import com.querydsl.core.util.StringUtils;
 import io.weyoui.weyouiappcore.common.model.Address;
 import io.weyoui.weyouiappcore.common.model.BaseTimeEntity;
-import io.weyoui.weyouiappcore.product.domain.Product;
+import io.weyoui.weyouiappcore.product.command.domain.Product;
 import io.weyoui.weyouiappcore.store.query.application.dto.StoreViewResponse;
 import jakarta.persistence.*;
 import lombok.Builder;

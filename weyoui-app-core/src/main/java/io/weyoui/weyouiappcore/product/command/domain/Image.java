@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.product.domain;
+package io.weyoui.weyouiappcore.product.command.domain;
 
 import jakarta.persistence.*;
 
