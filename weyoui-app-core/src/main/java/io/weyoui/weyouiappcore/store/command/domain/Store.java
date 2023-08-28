@@ -3,7 +3,10 @@ package io.weyoui.weyouiappcore.store.command.domain;
 import com.querydsl.core.util.StringUtils;
 import io.weyoui.weyouiappcore.common.model.Address;
 import io.weyoui.weyouiappcore.common.model.BaseTimeEntity;
+import io.weyoui.weyouiappcore.product.command.application.dto.ProductRequest;
 import io.weyoui.weyouiappcore.product.command.domain.Product;
+import io.weyoui.weyouiappcore.product.command.domain.ProductId;
+import io.weyoui.weyouiappcore.product.command.domain.ProductState;
 import io.weyoui.weyouiappcore.store.query.application.dto.StoreViewResponse;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -32,6 +35,7 @@ public class Store extends BaseTimeEntity {
     @OneToMany(cascade = {CascadeType.REMOVE,CascadeType.REFRESH}, orphanRemoval = true, mappedBy = "storeInfo")
     private Set<Product> productInfos;
 
+
     private Float rating;
 
     @Enumerated(EnumType.STRING)
@@ -40,17 +44,32 @@ public class Store extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private StoreState state;
 
+    @Lob
+    private String description;
+
     protected Store() {}
 
 
     @Builder
-    public Store(StoreId storeId, String name, Address address, Owner owner,StoreCategory category, StoreState state) {
+    public Store(StoreId storeId, String name, Address address, Owner owner,StoreCategory category, StoreState state, String description) {
         this.id = storeId;
         this.name = name;
         this.address = address;
         this.owner = owner;
         this.category = category;
         this.state = state;
+        this.description = description;
+    }
+
+    public Product createProduct(ProductId productId, ProductRequest productRequest) {
+        if(state.equals(StoreState.BANNED) || state.equals(StoreState.DELETED)) throw new IllegalStateException("영업정지 혹은 삭제된 가게에서는 상품을 등록할 수 없습니다.");
+        return Product.builder()
+                .id(productId)
+                .storeInfo(this)
+                .name(productRequest.getName())
+                .description(productRequest.getDescription())
+                .state(ProductState.findByCode(productRequest.getState()))
+                .build();
     }
 
     public StoreViewResponse toResponseDto() {
