@@ -1,6 +1,5 @@
 package io.weyoui.weyouiappcore.store.command.application;
 
-import io.weyoui.weyouiappcore.common.exception.NoAuthException;
 import io.weyoui.weyouiappcore.store.command.application.dto.StoreRequest;
 import io.weyoui.weyouiappcore.store.command.domain.Store;
 import io.weyoui.weyouiappcore.store.command.domain.StoreId;
@@ -17,16 +16,18 @@ public class StoreService {
 
     private final StoreRepository storeRepository;
     private final StoreViewService storeViewService;
+    private final CheckStoreOwnerService checkStoreOwnerService;
 
-    public StoreService(StoreRepository storeRepository, StoreViewService storeViewService) {
+    public StoreService(StoreRepository storeRepository, StoreViewService storeViewService, CheckStoreOwnerService checkStoreOwnerService) {
         this.storeRepository = storeRepository;
         this.storeViewService = storeViewService;
+        this.checkStoreOwnerService = checkStoreOwnerService;
     }
 
     public void updateStore(UserId userId, StoreId storeId, StoreRequest storeRequest) {
         Store store = storeViewService.findById(storeId);
 
-        if(!userId.equals(store.getOwner().getUserId())) throw new NoAuthException("요청한 가게의 owner의 id와 요청한 회원의 id가 일치하지 않습니다.");
+        checkStoreOwnerService.checkStoreOwner(store,userId);
 
         store.setName(storeRequest.getName());
         store.setCategory(storeRequest.getCategory());
@@ -38,7 +39,7 @@ public class StoreService {
     public void deleteStore(UserId userId, StoreId storeId) {
         Store store = storeViewService.findById(storeId);
 
-        if(!userId.equals(store.getOwner().getUserId())) throw new NoAuthException("요청한 가게의 owner의 id와 요청한 회원의 id가 일치하지 않습니다.");
+        checkStoreOwnerService.checkStoreOwner(store,userId);
 
         store.setState(StoreState.DELETED.getCode());
 
