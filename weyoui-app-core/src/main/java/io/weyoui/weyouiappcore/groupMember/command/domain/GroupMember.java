@@ -59,7 +59,12 @@ public class GroupMember extends BaseTimeEntity {
         this.group.addGroupMember(this);
     }
 
-    public void inactivateState() {
+    public void kickOut() {
+        leaderCheck();
+        state = GroupMemberState.INACTIVE;
+    }
+    public void leave(UserId userId) {
+        if(!this.getUser().getId().equals(userId)) throw new IllegalArgumentException("모임 탈퇴는 스스로만 가능합니다. ");
         state = GroupMemberState.INACTIVE;
     }
 
