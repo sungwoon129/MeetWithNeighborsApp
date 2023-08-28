@@ -1,6 +1,7 @@
 package io.weyoui.weyouiappcore.store.command.application;
 
 import io.weyoui.weyouiappcore.product.command.application.dto.ProductRequest;
+import io.weyoui.weyouiappcore.product.command.domain.Product;
 import io.weyoui.weyouiappcore.product.command.domain.ProductId;
 import io.weyoui.weyouiappcore.product.infrastructure.ProductRepository;
 import io.weyoui.weyouiappcore.store.command.domain.Store;
@@ -31,7 +32,9 @@ public class RegisterProductService {
 
         ProductId productId = productRepository.nextId();
 
-        store.createProduct(productId, productRequest);
+        Product product = store.createProduct(productId, productRequest);
+
+        productRepository.save(product);
 
         return productId;
     }
