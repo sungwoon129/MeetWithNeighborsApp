@@ -6,10 +6,17 @@ import io.weyoui.weyouiappcore.common.jpa.MoneyConverter;
 import io.weyoui.weyouiappcore.product.query.application.dto.ProductViewResponse;
 import io.weyoui.weyouiappcore.store.command.domain.Store;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Product extends BaseTimeEntity {
 
@@ -36,6 +43,11 @@ public class Product extends BaseTimeEntity {
     @Column(name = "product_state")
     private ProductState state;
 
+    @Lob
+    private String description;
+
+
+
     public ProductViewResponse toResponseDto() {
         return ProductViewResponse.builder()
                 .id(id)
@@ -44,6 +56,7 @@ public class Product extends BaseTimeEntity {
                 .state(state)
                 .build();
     }
+
 
 
 
