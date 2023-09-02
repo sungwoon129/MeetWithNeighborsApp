@@ -9,7 +9,8 @@ import java.util.NoSuchElementException;
 public enum ProductState implements EnumMapperType {
 
     FOR_SALE("판매중","S"),
-    NOT_FOR_SALE("비 판매중","N");
+    NOT_FOR_SALE("비 판매중","N"),
+    DELETED("삭제된 상품", "D");
 
     private String title;
     private String code;

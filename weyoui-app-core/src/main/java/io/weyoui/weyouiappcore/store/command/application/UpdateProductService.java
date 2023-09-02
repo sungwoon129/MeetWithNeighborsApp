@@ -27,12 +27,20 @@ public class UpdateProductService {
     }
 
 
-    public void updateProductInfo(StoreId storeId, ProductId productId, UserId userId, ProductRequest productRequest) {
+    public void updateStoreProduct(StoreId storeId, ProductId productId, UserId userId, ProductRequest productRequest) {
         Store store = storeViewService.findById(storeId);
 
         checkStoreOwnerService.checkStoreOwner(store,userId);
 
         store.updateProduct(productId, productRequest);
 
+    }
+
+    public void deleteStoreProduct(StoreId storeId, ProductId productId, UserId userId) {
+        Store store = storeViewService.findById(storeId);
+
+        checkStoreOwnerService.checkStoreOwner(store,userId);
+
+        store.invalidateProduct(productId);
     }
 }

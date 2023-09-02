@@ -34,8 +34,16 @@ public class StoreProductsController {
     }
 
     @PutMapping("/api/v1/users/store/{storeId}/product/{productId}")
-    public ResponseEntity<CommonResponse<?>> updateProduct(@PathVariable StoreId storeId, @PathVariable ProductId productId, @LoginUserId UserId userId, ProductRequest productRequest) {
-        updateProductService.updateProductInfo(storeId, productId, userId, productRequest);
+    public ResponseEntity<CommonResponse<?>> updateStoreProduct(@PathVariable StoreId storeId, @PathVariable ProductId productId, @LoginUserId UserId userId, ProductRequest productRequest) {
+        updateProductService.updateStoreProduct(storeId, productId, userId, productRequest);
+
+        return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
+    }
+
+    @PutMapping("/api/v1/users/store/{storeId}/product/{productId}/delete")
+    public ResponseEntity<CommonResponse<?>> deleteStoreProduct(@PathVariable StoreId storeId, @PathVariable ProductId productId, @LoginUserId UserId userId) {
+
+        updateProductService.deleteStoreProduct(storeId, productId, userId);
 
         return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
     }

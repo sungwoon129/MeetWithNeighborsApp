@@ -109,7 +109,7 @@ public class Store extends BaseTimeEntity {
 
     public void updateProduct(ProductId productId, ProductRequest productRequest) {
 
-        Product product = checkStoreProduct(productId);
+        Product product = findStoreProduct(productId);
 
         product.setName(productRequest.getName());
         product.setPrice(productRequest.getPrice());
@@ -117,10 +117,17 @@ public class Store extends BaseTimeEntity {
         product.setStateByCode(productRequest.getState());
     }
 
-    private Product checkStoreProduct(ProductId productId) {
+    private Product findStoreProduct(ProductId productId) {
         return productInfos.stream()
                 .filter(product -> product.getId().equals(productId))
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("요청한 상품은 해당 가게의 상품이 아닙니다."));
+    }
+
+    public void invalidateProduct(ProductId productId) {
+
+        Product product = findStoreProduct(productId);
+
+        product.setStateByCode(ProductState.DELETED.getCode());
     }
 }
