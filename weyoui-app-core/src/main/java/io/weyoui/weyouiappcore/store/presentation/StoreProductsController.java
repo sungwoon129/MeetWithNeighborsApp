@@ -1,24 +1,29 @@
 package io.weyoui.weyouiappcore.store.presentation;
 
 import io.weyoui.weyouiappcore.common.model.CommonResponse;
+import io.weyoui.weyouiappcore.common.model.ResultYnType;
 import io.weyoui.weyouiappcore.config.app_config.LoginUserId;
 import io.weyoui.weyouiappcore.product.command.application.dto.ProductRequest;
 import io.weyoui.weyouiappcore.product.command.domain.ProductId;
 import io.weyoui.weyouiappcore.store.command.application.RegisterProductService;
+import io.weyoui.weyouiappcore.store.command.application.UpdateProductService;
 import io.weyoui.weyouiappcore.store.command.domain.StoreId;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class StoreProductsController {
 
     private final RegisterProductService registerProductService;
+    private final UpdateProductService updateProductService;
 
-    public StoreProductsController(RegisterProductService registerProductService) {
+    public StoreProductsController(RegisterProductService registerProductService, UpdateProductService updateProductService) {
         this.registerProductService = registerProductService;
+        this.updateProductService = updateProductService;
     }
 
     @PostMapping("/api/v1/users/store/{storeId}/product")
@@ -27,4 +32,12 @@ public class StoreProductsController {
 
         return ResponseEntity.ok().body(new CommonResponse<>(productId));
     }
+
+    @PutMapping("/api/v1/users/store/{storeId}/product/{productId}")
+    public ResponseEntity<CommonResponse<?>> updateProduct(@PathVariable StoreId storeId, @PathVariable ProductId productId, @LoginUserId UserId userId, ProductRequest productRequest) {
+        updateProductService.updateProductInfo(storeId, productId, userId, productRequest);
+
+        return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
+    }
+
 }

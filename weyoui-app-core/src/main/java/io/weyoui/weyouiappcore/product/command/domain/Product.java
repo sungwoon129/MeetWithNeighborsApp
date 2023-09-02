@@ -1,19 +1,18 @@
 package io.weyoui.weyouiappcore.product.command.domain;
 
+import com.querydsl.core.util.StringUtils;
 import io.weyoui.weyouiappcore.common.model.BaseTimeEntity;
 import io.weyoui.weyouiappcore.common.model.Money;
 import io.weyoui.weyouiappcore.common.jpa.MoneyConverter;
 import io.weyoui.weyouiappcore.product.query.application.dto.ProductViewResponse;
 import io.weyoui.weyouiappcore.store.command.domain.Store;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -58,8 +57,21 @@ public class Product extends BaseTimeEntity {
     }
 
 
+    public void setName(String name) {
+        if(!StringUtils.isNullOrEmpty(name)) {
+            this.name = name;
+        }
+    }
 
+    public void setPrice(Money price) {
+        if(price != null) this.price = price;
+    }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-
+    public void setStateByCode(String stateCode) {
+        this.state = ProductState.findByCode(stateCode);
+    }
 }

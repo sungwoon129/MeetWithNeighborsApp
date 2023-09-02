@@ -12,6 +12,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -104,5 +105,22 @@ public class Store extends BaseTimeEntity {
         if(!StringUtils.isNullOrEmpty(state)) {
             this.state = StoreState.findByCode(state);
         }
+    }
+
+    public void updateProduct(ProductId productId, ProductRequest productRequest) {
+
+        Product product = checkStoreProduct(productId);
+
+        product.setName(productRequest.getName());
+        product.setPrice(productRequest.getPrice());
+        product.setDescription(productRequest.getDescription());
+        product.setStateByCode(productRequest.getState());
+    }
+
+    private Product checkStoreProduct(ProductId productId) {
+        return productInfos.stream()
+                .filter(product -> product.getId().equals(productId))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("요청한 상품은 해당 가게의 상품이 아닙니다."));
     }
 }
