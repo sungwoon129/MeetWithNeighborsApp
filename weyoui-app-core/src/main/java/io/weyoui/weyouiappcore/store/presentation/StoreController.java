@@ -45,9 +45,8 @@ public class StoreController {
 
     @GetMapping("/api/v1/users/store/{storeId}")
     public ResponseEntity<CommonResponse<StoreViewResponse>> findById(@PathVariable StoreId storeId) {
-        Store store = storeViewService.findById(storeId);
 
-        return ResponseEntity.ok().body(new CommonResponse<>(store.toResponseDto()));
+        return ResponseEntity.ok().body(new CommonResponse<>(storeViewService.findByIdToFetchAll(storeId)));
     }
 
     @GetMapping("/api/v1/users/stores")

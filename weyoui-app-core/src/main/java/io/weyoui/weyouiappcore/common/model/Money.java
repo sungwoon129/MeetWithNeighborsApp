@@ -1,10 +1,14 @@
 package io.weyoui.weyouiappcore.common.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Objects;
 
+@Setter
 @Getter
+@NoArgsConstructor
 public class Money {
 
     private int value;

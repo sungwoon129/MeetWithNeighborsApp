@@ -27,4 +27,8 @@ public class StoreViewService {
     public Page<StoreViewResponse> findByConditions(StoreSearchRequest storeSearchRequest, Pageable pageable) {
         return storeQueryRepository.findByConditions(storeSearchRequest, pageable);
     }
+
+    public StoreViewResponse findByIdToFetchAll(StoreId storeId) {
+        return storeQueryRepository.findByIdToFetchAll(storeId);
+    }
 }

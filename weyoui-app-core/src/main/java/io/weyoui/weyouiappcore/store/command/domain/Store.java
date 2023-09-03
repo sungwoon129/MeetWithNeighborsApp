@@ -11,12 +11,14 @@ import io.weyoui.weyouiappcore.store.query.application.dto.StoreViewResponse;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
+@Table(name = "store")
 @Entity
 public class Store extends BaseTimeEntity {
 
@@ -33,6 +35,7 @@ public class Store extends BaseTimeEntity {
     @Embedded
     private Address address;
 
+    @BatchSize(size = 2000)
     @OneToMany(cascade = {CascadeType.REMOVE,CascadeType.REFRESH}, orphanRemoval = true, mappedBy = "storeInfo")
     private Set<Product> productInfos;
 

@@ -2,6 +2,7 @@ package io.weyoui.weyouiappcore.store.query.infrastructure;
 
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
@@ -12,8 +13,9 @@ import io.weyoui.weyouiappcore.common.querydsl.NativeSQLGenerator;
 import io.weyoui.weyouiappcore.group.query.application.Direction;
 import io.weyoui.weyouiappcore.group.query.application.GeometryUtil;
 import io.weyoui.weyouiappcore.group.query.application.dto.Location;
-import io.weyoui.weyouiappcore.product.query.application.dto.QProductViewResponse;
+import io.weyoui.weyouiappcore.product.query.application.dto.ProductViewResponse;
 import io.weyoui.weyouiappcore.store.command.domain.Store;
+import io.weyoui.weyouiappcore.store.command.domain.StoreId;
 import io.weyoui.weyouiappcore.store.command.domain.StoreState;
 import io.weyoui.weyouiappcore.store.query.application.dto.QStoreViewResponse;
 import io.weyoui.weyouiappcore.store.query.application.dto.StoreSearchRequest;
@@ -28,6 +30,7 @@ import java.util.List;
 
 import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.group.GroupBy.list;
+import static io.weyoui.weyouiappcore.product.command.domain.QImage.image;
 import static io.weyoui.weyouiappcore.product.command.domain.QProduct.product;
 import static io.weyoui.weyouiappcore.store.command.domain.QStore.store;
 
@@ -47,6 +50,23 @@ public class StoreQueryRepositoryImpl implements StoreQueryRepositoryCustom {
         JPAQuery<Long> countQuery = getCountQuery(storeSearchRequest);
 
         return PageableExecutionUtils.getPage(contents, pageable, countQuery::fetchOne);
+    }
+
+    @Override
+    public StoreViewResponse findByIdToFetchAll(StoreId storeId) {
+
+        Store findStore = jpaQueryFactory.select(store)
+                .from(store)
+                .leftJoin(store.productInfos,product).fetchJoin()
+                .leftJoin(product.images,image).fetchJoin()
+                .fetchOne();
+
+        assert findStore != null;
+        return findStore.toResponseDto();
+    }
+
+    private BooleanExpression equalsId(StoreId storeId) {
+        return storeId == null ? null : store.id.id.eq(storeId.getId());
     }
 
     private JPAQuery<Long> getCountQuery(StoreSearchRequest storeSearchRequest) {
@@ -81,7 +101,8 @@ public class StoreQueryRepositoryImpl implements StoreQueryRepositoryCustom {
                                                 store.name,
                                                 store.owner,
                                                 store.address,
-                                                list(new QProductViewResponse(
+                                                list(Projections.fields(
+                                                        ProductViewResponse.class,
                                                         product.id,
                                                         product.name,
                                                         product.price,

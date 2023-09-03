@@ -9,6 +9,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -17,15 +21,17 @@ public class ProductViewResponse {
     private String name;
     private Money price;
     private ProductState state;
+    private List<ImageViewResponse> images = new ArrayList<>();
 
 
     @Builder
     @QueryProjection
-    public ProductViewResponse(ProductId id, String name, Money price, ProductState state) {
+    public ProductViewResponse(ProductId id, String name, Money price, ProductState state, List<ImageViewResponse> images) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.state = state;
+        this.images = images.stream().filter(imageViewResponse -> imageViewResponse.getId() != null).collect(Collectors.toList());
     }
 
 

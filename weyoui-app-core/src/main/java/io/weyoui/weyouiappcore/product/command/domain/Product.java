@@ -8,14 +8,15 @@ import io.weyoui.weyouiappcore.product.query.application.dto.ProductViewResponse
 import io.weyoui.weyouiappcore.store.command.domain.Store;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "product")
 @Entity
 public class Product extends BaseTimeEntity {
 
@@ -33,7 +34,8 @@ public class Product extends BaseTimeEntity {
     @Convert(converter = MoneyConverter.class)
     private Money price;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY)
+    @BatchSize(size = 2000)
+    @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     @OrderColumn(name = "list_idx")
     private List<Image> images = new ArrayList<>();
@@ -45,6 +47,17 @@ public class Product extends BaseTimeEntity {
     @Lob
     private String description;
 
+    @Builder
+    protected Product(ProductId id, Store storeInfo, String name, Money price, List<Image> images, ProductState state, String description) {
+        this.id = id;
+        this.state = state;
+        this.name = name;
+        this.storeInfo = storeInfo;
+        this.price = price;
+        this.images = images;
+        this.description = description;
+    }
+
 
 
     public ProductViewResponse toResponseDto() {
@@ -53,6 +66,7 @@ public class Product extends BaseTimeEntity {
                 .name(name)
                 .price(price)
                 .state(state)
+                .images(images.stream().map(Image::toResponseDto).collect(Collectors.toList()))
                 .build();
     }
 
