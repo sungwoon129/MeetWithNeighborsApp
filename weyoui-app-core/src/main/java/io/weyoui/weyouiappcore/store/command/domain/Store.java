@@ -13,6 +13,7 @@ import lombok.Builder;
 import lombok.Getter;
 import org.hibernate.annotations.BatchSize;
 
+import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -37,7 +38,7 @@ public class Store extends BaseTimeEntity {
 
     @BatchSize(size = 2000)
     @OneToMany(cascade = {CascadeType.REMOVE,CascadeType.REFRESH}, orphanRemoval = true, mappedBy = "storeInfo")
-    private Set<Product> productInfos;
+    private Set<Product> productInfos = new HashSet<>();
 
 
     private Float rating;
