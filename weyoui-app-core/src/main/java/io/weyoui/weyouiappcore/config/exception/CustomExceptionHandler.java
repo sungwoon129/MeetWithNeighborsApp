@@ -6,6 +6,7 @@ import io.weyoui.weyouiappcore.common.exception.NoAuthException;
 import io.weyoui.weyouiappcore.user.command.application.exception.DuplicateEmailException;
 import io.weyoui.weyouiappcore.user.command.application.exception.NotFoundUserException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -78,6 +79,15 @@ public class CustomExceptionHandler {
         ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INVALID_RESOURCE_ACCESS);
         errorResponse.setHttpStatus(HttpStatus.BAD_REQUEST);
         errorResponse.setDetail(e.getMessage());
+        log.error(e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = RedisConnectionFailureException.class)
+    protected ResponseEntity<ErrorResponse> handleRedisConnectionFailureException(RedisConnectionFailureException e) {
+        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
+        errorResponse.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+        errorResponse.setDetail("서버 내부의 문제로 서비스 이용이 원활하지 않습니다. Redis Server 연결에 실패하였습니다.");
         log.error(e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
