@@ -1,5 +1,6 @@
 package io.weyoui.weyouiappcore.store.query.application;
 
+import io.weyoui.weyouiappcore.aspects.PerfLogging;
 import io.weyoui.weyouiappcore.store.command.domain.Store;
 import io.weyoui.weyouiappcore.store.command.domain.StoreId;
 import io.weyoui.weyouiappcore.store.query.application.dto.StoreSearchRequest;
@@ -24,10 +25,12 @@ public class StoreViewService {
         return storeQueryRepository.findById(storeId).orElseThrow(() -> new IllegalArgumentException("일치하는 store id를 가진 데이터가 DB에 존재하지 않습니다."));
     }
 
+    @PerfLogging
     public Page<StoreViewResponse> findByConditions(StoreSearchRequest storeSearchRequest, Pageable pageable) {
         return storeQueryRepository.findByConditions(storeSearchRequest, pageable);
     }
 
+    @PerfLogging
     public StoreViewResponse findByIdToFetchAll(StoreId storeId) {
         return storeQueryRepository.findByIdToFetchAll(storeId);
     }
