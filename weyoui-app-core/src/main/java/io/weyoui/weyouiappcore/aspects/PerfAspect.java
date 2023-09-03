@@ -16,18 +16,18 @@ import java.util.TimeZone;
 public class PerfAspect {
 
     @Around("@annotation(PerfLogging)")
-    public Object logPerf(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+    public Object logPerf(ProceedingJoinPoint joinPoint) throws Throwable {
         long start = System.currentTimeMillis();
-        log.info("---------- " + proceedingJoinPoint.toString() + " START ----------");
+        log.info("---------- " + joinPoint.toString() + " START ----------");
         log.info("START TIME : " + LocalDateTime.ofInstant(Instant.ofEpochMilli(start), TimeZone.getDefault().toZoneId()));
 
         try {
-            return proceedingJoinPoint.proceed();
+            return joinPoint.proceed();
         } finally {
             long finish = System.currentTimeMillis();
             long timeMs = finish - start;
             log.info("END TIME : " + LocalDateTime.ofInstant(Instant.ofEpochMilli(finish), TimeZone.getDefault().toZoneId()));
-            log.info("---------- " + proceedingJoinPoint.toString() + " END ----------" + timeMs + "ms");
+            log.info("---------- " + joinPoint + " END ----------" + timeMs + "ms");
         }
     }
 }
