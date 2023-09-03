@@ -5,7 +5,10 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StopWatch;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.TimeZone;
 
 @Slf4j
 @Component
@@ -14,13 +17,17 @@ public class PerfAspect {
 
     @Around("@annotation(PerfLogging)")
     public Object logPerf(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-        Object retVal = proceedingJoinPoint.proceed();
-        stopWatch.stop();
+        long start = System.currentTimeMillis();
+        log.info("------------------" + proceedingJoinPoint.toString() + " START -----------------------");
+        log.info("START TIME : " + LocalDateTime.ofInstant(Instant.ofEpochMilli(start), TimeZone.getDefault().toZoneId()));
 
-        log.info(stopWatch.prettyPrint());
-
-        return retVal;
+        try {
+            return proceedingJoinPoint.proceed();
+        } finally {
+            long finish = System.currentTimeMillis();
+            long timeMs = finish - start;
+            log.info("END TIME : " + LocalDateTime.ofInstant(Instant.ofEpochMilli(finish), TimeZone.getDefault().toZoneId()));
+            log.info("END " + proceedingJoinPoint + " " + timeMs + "ms");
+        }
     }
 }
