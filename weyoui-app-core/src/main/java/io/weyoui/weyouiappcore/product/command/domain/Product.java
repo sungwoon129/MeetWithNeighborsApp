@@ -4,6 +4,8 @@ import com.querydsl.core.util.StringUtils;
 import io.weyoui.weyouiappcore.common.model.BaseTimeEntity;
 import io.weyoui.weyouiappcore.common.model.Money;
 import io.weyoui.weyouiappcore.common.jpa.MoneyConverter;
+import io.weyoui.weyouiappcore.product.command.application.ProductImageUploadService;
+import io.weyoui.weyouiappcore.product.command.application.dto.FileRequest;
 import io.weyoui.weyouiappcore.product.query.application.dto.ProductViewResponse;
 import io.weyoui.weyouiappcore.store.command.domain.Store;
 import jakarta.persistence.*;
@@ -87,5 +89,9 @@ public class Product extends BaseTimeEntity {
 
     public void setStateByCode(String stateCode) {
         this.state = ProductState.findByCode(stateCode);
+    }
+
+    public void saveImages(List<FileRequest> files, ProductImageUploadService imageUploadService) {
+        this.images = imageUploadService.saveImages(files);
     }
 }

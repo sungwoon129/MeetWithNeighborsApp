@@ -1,5 +1,8 @@
 package io.weyoui.weyouiappcore.product.command.domain;
 
+import io.weyoui.weyouiappcore.file.application.ExternalStorageServiceImpl;
+import io.weyoui.weyouiappcore.file.application.StorageService;
+import io.weyoui.weyouiappcore.product.command.application.dto.FileRequest;
 import io.weyoui.weyouiappcore.product.query.application.dto.ImageViewResponse;
 import jakarta.persistence.*;
 
@@ -50,5 +53,12 @@ public abstract class Image {
                 .id(id)
                 .path(path)
                 .build();
+    }
+
+    public static Image createImage(StorageService storageService, FileRequest fileRequest) {
+
+        String path = storageService.save(fileRequest);
+
+        return storageService instanceof ExternalStorageServiceImpl ? new ExternalImage(path) : new InternalImage(path);
     }
 }
