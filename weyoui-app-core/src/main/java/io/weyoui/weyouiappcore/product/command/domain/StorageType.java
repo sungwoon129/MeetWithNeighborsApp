@@ -1,9 +1,7 @@
 package io.weyoui.weyouiappcore.product.command.domain;
 
-import io.weyoui.weyouiappcore.file.application.StorageService;
 import io.weyoui.weyouiappcore.util.EnumMapperType;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
