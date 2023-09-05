@@ -18,9 +18,9 @@ public enum StorageType implements EnumMapperType {
         this.code = code;
     }
 
-    public static StorageType findStorage(StorageType storageType) {
+    public static StorageType findStorage(String storageTypeCode) {
         return Arrays.stream(StorageType.values())
-                .filter(storage -> storage.equals(storageType))
+                .filter(storage -> storage.code.equals(storageTypeCode))
                 .findAny()
                 .orElseThrow(() -> new NoSuchElementException("요청한 파일의 저장소 타입은 External 혹은 Internal 이어야 합니다."));
     }

@@ -1,6 +1,7 @@
 package io.weyoui.weyouiappcore.file.application;
 
 import io.weyoui.weyouiappcore.file.application.domain.SupportImgExtension;
+import io.weyoui.weyouiappcore.product.command.domain.StorageType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,11 @@ public class InternalStorageServiceImpl implements StorageService{
     }
 
     @Override
+    public boolean isAvailableType(String storageTypeCode) {
+        return StorageType.findStorage(storageTypeCode).equals(StorageType.INTERNAL);
+    }
+
+    @Override
     public String save(MultipartFile file) {
 
         String ext = checkFileExt(file);
@@ -46,6 +52,11 @@ public class InternalStorageServiceImpl implements StorageService{
         }
 
         return uploadFile.getPath();
+    }
+
+    @Override
+    public void delete(String id) {
+
     }
 
     private String checkFileExt(MultipartFile file) {

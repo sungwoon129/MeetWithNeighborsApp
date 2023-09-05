@@ -13,11 +13,13 @@ public class ImageViewResponse {
 
     private Long id;
     private String path;
+    private int listIdx;
 
     @Builder
     @QueryProjection
-    public ImageViewResponse(long id, String path) {
+    public ImageViewResponse(long id, String path, int listIdx) {
         this.id = id;
         this.path = path;
+        this.listIdx = listIdx;
     }
 }

@@ -9,8 +9,8 @@ public class InternalImage extends Image {
 
     protected InternalImage() {}
 
-    public InternalImage(String path) {
-        super(path);
+    public InternalImage(String path, int listIdx) {
+        super(path,listIdx);
     }
 
     @Override

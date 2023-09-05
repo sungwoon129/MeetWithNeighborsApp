@@ -10,8 +10,8 @@ public class ExternalImage extends Image {
 
     protected  ExternalImage() {}
 
-    public ExternalImage(String path) {
-        super(path);
+    public ExternalImage(String path, int listIdx) {
+        super(path,listIdx);
     }
 
     @Override

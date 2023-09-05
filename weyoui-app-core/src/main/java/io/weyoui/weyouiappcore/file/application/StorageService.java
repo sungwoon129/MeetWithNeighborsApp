@@ -4,5 +4,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface StorageService {
 
+    boolean isAvailableType(String storageTypeCode);
+
     String save(MultipartFile file);
+
+    void delete(String id);
 }

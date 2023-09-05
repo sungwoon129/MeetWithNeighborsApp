@@ -28,9 +28,12 @@ public class ProductController {
 
     @PostMapping(value = "/api/v1/users/store/product/{productId}")
     public ResponseEntity<CommonResponse<?>> uploadProductImage(@LoginUserId UserId userId, @PathVariable ProductId productId, @RequestPart List<MultipartFile> files,
-    @RequestPart FileInfo fileInfo
+    @RequestPart List<FileInfo> fileInfos
     ) {
-        productService.updateProductImages(productId,userId,files,fileInfo);
+
+        if(fileInfos.size() != files.size()) throw new IllegalArgumentException("전송한 파일의 수와 파일정보 목록의 수가 일치하지 않습니다.");
+
+        productService.updateProductImages(productId,userId,files,fileInfos);
 
         return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
     }

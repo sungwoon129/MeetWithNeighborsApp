@@ -4,6 +4,7 @@ import io.weyoui.weyouiappcore.file.application.ExternalStorageServiceImpl;
 import io.weyoui.weyouiappcore.file.application.StorageService;
 import io.weyoui.weyouiappcore.product.query.application.dto.ImageViewResponse;
 import jakarta.persistence.*;
+import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
@@ -25,11 +26,21 @@ public abstract class Image {
     @Column(name = "upload_time")
     private LocalDateTime uploadTime;
 
+    @Getter
+    @Column(name = "list_idx")
+    private int listIdx;
+
 
     protected Image() {}
 
     public Image(String path) {
         this.path = path;
+        this.uploadTime = LocalDateTime.now();
+    }
+
+    protected Image(String path, int listIdx) {
+        this.path = path;
+        this.listIdx = listIdx;
         this.uploadTime = LocalDateTime.now();
     }
 
@@ -52,13 +63,17 @@ public abstract class Image {
         return ImageViewResponse.builder()
                 .id(id)
                 .path(path)
+                .listIdx(listIdx)
                 .build();
     }
 
-    public static Image createImage(StorageService storageService, MultipartFile file) {
+    public static Image createImage(StorageService storageService, MultipartFile file, int listIdx) {
 
         String path = storageService.save(file);
 
-        return storageService instanceof ExternalStorageServiceImpl ? new ExternalImage(path) : new InternalImage(path);
+        return storageService instanceof ExternalStorageServiceImpl ? new ExternalImage(path,listIdx) : new InternalImage(path,listIdx);
+    }
+
+    public void delete() {
     }
 }

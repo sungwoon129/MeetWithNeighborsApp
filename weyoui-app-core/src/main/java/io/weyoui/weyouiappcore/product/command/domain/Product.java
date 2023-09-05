@@ -4,7 +4,7 @@ import com.querydsl.core.util.StringUtils;
 import io.weyoui.weyouiappcore.common.model.BaseTimeEntity;
 import io.weyoui.weyouiappcore.common.model.Money;
 import io.weyoui.weyouiappcore.common.jpa.MoneyConverter;
-import io.weyoui.weyouiappcore.product.command.application.ProductImageUploadService;
+import io.weyoui.weyouiappcore.file.application.FileService;
 import io.weyoui.weyouiappcore.product.command.application.dto.FileInfo;
 import io.weyoui.weyouiappcore.product.query.application.dto.ProductViewResponse;
 import io.weyoui.weyouiappcore.store.command.domain.Store;
@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Getter
@@ -40,7 +41,7 @@ public class Product extends BaseTimeEntity {
     @BatchSize(size = 2000)
     @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    @OrderColumn(name = "list_idx")
+    @OrderBy("listIdx asc")
     private List<Image> images = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
@@ -92,12 +93,27 @@ public class Product extends BaseTimeEntity {
         this.state = ProductState.findByCode(stateCode);
     }
 
-    public void saveImages(List<MultipartFile> files, FileInfo fileInfo, ProductImageUploadService imageUploadService) {
+    public void saveImages(List<MultipartFile> files, List<FileInfo> fileInfos, FileService fileService) {
 
-        // TODO : 상품의 최대 이미지 개수 제한 로직, 기존 이미지 제거후 새로운 이미지로 교체하는 로직 필요
+        if(files.size() > 5) throw new IllegalArgumentException("등록할 수 있는 이미지의 최대개수는 5개입니다.");
 
-        for(MultipartFile file : files) {
-            this.images.add(imageUploadService.saveImages(file, fileInfo));
+
+        for(int idx = 0; idx < fileInfos.size(); idx++) {
+            FileInfo fileInfo = fileInfos.get(idx);
+
+            Image image = getDeleteImage(fileInfo);
+
+            image.delete();
+            images.remove(image);
+
+            this.images.add(fileService.createImage(files.get(idx), fileInfo.getUpdateListIdx(),fileInfo.getStorageType()));
+
         }
+
+    }
+
+    private Image getDeleteImage(FileInfo fileInfo) {
+        return images.stream().filter(img -> img.getListIdx() == fileInfo.getUpdateListIdx())
+                .findAny().orElseThrow(() -> new NoSuchElementException("요청한 인덱스와 일치하는 이미지가 존재하지 않습니다."));
     }
 }
