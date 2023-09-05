@@ -2,9 +2,9 @@ package io.weyoui.weyouiappcore.product.command.domain;
 
 import io.weyoui.weyouiappcore.file.application.ExternalStorageServiceImpl;
 import io.weyoui.weyouiappcore.file.application.StorageService;
-import io.weyoui.weyouiappcore.product.command.application.dto.FileRequest;
 import io.weyoui.weyouiappcore.product.query.application.dto.ImageViewResponse;
 import jakarta.persistence.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
@@ -55,9 +55,9 @@ public abstract class Image {
                 .build();
     }
 
-    public static Image createImage(StorageService storageService, FileRequest fileRequest) {
+    public static Image createImage(StorageService storageService, MultipartFile file) {
 
-        String path = storageService.save(fileRequest);
+        String path = storageService.save(file);
 
         return storageService instanceof ExternalStorageServiceImpl ? new ExternalImage(path) : new InternalImage(path);
     }

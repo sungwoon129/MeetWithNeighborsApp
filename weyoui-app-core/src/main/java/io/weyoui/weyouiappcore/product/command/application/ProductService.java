@@ -1,12 +1,14 @@
 package io.weyoui.weyouiappcore.product.command.application;
 
-import io.weyoui.weyouiappcore.product.command.application.dto.FileRequest;
+import io.weyoui.weyouiappcore.product.command.application.dto.FileInfo;
 import io.weyoui.weyouiappcore.product.command.domain.Product;
 import io.weyoui.weyouiappcore.product.command.domain.ProductId;
-import io.weyoui.weyouiappcore.product.infrastructure.ProductRepository;
 import io.weyoui.weyouiappcore.product.query.application.dto.ProductQueryService;
+import io.weyoui.weyouiappcore.store.command.application.CheckStoreOwnerService;
+import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -14,21 +16,24 @@ import java.util.List;
 @Service
 public class ProductService {
 
-    private final ProductRepository productRepository;
+    private final CheckStoreOwnerService checkStoreOwnerService;
     private final ProductQueryService productQueryService;
 
     private final ProductImageUploadService imageUploadService;
 
-    public ProductService(ProductRepository productRepository, ProductQueryService productQueryService, ProductImageUploadService imageUploadService) {
-        this.productRepository = productRepository;
+    public ProductService(CheckStoreOwnerService checkStoreOwnerService, ProductQueryService productQueryService, ProductImageUploadService imageUploadService) {
+        this.checkStoreOwnerService = checkStoreOwnerService;
         this.productQueryService = productQueryService;
         this.imageUploadService = imageUploadService;
     }
 
-    public void updateProductImages(ProductId productId, List<FileRequest> files) {
+    public void updateProductImages(ProductId productId, UserId userId, List<MultipartFile> files, FileInfo fileInfo) {
+
         Product product = productQueryService.findById(productId);
 
-        product.saveImages(files,imageUploadService);
+        checkStoreOwnerService.checkStoreOwner(product.getStoreInfo(), userId);
+
+        product.saveImages(files,fileInfo,imageUploadService);
 
     }
 

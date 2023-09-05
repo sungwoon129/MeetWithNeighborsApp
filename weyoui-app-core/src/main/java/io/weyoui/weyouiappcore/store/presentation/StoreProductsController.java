@@ -10,10 +10,7 @@ import io.weyoui.weyouiappcore.store.command.application.UpdateProductService;
 import io.weyoui.weyouiappcore.store.command.domain.StoreId;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class StoreProductsController {
@@ -27,7 +24,7 @@ public class StoreProductsController {
     }
 
     @PostMapping("/api/v1/users/store/{storeId}/product")
-    public ResponseEntity<CommonResponse<ProductId>> createStoreProduct(@PathVariable StoreId storeId, @LoginUserId UserId userId, ProductRequest productRequest) {
+    public ResponseEntity<CommonResponse<ProductId>> createStoreProduct(@PathVariable StoreId storeId, @LoginUserId UserId userId, @RequestBody ProductRequest productRequest) {
         ProductId productId = registerProductService.createStoreProduct(storeId,userId,productRequest);
 
         return ResponseEntity.ok().body(new CommonResponse<>(productId));
@@ -47,5 +44,7 @@ public class StoreProductsController {
 
         return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
     }
+
+
 
 }

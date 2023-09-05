@@ -3,14 +3,12 @@ package io.weyoui.weyouiappcore.product.command.application;
 import io.weyoui.weyouiappcore.file.application.ExternalStorageServiceImpl;
 import io.weyoui.weyouiappcore.file.application.InternalStorageServiceImpl;
 import io.weyoui.weyouiappcore.file.application.StorageService;
-import io.weyoui.weyouiappcore.product.command.application.dto.FileRequest;
+import io.weyoui.weyouiappcore.product.command.application.dto.FileInfo;
 import io.weyoui.weyouiappcore.product.command.domain.Image;
 import io.weyoui.weyouiappcore.product.command.domain.StorageType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 import static io.weyoui.weyouiappcore.product.command.domain.Image.createImage;
 
@@ -27,22 +25,17 @@ public class ProductImageUploadService {
     }
 
 
-    public List<Image> saveImages(List<FileRequest> files) {
+    public Image saveImages(MultipartFile file, FileInfo fileInfo) {
 
-        List<Image> images = new ArrayList<>();
         StorageService storageService;
 
-        for(FileRequest fileRequest : files) {
-            if(StorageType.findStorage(fileRequest.getStorageType()).equals(StorageType.EXTERNAL)) {
-                storageService = externalStorageService;
-            }
-            else  {
-                storageService = internalStorageService;
-            }
-
-            images.add(createImage(storageService, fileRequest));
+        if(StorageType.findStorage(fileInfo.getStorageType()).equals(StorageType.EXTERNAL)) {
+            storageService = externalStorageService;
+        }
+        else  {
+            storageService = internalStorageService;
         }
 
-        return images;
+        return createImage(storageService, file);
     }
 }

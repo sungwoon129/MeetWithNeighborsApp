@@ -5,12 +5,13 @@ import io.weyoui.weyouiappcore.common.model.BaseTimeEntity;
 import io.weyoui.weyouiappcore.common.model.Money;
 import io.weyoui.weyouiappcore.common.jpa.MoneyConverter;
 import io.weyoui.weyouiappcore.product.command.application.ProductImageUploadService;
-import io.weyoui.weyouiappcore.product.command.application.dto.FileRequest;
+import io.weyoui.weyouiappcore.product.command.application.dto.FileInfo;
 import io.weyoui.weyouiappcore.product.query.application.dto.ProductViewResponse;
 import io.weyoui.weyouiappcore.store.command.domain.Store;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +92,12 @@ public class Product extends BaseTimeEntity {
         this.state = ProductState.findByCode(stateCode);
     }
 
-    public void saveImages(List<FileRequest> files, ProductImageUploadService imageUploadService) {
-        this.images = imageUploadService.saveImages(files);
+    public void saveImages(List<MultipartFile> files, FileInfo fileInfo, ProductImageUploadService imageUploadService) {
+
+        // TODO : 상품의 최대 이미지 개수 제한 로직, 기존 이미지 제거후 새로운 이미지로 교체하는 로직 필요
+
+        for(MultipartFile file : files) {
+            this.images.add(imageUploadService.saveImages(file, fileInfo));
+        }
     }
 }

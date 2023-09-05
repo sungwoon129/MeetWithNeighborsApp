@@ -1,8 +1,8 @@
 package io.weyoui.weyouiappcore.file.application;
 
-import io.weyoui.weyouiappcore.product.command.application.dto.FileRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface StorageService {
 
-    String save(FileRequest fileRequest);
+    String save(MultipartFile file);
 }
