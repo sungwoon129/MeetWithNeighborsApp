@@ -11,8 +11,8 @@ truncate table orders;
 
 set FOREIGN_KEY_CHECKS = 1;
 
-insert into users(user_id,nickname,email) values('user1','임의의 회원1', 'anyuser1@test.com');
-insert into users(user_id,nickname, email) values('user2', '임의의 회원2', 'anyuser2@test.com');
+insert into users(user_id,nickname,email, user_state) values('user1','임의의 회원1', 'anyuser1@test.com', 'ACTIVE');
+insert into users(user_id,nickname, email, user_state) values('user2', '임의의 회원2', 'anyuser2@test.com', 'ACTIVE');
 
 insert into store(store_id,store_name,category,state,owner_id,owner_name,zip_code,address1,address2,point)
 values('store1','임의의 가게','SERVICE','OPEN','user1','임의의 회원1','123-456','경기도','성남시',ST_GeomFromText('POINT (37.37720712440026 127.11215415764482)'));
