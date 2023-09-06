@@ -18,7 +18,6 @@ import java.util.concurrent.ThreadLocalRandom;
 @Service
 public class InternalStorageServiceImpl implements StorageService{
 
-
     private final String filePath;
 
     public InternalStorageServiceImpl(@Value("${filePath}") String filePath) {

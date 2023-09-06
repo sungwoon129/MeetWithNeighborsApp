@@ -114,11 +114,8 @@ public class Product extends BaseTimeEntity {
                 images.remove(image);
             }
 
-
             if(idx < files.size()) images.add(createImage(storageService, files.get(idx), fileInfo.getUpdateListIdx()));
-
         }
-
     }
 
     private Image getDeleteImage(FileInfo fileInfo) {

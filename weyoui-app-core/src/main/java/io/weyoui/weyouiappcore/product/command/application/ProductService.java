@@ -20,9 +20,7 @@ public class ProductService {
 
     private final CheckStoreOwnerService checkStoreOwnerService;
     private final ProductQueryService productQueryService;
-
     private final ProductRepository productRepository;
-
     private final StorageServiceRouter storageServiceRouter;
 
     public ProductService(CheckStoreOwnerService checkStoreOwnerService, ProductQueryService productQueryService, StorageServiceRouter storageServiceRouter, ProductRepository productRepository) {
@@ -37,12 +35,9 @@ public class ProductService {
         Product product = productQueryService.findById(productId);
 
         checkStoreOwnerService.checkStoreOwner(product.getStoreInfo(), userId);
-
         product.updateImages(files,fileInfos, storageServiceRouter);
 
         productRepository.save(product);
 
     }
-
-
 }
