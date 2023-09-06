@@ -6,8 +6,8 @@ import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 public enum StorageType implements EnumMapperType {
-    EXTERNAL("외부", "E"),
-    INTERNAL("내부", "I");
+    EXTERNAL("외부", "EXTERNAL"),
+    INTERNAL("내부", "INTERNAL");
 
 
     private String code;
@@ -20,7 +20,7 @@ public enum StorageType implements EnumMapperType {
 
     public static StorageType findStorage(String storageTypeCode) {
         return Arrays.stream(StorageType.values())
-                .filter(storage -> storage.code.equals(storageTypeCode))
+                .filter(storage -> storage.code.equals(storageTypeCode.toUpperCase()))
                 .findAny()
                 .orElseThrow(() -> new NoSuchElementException("요청한 파일의 저장소 타입은 External 혹은 Internal 이어야 합니다."));
     }
