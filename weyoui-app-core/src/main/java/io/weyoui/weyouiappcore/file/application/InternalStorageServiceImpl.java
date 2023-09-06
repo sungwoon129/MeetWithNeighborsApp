@@ -55,7 +55,16 @@ public class InternalStorageServiceImpl implements StorageService{
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(Long id, String path) {
+        File file = new File(path);
+        String name = file.getName();
+
+        assert file.exists();
+
+        boolean isDeleted = file.delete();
+
+        if(isDeleted) log.info("파일이 성공적으로 삭제되었습니다. \n 파일이름 : " + name);
+        else log.error("파일 삭제에 실패했습니다. \n 파일 이름 : " + name);
 
     }
 

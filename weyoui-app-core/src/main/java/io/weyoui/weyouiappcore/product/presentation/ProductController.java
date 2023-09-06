@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -27,11 +28,10 @@ public class ProductController {
 
 
     @PostMapping(value = "/api/v1/users/store/product/{productId}")
-    public ResponseEntity<CommonResponse<?>> uploadProductImage(@LoginUserId UserId userId, @PathVariable ProductId productId, @RequestPart List<MultipartFile> files,
+    public ResponseEntity<CommonResponse<?>> uploadProductImage(@LoginUserId UserId userId, @PathVariable ProductId productId, @RequestPart(required = false) List<MultipartFile> files,
     @RequestPart List<FileInfo> fileInfos
     ) {
-
-        if(fileInfos.size() != files.size()) throw new IllegalArgumentException("전송한 파일의 수와 파일정보 목록의 수가 일치하지 않습니다.");
+        if(files == null) files = new ArrayList<>();
 
         productService.updateProductImages(productId,userId,files,fileInfos);
 

@@ -17,7 +17,7 @@ public class ExternalStorageServiceImpl implements StorageService{
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(Long id, String path) {
 
     }
 }

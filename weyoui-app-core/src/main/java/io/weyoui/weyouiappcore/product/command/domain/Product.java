@@ -1,22 +1,27 @@
 package io.weyoui.weyouiappcore.product.command.domain;
 
 import com.querydsl.core.util.StringUtils;
+import io.weyoui.weyouiappcore.common.jpa.MoneyConverter;
 import io.weyoui.weyouiappcore.common.model.BaseTimeEntity;
 import io.weyoui.weyouiappcore.common.model.Money;
-import io.weyoui.weyouiappcore.common.jpa.MoneyConverter;
-import io.weyoui.weyouiappcore.file.application.FileService;
+import io.weyoui.weyouiappcore.file.application.StorageServiceRouter;
+import io.weyoui.weyouiappcore.file.application.StorageService;
 import io.weyoui.weyouiappcore.product.command.application.dto.FileInfo;
 import io.weyoui.weyouiappcore.product.query.application.dto.ProductViewResponse;
 import io.weyoui.weyouiappcore.store.command.domain.Store;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+
+import static io.weyoui.weyouiappcore.product.command.domain.Image.createImage;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -93,20 +98,24 @@ public class Product extends BaseTimeEntity {
         this.state = ProductState.findByCode(stateCode);
     }
 
-    public void saveImages(List<MultipartFile> files, List<FileInfo> fileInfos, FileService fileService) {
+    public void updateImages(List<MultipartFile> files, List<FileInfo> fileInfos, StorageServiceRouter storageServiceRouter) {
 
         if(files.size() > 5) throw new IllegalArgumentException("등록할 수 있는 이미지의 최대개수는 5개입니다.");
-
 
         for(int idx = 0; idx < fileInfos.size(); idx++) {
             FileInfo fileInfo = fileInfos.get(idx);
 
             Image image = getDeleteImage(fileInfo);
 
-            image.delete();
-            images.remove(image);
+            StorageService storageService = storageServiceRouter.getStorageService(fileInfo.getStorageType());
 
-            this.images.add(fileService.createImage(files.get(idx), fileInfo.getUpdateListIdx(),fileInfo.getStorageType()));
+            if(image != null) {
+                image.delete(storageService);
+                images.remove(image);
+            }
+
+
+            if(idx < files.size()) images.add(createImage(storageService, files.get(idx), fileInfo.getUpdateListIdx()));
 
         }
 
@@ -114,6 +123,6 @@ public class Product extends BaseTimeEntity {
 
     private Image getDeleteImage(FileInfo fileInfo) {
         return images.stream().filter(img -> img.getListIdx() == fileInfo.getUpdateListIdx())
-                .findAny().orElseThrow(() -> new NoSuchElementException("요청한 인덱스와 일치하는 이미지가 존재하지 않습니다."));
+                .findAny().orElse(null);
     }
 }

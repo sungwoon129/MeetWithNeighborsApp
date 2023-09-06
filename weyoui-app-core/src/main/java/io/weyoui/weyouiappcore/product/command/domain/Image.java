@@ -30,7 +30,6 @@ public abstract class Image {
     @Column(name = "list_idx")
     private int listIdx;
 
-
     protected Image() {}
 
     public Image(String path) {
@@ -74,6 +73,7 @@ public abstract class Image {
         return storageService instanceof ExternalStorageServiceImpl ? new ExternalImage(path,listIdx) : new InternalImage(path,listIdx);
     }
 
-    public void delete() {
+    public void delete(StorageService storageService) {
+        storageService.delete(id,path);
     }
 }
