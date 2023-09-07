@@ -141,6 +141,5 @@ class StoreProductsControllerTest {
                 .file(fileInfosFile)
                 .header(HttpHeaders.AUTHORIZATION, token.getGrantType() + " " + token.getAccessToken())
         ).andDo(print()).andExpect(status().isCreated());
-
     }
 }
