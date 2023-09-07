@@ -37,20 +37,21 @@ public class InternalStorageServiceImpl implements StorageService{
         String detailFilePath = createFilePath();
         String fileName = ThreadLocalRandom.current().nextInt(90000) + 10000 + "." + ext;
 
-        File uploadFile = new File(detailFilePath, fileName);
+        File savePath = new File(detailFilePath);
+        String fullPath = savePath + File.separator + fileName;
 
-        if(!uploadFile.exists()) {
-            if(uploadFile.mkdirs()) log.info("파일 생성 : " + detailFilePath);
+        if(!savePath.isDirectory()) {
+            if(savePath.mkdirs()) log.info("디렉토리 생성 : " + detailFilePath);
             else throw new RuntimeException("파일 디렉토리 경로 생성에 실패하였습니다.");
         }
 
         try {
-            file.transferTo(uploadFile);
+            file.transferTo(new File(fullPath));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        return uploadFile.getPath();
+        return fullPath;
     }
 
     @Override

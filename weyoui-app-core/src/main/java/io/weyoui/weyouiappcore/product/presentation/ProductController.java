@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,11 +32,11 @@ public class ProductController {
     @PostMapping(value = "/api/v1/users/store/product/{productId}")
     public ResponseEntity<CommonResponse<?>> uploadProductImage(@LoginUserId UserId userId, @PathVariable ProductId productId, @RequestPart(required = false) List<MultipartFile> files,
     @RequestPart List<FileInfo> fileInfos
-    ) {
+    ) throws URISyntaxException {
         if(files == null) files = new ArrayList<>();
 
         productService.updateProductImages(productId,userId,files,fileInfos);
 
-        return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
+        return ResponseEntity.created(new URI("/store/product/images")).body(new CommonResponse<>(ResultYnType.Y));
     }
 }

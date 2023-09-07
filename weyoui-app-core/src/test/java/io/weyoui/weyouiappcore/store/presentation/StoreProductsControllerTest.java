@@ -3,10 +3,15 @@ package io.weyoui.weyouiappcore.store.presentation;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.weyoui.weyouiappcore.common.model.CommonResponse;
+import io.weyoui.weyouiappcore.product.command.application.dto.FileInfo;
 import io.weyoui.weyouiappcore.product.command.domain.ProductId;
 import io.weyoui.weyouiappcore.product.query.application.dto.ProductViewResponse;
 import io.weyoui.weyouiappcore.store.command.domain.StoreId;
 import io.weyoui.weyouiappcore.store.query.application.dto.StoreViewResponse;
+import io.weyoui.weyouiappcore.user.command.domain.RoleType;
+import io.weyoui.weyouiappcore.user.command.domain.UserId;
+import io.weyoui.weyouiappcore.user.infrastructure.JwtTokenProvider;
+import io.weyoui.weyouiappcore.user.query.application.dto.UserResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,13 +20,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.mock.web.MockPart;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.FileInputStream;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -38,6 +60,12 @@ class StoreProductsControllerTest {
 
     @Autowired
     JtsModule jtsModule;
+
+    @Autowired
+    ResourceLoader loader;
+
+    @Autowired
+    JwtTokenProvider jwtTokenProvider;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -75,6 +103,44 @@ class StoreProductsControllerTest {
         assertThat(productViewResponse.getId()).isEqualTo(productId);
         assertThat(productViewResponse.getImages().size()).isGreaterThan(1);
 
+
+    }
+
+    @WithMockUser
+    @DisplayName("상품의 이미지를 여러개 등록할 수 있다.")
+    @Test
+    void whenMultipleFileUploaded_thenVerifyStatus() throws Exception {
+        //given
+        ProductId productId = new ProductId("product1");
+        URL resource = getClass().getResource("/404.png");
+        assert resource != null;
+        FileInputStream inputStream = new FileInputStream(resource.getPath());
+
+        MockMultipartFile file1 = new MockMultipartFile("files", "404.png", MediaType.IMAGE_PNG_VALUE, inputStream);
+
+        List<FileInfo> fileInfos = new ArrayList<>();
+        FileInfo fileInfo = new FileInfo();
+        fileInfo.setStorageType("INTERNAL");
+        fileInfo.setUpdateListIdx(2);
+        fileInfos.add(fileInfo);
+
+
+        String fileInfosJson = objectMapper.writeValueAsString(fileInfos);
+        MockMultipartFile fileInfosFile = new MockMultipartFile("fileInfos", "fileInfos", MediaType.APPLICATION_JSON.toString(), fileInfosJson.getBytes(StandardCharsets.UTF_8));
+
+        String apiUrl = "http://localhost:" + port + "/api/v1/users/store/product/" + productId.getId();
+
+
+        UserId userId = new UserId("user1");
+        UserResponse.Token token = jwtTokenProvider.generateToken(new UsernamePasswordAuthenticationToken(userId, "",
+                Collections.singleton(new SimpleGrantedAuthority(RoleType.ROLE_USER.name()))), userId);
+
+        //when,then
+        mvc.perform(multipart(apiUrl)
+                .file(file1)
+                .file(fileInfosFile)
+                .header(HttpHeaders.AUTHORIZATION, token.getGrantType() + " " + token.getAccessToken())
+        ).andDo(print()).andExpect(status().isCreated());
 
     }
 }
