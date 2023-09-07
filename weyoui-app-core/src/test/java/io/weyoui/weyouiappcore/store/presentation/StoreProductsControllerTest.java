@@ -4,8 +4,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.weyoui.weyouiappcore.common.model.CommonResponse;
 import io.weyoui.weyouiappcore.product.command.application.dto.FileInfo;
+import io.weyoui.weyouiappcore.product.command.domain.Product;
 import io.weyoui.weyouiappcore.product.command.domain.ProductId;
 import io.weyoui.weyouiappcore.product.query.application.dto.ProductViewResponse;
+import io.weyoui.weyouiappcore.product.query.infrastructure.ProductQueryRepository;
 import io.weyoui.weyouiappcore.store.command.domain.StoreId;
 import io.weyoui.weyouiappcore.store.query.application.dto.StoreViewResponse;
 import io.weyoui.weyouiappcore.user.command.domain.RoleType;
@@ -20,19 +22,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.mock.web.MockPart;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
 import java.net.URL;
@@ -62,10 +61,10 @@ class StoreProductsControllerTest {
     JtsModule jtsModule;
 
     @Autowired
-    ResourceLoader loader;
+    JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    JwtTokenProvider jwtTokenProvider;
+    ProductQueryRepository productQueryRepository;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -141,5 +140,27 @@ class StoreProductsControllerTest {
                 .file(fileInfosFile)
                 .header(HttpHeaders.AUTHORIZATION, token.getGrantType() + " " + token.getAccessToken())
         ).andDo(print()).andExpect(status().isCreated());
+    }
+
+    @WithMockUser
+    @DisplayName("상품의 아이디로 상세정보를 조회한다")
+    @Test
+    void getDetailInfoByProductId_test() throws Exception {
+        //given
+        ProductId productId = new ProductId("product1");
+
+        String apiUrl = "http://localhost" + port + "/api/v1/users/store/product/" + productId.getId();
+
+        //when
+        MvcResult result = mvc.perform(get(apiUrl))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+
+        //then
+        CommonResponse<ProductViewResponse> viewResponse = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
+        assertThat(viewResponse.getData().getImages().size()).isGreaterThan(0);
+
+        // Notice : query 2번실행
     }
 }
