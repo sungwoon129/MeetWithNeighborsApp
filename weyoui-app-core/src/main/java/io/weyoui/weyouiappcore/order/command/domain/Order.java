@@ -59,12 +59,12 @@ public class Order extends BaseTimeEntity {
     }
 
     private void setOrderId(OrderId orderId) {
-        if (orderId == null) throw new IllegalArgumentException("no number");
+        if (orderId == null) throw new IllegalArgumentException("주문 ID 값이 필요합니다.");
         this.orderId = orderId;
     }
 
     private void setOrderer(Orderer orderer) {
-        if (orderer == null) throw new IllegalArgumentException("no orderer");
+        if (orderer == null) throw new IllegalArgumentException("주문자(모임)에 대한 정보가 필요합니다.");
         this.orderer = orderer;
     }
 
