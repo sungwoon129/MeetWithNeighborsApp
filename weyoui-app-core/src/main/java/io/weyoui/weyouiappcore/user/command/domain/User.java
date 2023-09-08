@@ -136,4 +136,8 @@ public class User extends BaseTimeEntity {
             this.identificationDate = identificationDate;
         }
     }
+
+    public boolean isActive() {
+        return state.equals(UserState.ACTIVE);
+    }
 }
