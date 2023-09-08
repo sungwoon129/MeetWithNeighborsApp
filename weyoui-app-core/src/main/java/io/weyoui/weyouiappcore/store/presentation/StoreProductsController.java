@@ -44,7 +44,4 @@ public class StoreProductsController {
 
         return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
     }
-
-
-
 }
