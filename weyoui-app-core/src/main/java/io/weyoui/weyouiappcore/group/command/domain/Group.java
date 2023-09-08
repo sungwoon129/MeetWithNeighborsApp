@@ -4,6 +4,7 @@ import io.weyoui.weyouiappcore.common.model.Address;
 import io.weyoui.weyouiappcore.common.model.BaseTimeEntity;
 import io.weyoui.weyouiappcore.group.query.application.dto.GroupViewResponse;
 import io.weyoui.weyouiappcore.groupMember.command.domain.GroupMember;
+import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -131,7 +132,7 @@ public class Group extends BaseTimeEntity {
     }
 
     public GroupMember getGroupMember(UserId userId) {
-        return members.stream().filter(member -> member.isGroupMemberByUserId(userId))
+        return members.stream().filter(member -> member.isActiveGroupMember(userId))
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("모임의 구성원 중 일치하는 ID를 가진 회원이 존재하지 않습니다."));
     }
@@ -177,5 +178,10 @@ public class Group extends BaseTimeEntity {
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
+    }
+
+    public void checkGroupMember(User user) {
+        boolean isMember = members.stream().anyMatch(groupMember -> groupMember.isActiveGroupMember(user.getId()));
+        if(!isMember) throw new NoSuchElementException("요청한 회원은 이 그룹의 구성원이 아닙니다.");
     }
 }

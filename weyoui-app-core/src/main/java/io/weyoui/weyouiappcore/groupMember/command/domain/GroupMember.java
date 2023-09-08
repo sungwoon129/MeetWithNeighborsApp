@@ -68,8 +68,12 @@ public class GroupMember extends BaseTimeEntity {
         state = GroupMemberState.INACTIVE;
     }
 
-    public boolean isGroupMemberByUserId(UserId userId) {
-        return user.getId().equals(userId);
+    public boolean isActiveGroupMember(UserId userId) {
+        return user.getId().equals(userId) && user.isActive() && isActiveGroupMember();
+    }
+
+    private boolean isActiveGroupMember() {
+        return state.equals(GroupMemberState.ACTIVE);
     }
 
     public void leaderCheck() {
