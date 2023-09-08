@@ -3,6 +3,7 @@ package io.weyoui.weyouiappcore.config.exception;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.weyoui.weyouiappcore.common.exception.NoAuthException;
+import io.weyoui.weyouiappcore.common.exception.ValidationErrorException;
 import io.weyoui.weyouiappcore.user.command.application.exception.DuplicateEmailException;
 import io.weyoui.weyouiappcore.user.command.application.exception.NotFoundUserException;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -90,6 +92,12 @@ public class CustomExceptionHandler {
         errorResponse.setDetail("서버 내부의 문제로 서비스 이용이 원활하지 않습니다. Redis Server 연결에 실패하였습니다.");
         log.error(e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = ValidationErrorException.class)
+    protected ResponseEntity<List<ErrorResponse>> handleValidationErrorException(ValidationErrorException e) {
+        e.getErrors().forEach(error -> log.error(error.getDetail()));
+        return new ResponseEntity<>(e.getErrors(), HttpStatus.BAD_REQUEST);
     }
 
 

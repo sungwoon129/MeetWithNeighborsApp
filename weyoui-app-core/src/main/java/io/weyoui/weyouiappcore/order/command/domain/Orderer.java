@@ -1,6 +1,7 @@
 package io.weyoui.weyouiappcore.order.command.domain;
 
 import io.weyoui.weyouiappcore.group.command.domain.GroupId;
+import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -14,6 +15,12 @@ public class Orderer {
     )
     private GroupId groupId;
 
+    @Embedded
+    @AttributeOverrides(
+            @AttributeOverride(name = "id", column = @Column(name = "user_id"))
+    )
+    private UserId userId;
+
     @Column(name = "orderer_name")
     private String name;
 
@@ -23,8 +30,9 @@ public class Orderer {
 
     protected Orderer() {}
 
-    public Orderer(GroupId groupId, String name, String phone) {
+    public Orderer(GroupId groupId, UserId userId, String name, String phone) {
         this.groupId = groupId;
+        this.userId = userId;
         this.name = name;
         this.phone = phone;
     }
@@ -33,11 +41,11 @@ public class Orderer {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Orderer orderer)) return false;
-        return Objects.equals(groupId, orderer.groupId) && Objects.equals(name, orderer.name) && Objects.equals(phone, orderer.phone);
+        return Objects.equals(groupId, orderer.groupId) && Objects.equals(userId, orderer.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(groupId, name, phone);
+        return Objects.hash(groupId, userId);
     }
 }

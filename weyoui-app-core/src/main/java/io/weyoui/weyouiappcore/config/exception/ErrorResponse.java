@@ -10,7 +10,7 @@ public class ErrorResponse {
 
     private String code;
     private HttpStatus httpStatus;
-    private String msg = "에러가 발생하였습니다.";
+    private String msg;
     private String detail;
 
     public ErrorResponse(ErrorCode code) {
@@ -18,6 +18,13 @@ public class ErrorResponse {
         this.msg = code.getMessage();
     }
 
+    public ErrorResponse(ErrorCode code, String detail) {
+        this.code = code.getCode();
+        this.msg = code.getMessage();
+        this.detail = detail;
+    }
+
     public static ErrorResponse of(ErrorCode code) {return new ErrorResponse(code);}
+    public static ErrorResponse of(ErrorCode code, String detail) {return new ErrorResponse(code, detail);}
 
 }
