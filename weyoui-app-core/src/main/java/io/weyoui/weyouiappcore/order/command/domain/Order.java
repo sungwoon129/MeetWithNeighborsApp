@@ -3,9 +3,11 @@ package io.weyoui.weyouiappcore.order.command.domain;
 import io.weyoui.weyouiappcore.common.jpa.MoneyConverter;
 import io.weyoui.weyouiappcore.common.model.BaseTimeEntity;
 import io.weyoui.weyouiappcore.common.model.Money;
+import io.weyoui.weyouiappcore.common.event.Events;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "orders")
 @Entity
@@ -55,6 +58,7 @@ public class Order extends BaseTimeEntity {
         this.orderDate = LocalDateTime.now();
         this.message = message;
         this.totalAmounts = calculateTotalAmounts();
+        Events.raise(new OrderPlacedEvent(orderId.getId(), orderer, orderLines, orderDate, totalAmounts.getValue()));
 
     }
 
@@ -84,6 +88,20 @@ public class Order extends BaseTimeEntity {
         return new Money(orderLines.stream().mapToInt(orderline -> orderline.getAmounts().getValue()).sum());
     }
 
+    public void cancel() {
+        verifyCompletePayment();
+        this.state = OrderState.CANCEL;
+        Events.raise(new OrderCanceledEvent(orderId.getId()));
+
+    }
+
+    private void verifyCompletePayment() {
+        if(!isCompletePayment()) throw new IllegalStateException("결제가 완료되지 않은 주문입니다.");
+    }
+
+    private boolean isCompletePayment() {
+        return this.state == OrderState.PAYMENT_COMPLETE || this.state == OrderState.CONFIRM || this.state == OrderState.COMPLETE;
+    }
 
 
 }

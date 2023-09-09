@@ -15,6 +15,8 @@ public class OrderLine {
     @Embedded
     private ProductId productId;
 
+    private String name;
+
     @Convert(converter = MoneyConverter.class)
     private Money price;
 
@@ -26,8 +28,9 @@ public class OrderLine {
 
     protected OrderLine() {}
 
-    public OrderLine(ProductId productId, Money price, int quantity) {
+    public OrderLine(ProductId productId, String name, Money price, int quantity) {
         this.productId = productId;
+        this.name = name;
         this.price = price;
         this.quantity = quantity;
         this.amounts = calculateAmounts();

@@ -1,6 +1,5 @@
 package io.weyoui.weyouiappcore.common.exception;
 
-import io.weyoui.weyouiappcore.config.exception.ErrorResponse;
 import lombok.Getter;
 
 import java.util.List;

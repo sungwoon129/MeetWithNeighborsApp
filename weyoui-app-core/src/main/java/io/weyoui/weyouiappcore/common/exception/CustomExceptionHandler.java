@@ -1,9 +1,7 @@
-package io.weyoui.weyouiappcore.config.exception;
+package io.weyoui.weyouiappcore.common.exception;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
-import io.weyoui.weyouiappcore.common.exception.NoAuthException;
-import io.weyoui.weyouiappcore.common.exception.ValidationErrorException;
 import io.weyoui.weyouiappcore.user.command.application.exception.DuplicateEmailException;
 import io.weyoui.weyouiappcore.user.command.application.exception.NotFoundUserException;
 import lombok.extern.slf4j.Slf4j;

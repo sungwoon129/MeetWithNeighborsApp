@@ -1,6 +1,6 @@
 package io.weyoui.weyouiappcore.config.app_config;
 
-import io.weyoui.weyouiappcore.config.exception.ErrorCode;
+import io.weyoui.weyouiappcore.common.exception.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

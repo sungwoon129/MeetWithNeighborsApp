@@ -1,6 +1,6 @@
 package io.weyoui.weyouiappcore.config.app_config;
 
-import io.weyoui.weyouiappcore.config.exception.ErrorCode;
+import io.weyoui.weyouiappcore.common.exception.ErrorCode;
 import io.weyoui.weyouiappcore.group.command.domain.GroupCategory;
 import io.weyoui.weyouiappcore.group.command.domain.GroupState;
 import io.weyoui.weyouiappcore.order.command.domain.OrderState;

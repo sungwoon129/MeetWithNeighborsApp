@@ -1,7 +1,7 @@
 package io.weyoui.weyouiappcore.order.command.application;
 
 import io.weyoui.weyouiappcore.common.exception.ValidationErrorException;
-import io.weyoui.weyouiappcore.config.exception.ErrorResponse;
+import io.weyoui.weyouiappcore.common.exception.ErrorResponse;
 import io.weyoui.weyouiappcore.order.command.application.dto.OrderProduct;
 import io.weyoui.weyouiappcore.order.command.application.dto.OrderRequest;
 import io.weyoui.weyouiappcore.order.command.domain.Order;
@@ -41,7 +41,7 @@ public class PlaceOrderService {
         List<OrderLine> orderLines = new ArrayList<>();
         for(OrderProduct op : orderRequest.getOrderProducts()) {
             Product product = productQueryService.findById(op.getProductId());
-            orderLines.add(new OrderLine(product.getId(),product.getPrice(), op.getQuantity()));
+            orderLines.add(new OrderLine(product.getId(), product.getName(), product.getPrice(), op.getQuantity()));
         }
         OrderId orderId = orderRepository.nextId();
         Orderer orderer = ordererService.createOrderer(orderRequest.getGroupId(), userId);

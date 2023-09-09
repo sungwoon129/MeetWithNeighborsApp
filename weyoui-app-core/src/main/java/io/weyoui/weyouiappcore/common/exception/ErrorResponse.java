@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.config.exception;
+package io.weyoui.weyouiappcore.common.exception;
 
 import lombok.Getter;
 import lombok.Setter;

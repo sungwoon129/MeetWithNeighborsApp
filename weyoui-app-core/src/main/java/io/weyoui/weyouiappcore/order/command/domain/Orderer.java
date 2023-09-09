@@ -3,9 +3,11 @@ package io.weyoui.weyouiappcore.order.command.domain;
 import io.weyoui.weyouiappcore.group.command.domain.GroupId;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.util.Objects;
 
+@Getter
 @Embeddable
 public class Orderer {
 

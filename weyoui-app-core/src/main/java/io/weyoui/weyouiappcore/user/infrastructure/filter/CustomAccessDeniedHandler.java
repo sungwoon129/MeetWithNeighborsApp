@@ -1,8 +1,8 @@
 package io.weyoui.weyouiappcore.user.infrastructure.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.weyoui.weyouiappcore.config.exception.ErrorCode;
-import io.weyoui.weyouiappcore.config.exception.ErrorResponse;
+import io.weyoui.weyouiappcore.common.exception.ErrorCode;
+import io.weyoui.weyouiappcore.common.exception.ErrorResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

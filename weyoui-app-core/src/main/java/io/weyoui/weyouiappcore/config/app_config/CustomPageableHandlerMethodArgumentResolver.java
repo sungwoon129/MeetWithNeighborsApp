@@ -1,6 +1,6 @@
 package io.weyoui.weyouiappcore.config.app_config;
 
-import io.weyoui.weyouiappcore.config.exception.PageSizeOutOfBoundsException;
+import io.weyoui.weyouiappcore.common.exception.PageSizeOutOfBoundsException;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.core.MethodParameter;
 import org.springframework.data.domain.Pageable;

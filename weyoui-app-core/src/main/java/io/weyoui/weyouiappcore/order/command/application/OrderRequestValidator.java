@@ -1,7 +1,7 @@
 package io.weyoui.weyouiappcore.order.command.application;
 
-import io.weyoui.weyouiappcore.config.exception.ErrorCode;
-import io.weyoui.weyouiappcore.config.exception.ErrorResponse;
+import io.weyoui.weyouiappcore.common.exception.ErrorCode;
+import io.weyoui.weyouiappcore.common.exception.ErrorResponse;
 import io.weyoui.weyouiappcore.order.command.application.dto.OrderRequest;
 
 import java.util.ArrayList;
