@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.order.infrastructure.pay;
+package io.weyoui.weyouiappcore.order.infrastructure;
 
 import io.weyoui.weyouiappcore.order.command.domain.OrderLine;
 import io.weyoui.weyouiappcore.order.command.domain.OrderAlarmService;
@@ -14,11 +14,11 @@ import java.util.List;
 public class ExternalOrderAlarmService implements OrderAlarmService {
     @Override
     public void alarm(String orderId, List<OrderLine> orderLines, LocalDateTime orderDate, int totalAmounts) {
-        log.info("상품이 결제되었습니다. " +
+        log.info("상품을 주문하였습니다. " +
                 " \n 주문 ID : " + orderId +
                 " \n 상품 이름 : " + orderLines.get(0).getName() + " 외 " + (orderLines.size() - 1) + "상품" +
                 " \n 주문일시 : " + orderDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) +
-                " \n 결제 금액 : " + String.valueOf(totalAmounts)
+                " \n 결제 금액 : " + totalAmounts
         );
 
     }
