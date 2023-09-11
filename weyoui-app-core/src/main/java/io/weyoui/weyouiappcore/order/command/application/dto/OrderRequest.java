@@ -16,5 +16,6 @@ public class OrderRequest {
     private List<OrderProduct> orderProducts = new ArrayList<>();
     private GroupId groupId;
     private String message;
+    private String paymentMethodCode;
 
 }

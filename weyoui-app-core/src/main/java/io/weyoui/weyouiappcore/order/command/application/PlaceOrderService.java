@@ -46,7 +46,7 @@ public class PlaceOrderService {
         OrderId orderId = orderRepository.nextId();
         Orderer orderer = ordererService.createOrderer(orderRequest.getGroupId(), userId);
 
-        Order order = new Order(orderId,orderer,orderLines,orderRequest.getMessage());
+        Order order = new Order(orderId,orderer,orderLines,orderRequest.getMessage(), orderRequest.getPaymentMethodCode());
 
         orderRepository.save(order);
 

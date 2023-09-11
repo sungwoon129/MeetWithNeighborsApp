@@ -1,7 +1,9 @@
 package io.weyoui.weyouiappcore.order.command.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
+@Getter
 @Embeddable
 public class PaymentInfo {
 
@@ -26,5 +28,9 @@ public class PaymentInfo {
         this.id = id;
         this.method = method;
         this.state = state;
+    }
+
+    public void setPaymentMethod(String paymentMethodCode) {
+        this.method = PaymentMethod.findByCode(paymentMethodCode);
     }
 }

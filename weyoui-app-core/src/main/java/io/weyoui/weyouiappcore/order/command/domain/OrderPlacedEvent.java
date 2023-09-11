@@ -16,12 +16,14 @@ public class OrderPlacedEvent {
     private List<OrderLine> orderLines;
     private LocalDateTime orderDate;
     private int totalAmounts;
-    public OrderPlacedEvent(String id, Orderer orderer, List<OrderLine> orderLines, LocalDateTime orderDate, int totalAmounts) {
+    private String paymentMethodCode;
+    public OrderPlacedEvent(String id, Orderer orderer, List<OrderLine> orderLines, LocalDateTime orderDate, int totalAmounts, String paymentMethodCode) {
         this.id = id;
         this.orderer = orderer;
         this.orderLines = orderLines;
         this.orderDate = orderDate;
         this.totalAmounts = totalAmounts;
+        this.paymentMethodCode = paymentMethodCode;
     }
 
 

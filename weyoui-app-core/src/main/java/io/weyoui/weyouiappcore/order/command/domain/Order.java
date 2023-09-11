@@ -50,7 +50,7 @@ public class Order extends BaseTimeEntity {
 
 
 
-    public Order(OrderId orderId, Orderer orderer, List<OrderLine> orderLines, String message) {
+    public Order(OrderId orderId, Orderer orderer, List<OrderLine> orderLines, String message, String paymentMethodCode) {
         setOrderId(orderId);
         setOrderer(orderer);
         setOrderLines(orderLines);
@@ -58,7 +58,8 @@ public class Order extends BaseTimeEntity {
         this.orderDate = LocalDateTime.now();
         this.message = message;
         this.totalAmounts = calculateTotalAmounts();
-        Events.raise(new OrderPlacedEvent(orderId.getId(), orderer, orderLines, orderDate, totalAmounts.getValue()));
+
+        Events.raise(new OrderPlacedEvent(orderId.getId(), orderer, orderLines, orderDate, totalAmounts.getValue(), paymentMethodCode));
 
     }
 
