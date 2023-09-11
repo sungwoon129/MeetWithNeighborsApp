@@ -25,6 +25,11 @@ spring:
       hibernate:
         dialect: org.hibernate.spatial.dialect.mysql.MySQL56InnoDBSpatialDialect
         #default_batch_fetch_size: 2000
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
   data:
     redis:
       host: localhost
@@ -35,6 +40,15 @@ logging:
       orm.jdbc.bind: trace
       type: trace
       stat: debug
+
+rabbitmq:
+  queue:
+    name: weyoui.paymentQueue
+  exchange:
+    name: weyoui.paymentExchange
+  routing:
+    key: weyoui.paymentKey
+
 
 jwt:
   token:
