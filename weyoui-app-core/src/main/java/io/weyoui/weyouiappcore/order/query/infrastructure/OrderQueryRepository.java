@@ -6,7 +6,7 @@ import org.springframework.data.repository.Repository;
 
 import java.util.Optional;
 
-public interface OrderQueryRepository extends Repository<Order, OrderId> {
+public interface OrderQueryRepository extends Repository<Order, OrderId>, OrderQueryRepositoryCustom {
 
     Optional<Order> findById(OrderId orderId);
 }
