@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.order.infrastructure;
+package io.weyoui.weyouiappcore.order.infrastructure.event;
 
 import io.weyoui.weyouiappcore.order.command.application.dto.PaymentRequest;
 import io.weyoui.weyouiappcore.order.command.domain.OrderPlacedEvent;
