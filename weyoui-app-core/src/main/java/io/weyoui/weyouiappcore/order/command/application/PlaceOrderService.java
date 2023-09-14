@@ -4,10 +4,7 @@ import io.weyoui.weyouiappcore.common.exception.ValidationErrorException;
 import io.weyoui.weyouiappcore.common.exception.ErrorResponse;
 import io.weyoui.weyouiappcore.order.command.application.dto.OrderProduct;
 import io.weyoui.weyouiappcore.order.command.application.dto.OrderRequest;
-import io.weyoui.weyouiappcore.order.command.domain.Order;
-import io.weyoui.weyouiappcore.order.command.domain.OrderId;
-import io.weyoui.weyouiappcore.order.command.domain.OrderLine;
-import io.weyoui.weyouiappcore.order.command.domain.Orderer;
+import io.weyoui.weyouiappcore.order.command.domain.*;
 import io.weyoui.weyouiappcore.order.infrastructure.OrderRepository;
 import io.weyoui.weyouiappcore.product.command.domain.Product;
 import io.weyoui.weyouiappcore.product.query.application.dto.ProductQueryService;
@@ -26,11 +23,13 @@ public class PlaceOrderService {
     private final OrderRepository orderRepository;
     private final ProductQueryService productQueryService;
     private final OrdererService ordererService;
+    private final OrderStoreService orderStoreService;
 
-    public PlaceOrderService(OrderRepository orderRepository, ProductQueryService productQueryService, OrdererService ordererService) {
+    public PlaceOrderService(OrderRepository orderRepository, ProductQueryService productQueryService, OrdererService ordererService, OrderStoreService orderStoreService) {
         this.orderRepository = orderRepository;
         this.productQueryService = productQueryService;
         this.ordererService = ordererService;
+        this.orderStoreService = orderStoreService;
     }
 
 
@@ -46,8 +45,9 @@ public class PlaceOrderService {
         }
         OrderId orderId = orderRepository.nextId();
         Orderer orderer = ordererService.createOrderer(orderRequest.getGroupId(), userId);
+        OrderStore orderStore = orderStoreService.createOrderStore(storeId);
 
-        Order order = new Order(orderId,orderer,orderLines,orderRequest.getMessage(), orderRequest.getPaymentMethodCode());
+        Order order = new Order(orderId,orderer, orderStore, orderLines,orderRequest.getMessage(), orderRequest.getPaymentMethodCode());
 
         orderRepository.save(order);
 
