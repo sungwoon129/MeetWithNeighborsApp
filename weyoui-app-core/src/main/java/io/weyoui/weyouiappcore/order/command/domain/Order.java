@@ -1,9 +1,9 @@
 package io.weyoui.weyouiappcore.order.command.domain;
 
+import io.weyoui.weyouiappcore.common.event.Events;
 import io.weyoui.weyouiappcore.common.jpa.MoneyConverter;
 import io.weyoui.weyouiappcore.common.model.BaseTimeEntity;
 import io.weyoui.weyouiappcore.common.model.Money;
-import io.weyoui.weyouiappcore.common.event.Events;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
@@ -27,6 +27,8 @@ public class Order extends BaseTimeEntity {
     @Embedded
     private Orderer orderer;
 
+    @Embedded
+    private OrderStore orderStore;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "order_line", joinColumns = @JoinColumn(name = "order_id"))
@@ -50,9 +52,10 @@ public class Order extends BaseTimeEntity {
 
 
 
-    public Order(OrderId orderId, Orderer orderer, List<OrderLine> orderLines, String message, String paymentMethodCode) {
+    public Order(OrderId orderId, Orderer orderer, OrderStore orderStore, List<OrderLine> orderLines, String message, String paymentMethodCode) {
         setOrderId(orderId);
         setOrderer(orderer);
+        setOrderStore(orderStore);
         setOrderLines(orderLines);
         this.state = OrderState.ORDER;
         this.orderDate = LocalDateTime.now();
@@ -71,6 +74,11 @@ public class Order extends BaseTimeEntity {
     private void setOrderer(Orderer orderer) {
         if (orderer == null) throw new IllegalArgumentException("주문자(모임)에 대한 정보가 필요합니다.");
         this.orderer = orderer;
+    }
+
+    private void setOrderStore(OrderStore orderStore) {
+        if(orderStore == null) throw new IllegalArgumentException("주문 가게에 대한 올바른 정보가 필요합니다.");
+        this.orderStore = orderStore;
     }
 
     private void setOrderLines(List<OrderLine> orderLines) {
@@ -103,6 +111,4 @@ public class Order extends BaseTimeEntity {
     private boolean isCompletePayment() {
         return this.state == OrderState.PAYMENT_COMPLETE || this.state == OrderState.CONFIRM || this.state == OrderState.COMPLETE;
     }
-
-
 }
