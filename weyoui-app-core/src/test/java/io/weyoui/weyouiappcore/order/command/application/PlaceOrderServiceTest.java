@@ -9,6 +9,7 @@ import io.weyoui.weyouiappcore.order.command.domain.OrderId;
 import io.weyoui.weyouiappcore.order.command.domain.OrderState;
 import io.weyoui.weyouiappcore.order.query.infrastructure.OrderQueryRepository;
 import io.weyoui.weyouiappcore.product.command.domain.ProductId;
+import io.weyoui.weyouiappcore.store.command.domain.StoreId;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,9 +48,10 @@ class PlaceOrderServiceTest {
         orderRequest.setMessage("맛있게 해주세요.");
 
         UserId userId = new UserId("user1");
+        StoreId storeId = new StoreId("store1");
 
         //when
-        OrderId orderId = placeOrderService.placeOrder(orderRequest,userId);;
+        OrderId orderId = placeOrderService.placeOrder(orderRequest,storeId, userId);;
 
         //then
         Order order = orderQueryRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException(""));

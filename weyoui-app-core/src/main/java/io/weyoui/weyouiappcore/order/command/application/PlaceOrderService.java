@@ -11,6 +11,7 @@ import io.weyoui.weyouiappcore.order.command.domain.Orderer;
 import io.weyoui.weyouiappcore.order.infrastructure.OrderRepository;
 import io.weyoui.weyouiappcore.product.command.domain.Product;
 import io.weyoui.weyouiappcore.product.query.application.dto.ProductQueryService;
+import io.weyoui.weyouiappcore.store.command.domain.StoreId;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +34,7 @@ public class PlaceOrderService {
     }
 
 
-    public OrderId placeOrder(OrderRequest orderRequest, UserId userId) {
+    public OrderId placeOrder(OrderRequest orderRequest, StoreId storeId, UserId userId) {
 
         List<ErrorResponse> errors = validateOrderRequest(orderRequest);
         if(!errors.isEmpty()) throw new ValidationErrorException(errors);
