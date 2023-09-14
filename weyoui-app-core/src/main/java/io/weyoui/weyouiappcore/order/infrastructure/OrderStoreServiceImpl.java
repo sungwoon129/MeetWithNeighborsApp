@@ -5,7 +5,9 @@ import io.weyoui.weyouiappcore.order.command.domain.OrderStore;
 import io.weyoui.weyouiappcore.store.command.domain.Store;
 import io.weyoui.weyouiappcore.store.command.domain.StoreId;
 import io.weyoui.weyouiappcore.store.query.application.StoreViewService;
+import org.springframework.stereotype.Component;
 
+@Component
 public class OrderStoreServiceImpl implements OrderStoreService {
 
     private final StoreViewService storeViewService;
