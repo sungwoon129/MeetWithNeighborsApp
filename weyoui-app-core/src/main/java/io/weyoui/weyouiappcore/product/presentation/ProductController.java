@@ -3,7 +3,7 @@ package io.weyoui.weyouiappcore.product.presentation;
 import io.weyoui.weyouiappcore.common.model.CommonResponse;
 import io.weyoui.weyouiappcore.common.model.ResultYnType;
 import io.weyoui.weyouiappcore.config.app_config.LoginUserId;
-import io.weyoui.weyouiappcore.product.command.application.ProductService;
+import io.weyoui.weyouiappcore.product.command.application.UpdateProductImageService;
 import io.weyoui.weyouiappcore.product.command.application.dto.FileInfo;
 import io.weyoui.weyouiappcore.product.command.domain.ProductId;
 import io.weyoui.weyouiappcore.product.query.application.dto.ProductQueryService;
@@ -21,11 +21,11 @@ import java.util.List;
 @RestController
 public class ProductController {
 
-    private final ProductService productService;
+    private final UpdateProductImageService updateProductImageService;
     private final ProductQueryService productQueryService;
 
-    public ProductController(ProductService productService, ProductQueryService productQueryService) {
-        this.productService = productService;
+    public ProductController(UpdateProductImageService updateProductImageService, ProductQueryService productQueryService) {
+        this.updateProductImageService = updateProductImageService;
         this.productQueryService = productQueryService;
     }
 
@@ -36,7 +36,7 @@ public class ProductController {
     ) throws URISyntaxException {
         if(files == null) files = new ArrayList<>();
 
-        productService.updateProductImages(productId,userId,files,fileInfos);
+        updateProductImageService.updateProductImages(productId,userId,files,fileInfos);
 
         return ResponseEntity.created(new URI("/store/product/images")).body(new CommonResponse<>(ResultYnType.Y));
     }

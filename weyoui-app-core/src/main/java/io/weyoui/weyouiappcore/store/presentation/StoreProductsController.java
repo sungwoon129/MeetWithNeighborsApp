@@ -5,6 +5,7 @@ import io.weyoui.weyouiappcore.common.model.ResultYnType;
 import io.weyoui.weyouiappcore.config.app_config.LoginUserId;
 import io.weyoui.weyouiappcore.product.command.application.dto.ProductRequest;
 import io.weyoui.weyouiappcore.product.command.domain.ProductId;
+import io.weyoui.weyouiappcore.store.command.application.DeleteStoreProductService;
 import io.weyoui.weyouiappcore.store.command.application.RegisterProductService;
 import io.weyoui.weyouiappcore.store.command.application.UpdateProductService;
 import io.weyoui.weyouiappcore.store.command.domain.StoreId;
@@ -17,10 +18,12 @@ public class StoreProductsController {
 
     private final RegisterProductService registerProductService;
     private final UpdateProductService updateProductService;
+    private final DeleteStoreProductService deleteStoreProductService;
 
-    public StoreProductsController(RegisterProductService registerProductService, UpdateProductService updateProductService) {
+    public StoreProductsController(RegisterProductService registerProductService, UpdateProductService updateProductService, DeleteStoreProductService deleteStoreProductService) {
         this.registerProductService = registerProductService;
         this.updateProductService = updateProductService;
+        this.deleteStoreProductService = deleteStoreProductService;
     }
 
     @PostMapping("/api/v1/users/store/{storeId}/product")
@@ -40,7 +43,7 @@ public class StoreProductsController {
     @PutMapping("/api/v1/users/store/{storeId}/product/{productId}/delete")
     public ResponseEntity<CommonResponse<?>> deleteStoreProduct(@PathVariable StoreId storeId, @PathVariable ProductId productId, @LoginUserId UserId userId) {
 
-        updateProductService.deleteStoreProduct(storeId, productId, userId);
+        deleteStoreProductService.deleteStoreProduct(storeId, productId, userId);
 
         return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
     }

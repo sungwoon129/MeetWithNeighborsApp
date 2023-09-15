@@ -4,9 +4,10 @@ package io.weyoui.weyouiappcore.store.command.application;
 import io.weyoui.weyouiappcore.common.exception.NoAuthException;
 import io.weyoui.weyouiappcore.store.command.domain.Store;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
+@Component
 public class CheckStoreOwnerService {
 
     public void checkStoreOwner(Store store, UserId targetUserId) {

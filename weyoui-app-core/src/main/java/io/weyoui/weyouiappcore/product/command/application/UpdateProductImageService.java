@@ -16,14 +16,14 @@ import java.util.List;
 
 @Transactional
 @Service
-public class ProductService {
+public class UpdateProductImageService {
 
     private final CheckStoreOwnerService checkStoreOwnerService;
     private final ProductQueryService productQueryService;
     private final ProductRepository productRepository;
     private final StorageServiceRouter storageServiceRouter;
 
-    public ProductService(CheckStoreOwnerService checkStoreOwnerService, ProductQueryService productQueryService, StorageServiceRouter storageServiceRouter, ProductRepository productRepository) {
+    public UpdateProductImageService(CheckStoreOwnerService checkStoreOwnerService, ProductQueryService productQueryService, StorageServiceRouter storageServiceRouter, ProductRepository productRepository) {
         this.checkStoreOwnerService = checkStoreOwnerService;
         this.productQueryService = productQueryService;
         this.productRepository = productRepository;

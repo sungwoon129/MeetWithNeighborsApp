@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.config.message;
+package io.weyoui.weyouiappcore.config.messaging;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
