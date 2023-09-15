@@ -47,10 +47,8 @@ rabbitmq:
   exchange:
     name: weyoui.paymentExchange
   routing:
-    pay-request:
-      key: weyoui.pay.request
-    pay-result:
-      key: weyoui.pay.result
+    pay:
+      key: weyoui.pay
 
 
 jwt:
