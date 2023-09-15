@@ -3,32 +3,23 @@ package io.weyoui.weyouiappcore.order.infrastructure.pay;
 import io.weyoui.weyouiappcore.common.exception.ExternalPaymentException;
 import io.weyoui.weyouiappcore.common.model.Money;
 import io.weyoui.weyouiappcore.order.command.application.dto.PaymentRequest;
-import io.weyoui.weyouiappcore.order.command.domain.*;
+import io.weyoui.weyouiappcore.order.command.domain.Order;
+import io.weyoui.weyouiappcore.order.command.domain.OrderId;
+import io.weyoui.weyouiappcore.order.command.domain.PaymentInfo;
+import io.weyoui.weyouiappcore.order.command.domain.PaymentState;
 import io.weyoui.weyouiappcore.order.query.application.OrderQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 @RequiredArgsConstructor
 @Component
 public class ExternalPaymentListener {
 
-    private final RabbitTemplate rabbitTemplate;
     private final OrderQueryService orderQueryService;
-
-    @Value("${rabbitmq.exchange.name}")
-    private String exchangeName;
-
-    @Value("${rabbitmq.routing.key}")
-    private String routingKey;
-
-
 
     @RabbitListener(queues = "weyoui.paymentQueue")
     public void receiveMessage(PaymentRequest paymentRequest) {
