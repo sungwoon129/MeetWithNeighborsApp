@@ -1,9 +1,11 @@
 package io.weyoui.weyouiappcore.order.command.domain;
 
 import io.weyoui.weyouiappcore.common.event.Events;
+import io.weyoui.weyouiappcore.common.exception.ExternalPaymentException;
 import io.weyoui.weyouiappcore.common.jpa.MoneyConverter;
 import io.weyoui.weyouiappcore.common.model.BaseTimeEntity;
 import io.weyoui.weyouiappcore.common.model.Money;
+import io.weyoui.weyouiappcore.order.command.application.dto.PaymentRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
@@ -87,6 +89,16 @@ public class Order extends BaseTimeEntity {
         calculateTotalAmounts();
     }
 
+    public void setPaymentInfo(PaymentInfo paymentInfo) {
+        if(paymentInfo == null) throw new ExternalPaymentException("외부 결제서비스 요청과정에서 에러가 발생했습니다.");
+        this.paymentInfo = paymentInfo;
+
+        if(paymentInfo.getState().equals(PaymentState.PAYMENT_COMPLETE)) {
+            state = OrderState.PAYMENT_COMPLETE;
+        }
+    }
+
+
     private void verifyAtLeastOneOrMoreOrderLines(List<OrderLine> orderLines) {
         if (orderLines == null || orderLines.isEmpty()) {
             throw new IllegalArgumentException("주문에는 최소 하나 이상의 주문상품이 필요합니다.");
@@ -111,4 +123,6 @@ public class Order extends BaseTimeEntity {
     private boolean isCompletePayment() {
         return this.state == OrderState.PAYMENT_COMPLETE || this.state == OrderState.CONFIRM || this.state == OrderState.COMPLETE;
     }
+
+
 }

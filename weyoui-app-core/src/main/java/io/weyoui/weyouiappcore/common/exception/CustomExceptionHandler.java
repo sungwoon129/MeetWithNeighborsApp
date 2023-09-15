@@ -98,5 +98,13 @@ public class CustomExceptionHandler {
         return new ResponseEntity<>(e.getErrors(), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(value = ExternalPaymentException.class)
+    protected ResponseEntity<ErrorResponse> handleExternalPaymentException(ExternalPaymentException e) {
+        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
+        errorResponse.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+        errorResponse.setDetail(e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 
 }

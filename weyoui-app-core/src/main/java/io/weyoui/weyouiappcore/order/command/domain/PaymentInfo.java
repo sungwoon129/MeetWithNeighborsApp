@@ -11,7 +11,7 @@ public class PaymentInfo {
     @AttributeOverrides(
             @AttributeOverride(name = "id", column = @Column(name = "payment_id"))
     )
-    private Long id;
+    private String id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_method")
@@ -24,7 +24,7 @@ public class PaymentInfo {
 
     protected  PaymentInfo() {}
 
-    public PaymentInfo(Long id, PaymentMethod method, PaymentState state) {
+    public PaymentInfo(String id, PaymentMethod method, PaymentState state) {
         this.id = id;
         this.method = method;
         this.state = state;
