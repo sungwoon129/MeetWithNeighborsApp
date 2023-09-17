@@ -15,5 +15,4 @@ public class StoreSearchRequest {
     private String[] states = new String[]{StoreState.OPEN.getCode(), StoreState.NOT_OPEN.getCode()};
     private Location location;
     private long distance = 3;
-
 }
