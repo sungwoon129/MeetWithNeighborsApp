@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 @Getter
@@ -25,12 +26,12 @@ public class OrderViewResponseDto {
     private Money totalAmounts;
 
     @QueryProjection
-    public OrderViewResponseDto(String orderId, Orderer orderer, List<OrderLine> orderLines, LocalDateTime orderDate, OrderState state, String message, PaymentInfo paymentInfo,
+    public OrderViewResponseDto(String orderId, Orderer orderer, List<OrderLine> orderLines, long orderDate, OrderState state, String message, PaymentInfo paymentInfo,
                                 Money totalAmounts) {
         this.orderId = orderId;
         this.orderer = orderer;
         this.orderLines = orderLines;
-        this.orderDate = orderDate;
+        this.orderDate = LocalDateTime.ofEpochSecond(orderDate, 0, ZoneOffset.UTC);
         this.state = state;
         this.message = message;
         this.paymentInfo = paymentInfo;
