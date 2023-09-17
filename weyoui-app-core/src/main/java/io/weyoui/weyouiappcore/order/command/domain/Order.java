@@ -38,7 +38,7 @@ public class Order extends BaseTimeEntity {
     private List<OrderLine> orderLines = new ArrayList<>();
 
     @Column(name = "order_date")
-    private LocalDateTime orderDate;
+    private long orderDate;
 
     @Enumerated(EnumType.STRING)
     private OrderState state;
@@ -60,7 +60,7 @@ public class Order extends BaseTimeEntity {
         setOrderStore(orderStore);
         setOrderLines(orderLines);
         this.state = OrderState.ORDER;
-        this.orderDate = LocalDateTime.now();
+        this.orderDate = System.currentTimeMillis();
         this.message = message;
         this.totalAmounts = calculateTotalAmounts();
 
