@@ -5,14 +5,12 @@ import io.weyoui.weyouiappcore.common.exception.ExternalPaymentException;
 import io.weyoui.weyouiappcore.common.jpa.MoneyConverter;
 import io.weyoui.weyouiappcore.common.model.BaseTimeEntity;
 import io.weyoui.weyouiappcore.common.model.Money;
-import io.weyoui.weyouiappcore.order.command.application.dto.PaymentRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +18,8 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "orders", indexes = {
-        @Index(name = "idx_order_date", columnList = "order_date")
+        @Index(name = "idx_order_date", columnList = "order_date"),
+        @Index(name = "idx_order_date_and_state", columnList = "order_date, state"),
 })
 @Entity
 public class Order extends BaseTimeEntity {
