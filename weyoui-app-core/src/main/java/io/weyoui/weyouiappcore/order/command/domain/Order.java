@@ -19,7 +19,9 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "orders")
+@Table(name = "orders", indexes = {
+        @Index(name = "idx_order_date", columnList = "order_date")
+})
 @Entity
 public class Order extends BaseTimeEntity {
 
