@@ -8,14 +8,17 @@ import com.querydsl.core.util.StringUtils;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.weyoui.weyouiappcore.order.command.domain.OrderState;
+import io.weyoui.weyouiappcore.order.query.application.dto.OrderSearchRequest;
 import io.weyoui.weyouiappcore.order.query.application.dto.OrderViewResponseDto;
 import io.weyoui.weyouiappcore.order.query.application.dto.QOrderViewResponseDto;
 import io.weyoui.weyouiappcore.store.command.domain.Store;
-import io.weyoui.weyouiappcore.store.query.application.dto.StoreSearchRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.support.PageableExecutionUtils;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,27 +36,31 @@ public class OrderQueryRepositoryImpl implements OrderQueryRepositoryCustom{
 
 
     @Override
-    public Page<OrderViewResponseDto> findByConditions(StoreSearchRequest storeSearchRequest, Pageable pageable) {
-        return null;
+    public Page<OrderViewResponseDto> findByConditions(OrderSearchRequest orderSearchRequest, Pageable pageable) {
+        List<OrderViewResponseDto> contents = getContents(orderSearchRequest, pageable);
+        JPAQuery<Long> countQuery = getCountQuery(orderSearchRequest);
+
+        return PageableExecutionUtils.getPage(contents, pageable, countQuery::fetchOne);
     }
 
-    private JPAQuery<Long> getCountQuery(StoreSearchRequest storeSearchRequest) {
+    private JPAQuery<Long> getCountQuery(OrderSearchRequest orderSearchRequest) {
         return jpaQueryFactory
                 .select(order.count())
                 .from(order)
                 .where(
-                        nameLike(storeSearchRequest.getName()),
-                        isInState(storeSearchRequest.getStates())
+                        isInDate(orderSearchRequest.getStartDateTime(), orderSearchRequest.getEndDateTime()),
+                        isInState(orderSearchRequest.getStates()),
+                        nameLike(orderSearchRequest.getOrderer())
                 );
     }
 
-    private List<OrderViewResponseDto> getContents(StoreSearchRequest storeSearchRequest, Pageable pageable) {
+    private List<OrderViewResponseDto> getContents(OrderSearchRequest orderSearchRequest, Pageable pageable) {
         return jpaQueryFactory
                 .from(order)
                 .where(
-                        // TODO : 요구사항에 맞는 booleanExpressino 추가 필요
-                        nameLike(storeSearchRequest.getName()),
-                        isInState(storeSearchRequest.getStates())
+                        isInDate(orderSearchRequest.getStartDateTime(), orderSearchRequest.getEndDateTime()),
+                        isInState(orderSearchRequest.getStates()),
+                        nameLike(orderSearchRequest.getOrderer())
                 )
                 .orderBy(getOrderSpecifier(pageable.getSort()))
                 .offset(pageable.getOffset())
@@ -93,5 +100,10 @@ public class OrderQueryRepositoryImpl implements OrderQueryRepositoryCustom{
 
     private BooleanExpression nameLike(String name) {
         return StringUtils.isNullOrEmpty(name) ? null : order.orderer.name.contains(name);
+    }
+
+    private BooleanExpression isInDate(LocalDateTime start, LocalDateTime end) {
+        if(start == null || end == null) return null;
+        return order.orderDate.goe(start.toEpochSecond(ZoneOffset.UTC)).and(order.orderDate.loe(end.toEpochSecond(ZoneOffset.UTC)));
     }
 }
