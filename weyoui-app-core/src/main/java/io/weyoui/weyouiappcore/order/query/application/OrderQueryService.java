@@ -1,5 +1,6 @@
 package io.weyoui.weyouiappcore.order.query.application;
 
+import io.weyoui.weyouiappcore.aspects.PerfLogging;
 import io.weyoui.weyouiappcore.order.command.domain.Order;
 import io.weyoui.weyouiappcore.order.command.domain.OrderId;
 import io.weyoui.weyouiappcore.order.query.application.dto.OrderSearchRequest;
@@ -23,6 +24,7 @@ public class OrderQueryService {
         return orderQueryRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException("ID와 일치하는 주문이 존재하지 않습니다."));
     }
 
+    @PerfLogging
     public Page<OrderViewResponseDto> findByConditions(OrderSearchRequest orderSearchRequest, Pageable pageable) {
         return orderQueryRepository.findByConditions(orderSearchRequest, pageable);
     }
