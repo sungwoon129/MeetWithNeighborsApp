@@ -35,7 +35,6 @@ public class Order extends BaseTimeEntity {
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "order_line", joinColumns = @JoinColumn(name = "order_id"))
-    @OrderColumn(name = "line_idx")
     private List<OrderLine> orderLines = new ArrayList<>();
 
     @Column(name = "order_date")
@@ -50,6 +49,7 @@ public class Order extends BaseTimeEntity {
     @Embedded
     private PaymentInfo paymentInfo;
 
+    @Column(name = "total_amounts")
     @Convert(converter = MoneyConverter.class)
     private Money totalAmounts;
 
