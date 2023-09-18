@@ -3,6 +3,7 @@ package io.weyoui.weyouiappcore.order.command.domain;
 import io.weyoui.weyouiappcore.common.model.Money;
 import io.weyoui.weyouiappcore.common.jpa.MoneyConverter;
 import io.weyoui.weyouiappcore.product.command.domain.ProductId;
+import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
@@ -21,6 +22,10 @@ public class OrderLine {
     private Money price;
 
     private int quantity;
+
+    // TODO : orderLine 생성 시점에 lineIdx 순서대로 생성되도록 변경필요
+    @Column(name = "line_idx")
+    private int lineIdx;
 
     @Convert(converter = MoneyConverter.class)
     private Money amounts;
