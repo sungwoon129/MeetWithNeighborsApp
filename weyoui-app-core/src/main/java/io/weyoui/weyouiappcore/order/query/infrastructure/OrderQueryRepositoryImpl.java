@@ -8,10 +8,11 @@ import com.querydsl.core.util.StringUtils;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.weyoui.weyouiappcore.order.command.domain.OrderState;
+import io.weyoui.weyouiappcore.order.command.domain.QOrder;
 import io.weyoui.weyouiappcore.order.query.application.dto.OrderSearchRequest;
 import io.weyoui.weyouiappcore.order.query.application.dto.OrderViewResponseDto;
+import io.weyoui.weyouiappcore.order.query.application.dto.QOrderLineViewResponse;
 import io.weyoui.weyouiappcore.order.query.application.dto.QOrderViewResponseDto;
-import io.weyoui.weyouiappcore.store.command.domain.Store;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -23,8 +24,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.querydsl.core.group.GroupBy.groupBy;
+import static com.querydsl.core.group.GroupBy.list;
 import static io.weyoui.weyouiappcore.order.command.domain.QOrder.order;
-import static io.weyoui.weyouiappcore.store.command.domain.QStore.store;
+import static io.weyoui.weyouiappcore.order.command.domain.QOrderLine.orderLine;
 
 public class OrderQueryRepositoryImpl implements OrderQueryRepositoryCustom{
 
@@ -47,6 +49,7 @@ public class OrderQueryRepositoryImpl implements OrderQueryRepositoryCustom{
         return jpaQueryFactory
                 .select(order.count())
                 .from(order)
+                .join(order.orderLines, orderLine)
                 .where(
                         isInDate(orderSearchRequest.getStartDateTime(), orderSearchRequest.getEndDateTime()),
                         isInState(orderSearchRequest.getStates()),
@@ -55,8 +58,10 @@ public class OrderQueryRepositoryImpl implements OrderQueryRepositoryCustom{
     }
 
     private List<OrderViewResponseDto> getContents(OrderSearchRequest orderSearchRequest, Pageable pageable) {
+
         return jpaQueryFactory
                 .from(order)
+                .join(order.orderLines, orderLine)
                 .where(
                         isInDate(orderSearchRequest.getStartDateTime(), orderSearchRequest.getEndDateTime()),
                         isInState(orderSearchRequest.getStates()),
@@ -67,25 +72,30 @@ public class OrderQueryRepositoryImpl implements OrderQueryRepositoryCustom{
                 .limit(pageable.getPageSize())
                 .transform(
                         groupBy(order.orderId)
-                                .list(
-                                        new QOrderViewResponseDto(
-                                                order.orderId.id,
-                                                order.orderer,
-                                                order.orderLines,
-                                                order.orderDate,
-                                                order.state,
-                                                order.message,
-                                                order.paymentInfo,
-                                                order.totalAmounts
-                                        )
-                                ));
+                                .list(new QOrderViewResponseDto(
+                                        order.orderId.id,
+                                        order.orderer,
+                                        list(new QOrderLineViewResponse(
+                                                orderLine.productId.id,
+                                                orderLine.name,
+                                                orderLine.price,
+                                                orderLine.quantity,
+                                                orderLine.amounts
+                                        )),
+                                        order.orderDate,
+                                        order.state,
+                                        order.message,
+                                        order.paymentInfo,
+                                        order.totalAmounts
+                                ))
+                );
     }
 
 
     private OrderSpecifier<?>[] getOrderSpecifier(Sort sort) {
         return sort.stream()
                 .map(order -> {
-                    PathBuilder<Store> pathBuilder = new PathBuilder<>(store.getType(), store.getMetadata());
+                    PathBuilder<io.weyoui.weyouiappcore.order.command.domain.Order> pathBuilder = new PathBuilder<>(QOrder.order.getType(), QOrder.order.getMetadata());
                     return new OrderSpecifier(toQuerydslDirection(order.getDirection()), pathBuilder.get(order.getProperty()));
                 }).toArray(OrderSpecifier[]::new);
     }

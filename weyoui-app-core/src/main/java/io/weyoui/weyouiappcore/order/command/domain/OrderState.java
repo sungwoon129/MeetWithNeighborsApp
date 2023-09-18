@@ -25,7 +25,7 @@ public enum OrderState implements EnumMapperType {
 
     @Override
     public String getCode() {
-        return "";
+        return code;
     }
 
     @Override
