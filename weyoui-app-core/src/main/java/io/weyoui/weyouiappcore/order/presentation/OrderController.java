@@ -59,9 +59,9 @@ public class OrderController {
     }
 
     @GetMapping("/api/v1/users/order/{orderId}")
-    public ResponseEntity<CommonResponse<OrderViewResponseDto>> findById(@PathVariable OrderId orderId) {
+    public ResponseEntity<CommonResponse<OrderViewResponseDto>> findByIdToFetchAll(@PathVariable OrderId orderId) {
 
-        OrderViewResponseDto orderViewResponseDto = orderQueryService.findById(orderId).toResponseDto();
+        OrderViewResponseDto orderViewResponseDto = orderQueryService.findByIdToFetchAll(orderId);
 
         return ResponseEntity.ok().body(new CommonResponse<>(orderViewResponseDto));
 

@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.core.util.StringUtils;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import io.weyoui.weyouiappcore.order.command.domain.OrderId;
 import io.weyoui.weyouiappcore.order.command.domain.OrderState;
 import io.weyoui.weyouiappcore.order.command.domain.QOrder;
 import io.weyoui.weyouiappcore.order.query.application.dto.OrderSearchRequest;
@@ -45,6 +46,40 @@ public class OrderQueryRepositoryImpl implements OrderQueryRepositoryCustom{
         return PageableExecutionUtils.getPage(contents, pageable, countQuery::fetchOne);
     }
 
+    @Override
+    public OrderViewResponseDto findByIdToFetchAll(OrderId orderId) {
+        OrderViewResponseDto resultSet = jpaQueryFactory
+                .from(order)
+                .join(order.orderLines,orderLine)
+                .where(orderId == null ? null : order.orderId.eq(orderId))
+                .transform(
+                        groupBy(order.orderId)
+                                .as(
+                                        new QOrderViewResponseDto(
+                                                order.orderId.id,
+                                                order.orderer,
+                                                order.orderStore,
+                                                list(new QOrderLineViewResponse(
+                                                        orderLine.productId.id,
+                                                        orderLine.name,
+                                                        orderLine.price,
+                                                        orderLine.quantity,
+                                                        orderLine.amounts
+                                                )),
+                                                order.orderDate,
+                                                order.state,
+                                                order.message,
+                                                order.paymentInfo,
+                                                order.totalAmounts
+                                        )
+                                )
+                ).getOrDefault(orderId, null);
+
+        if(resultSet == null) throw new IllegalArgumentException("ID와 일치하는 주문 정보가 존재하지 않습니다.");
+
+        return resultSet;
+    }
+
     private JPAQuery<Long> getCountQuery(OrderSearchRequest orderSearchRequest) {
         return jpaQueryFactory
                 .select(order.count())
@@ -75,6 +110,7 @@ public class OrderQueryRepositoryImpl implements OrderQueryRepositoryCustom{
                                 .list(new QOrderViewResponseDto(
                                         order.orderId.id,
                                         order.orderer,
+                                        order.orderStore,
                                         list(new QOrderLineViewResponse(
                                                 orderLine.productId.id,
                                                 orderLine.name,

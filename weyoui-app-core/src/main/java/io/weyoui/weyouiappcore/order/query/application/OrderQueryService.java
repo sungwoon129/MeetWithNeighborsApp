@@ -28,4 +28,8 @@ public class OrderQueryService {
     public Page<OrderViewResponseDto> findByConditions(OrderSearchRequest orderSearchRequest, Pageable pageable) {
         return orderQueryRepository.findByConditions(orderSearchRequest, pageable);
     }
+
+    public OrderViewResponseDto findByIdToFetchAll(OrderId orderId) {
+        return orderQueryRepository.findByIdToFetchAll(orderId);
+    }
 }
