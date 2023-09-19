@@ -5,6 +5,7 @@ import io.weyoui.weyouiappcore.common.exception.ExternalPaymentException;
 import io.weyoui.weyouiappcore.common.jpa.MoneyConverter;
 import io.weyoui.weyouiappcore.common.model.BaseTimeEntity;
 import io.weyoui.weyouiappcore.common.model.Money;
+import io.weyoui.weyouiappcore.order.query.application.dto.OrderViewResponseDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
@@ -66,7 +67,19 @@ public class Order extends BaseTimeEntity {
         this.totalAmounts = calculateTotalAmounts();
 
         Events.raise(new OrderPlacedEvent(orderId.getId(), orderer, orderLines, orderDate, totalAmounts.getValue(), paymentMethodCode));
+    }
 
+    public OrderViewResponseDto toResponseDto() {
+        return OrderViewResponseDto.builder()
+                .orderId(orderId.getId())
+                .orderer(orderer)
+                .orderLines(orderLines.stream().map(OrderLine::toResponseDto).toList())
+                .message(message)
+                .orderDate(orderDate)
+                .paymentInfo(paymentInfo)
+                .state(state)
+                .totalAmounts(totalAmounts)
+                .build();
     }
 
     private void setOrderId(OrderId orderId) {

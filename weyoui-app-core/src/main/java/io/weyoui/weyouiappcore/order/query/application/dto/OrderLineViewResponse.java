@@ -2,6 +2,7 @@ package io.weyoui.weyouiappcore.order.query.application.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 import io.weyoui.weyouiappcore.common.model.Money;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,7 @@ public class OrderLineViewResponse {
     private int quantity;
     private Money amounts;
 
+    @Builder
     @QueryProjection
     public OrderLineViewResponse(String productId, String name, Money price, int quantity, Money amounts) {
         this.productId = productId;

@@ -5,6 +5,7 @@ import io.weyoui.weyouiappcore.common.model.Money;
 import io.weyoui.weyouiappcore.order.command.domain.OrderState;
 import io.weyoui.weyouiappcore.order.command.domain.Orderer;
 import io.weyoui.weyouiappcore.order.command.domain.PaymentInfo;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,6 +28,7 @@ public class OrderViewResponseDto {
     private PaymentInfo paymentInfo;
     private Money totalAmounts;
 
+    @Builder
     @QueryProjection
     public OrderViewResponseDto(String orderId, Orderer orderer, List<OrderLineViewResponse> orderLines, long orderDate, OrderState state, String message, PaymentInfo paymentInfo,
                                 Money totalAmounts) {

@@ -2,11 +2,13 @@ package io.weyoui.weyouiappcore.order.command.domain;
 
 import io.weyoui.weyouiappcore.common.model.Money;
 import io.weyoui.weyouiappcore.common.jpa.MoneyConverter;
+import io.weyoui.weyouiappcore.order.query.application.dto.OrderLineViewResponse;
 import io.weyoui.weyouiappcore.product.command.domain.ProductId;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -43,5 +45,15 @@ public class OrderLine {
 
     private Money calculateAmounts() {
         return price.multiply(quantity);
+    }
+
+    public OrderLineViewResponse toResponseDto() {
+        return OrderLineViewResponse.builder()
+                .productId(productId.getId())
+                .name(name)
+                .price(price)
+                .quantity(quantity)
+                .amounts(amounts)
+                .build();
     }
 }
