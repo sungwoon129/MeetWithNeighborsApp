@@ -100,7 +100,6 @@ class GroupControllerTest {
         objectMapper.registerModule(jtsModule);
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-
     }
 
 
