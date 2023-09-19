@@ -1,11 +1,14 @@
 package io.weyoui.weyouiappcore.common.exception;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class ErrorResponse {
 
     private String code;

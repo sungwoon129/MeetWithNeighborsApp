@@ -26,7 +26,7 @@ public class CustomExceptionHandler {
         errorResponse.setHttpStatus(HttpStatus.BAD_REQUEST);
         errorResponse.setDetail(e.getMessage());
         log.error(e.getMessage());
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = NoSuchElementException.class)
@@ -35,7 +35,16 @@ public class CustomExceptionHandler {
         errorResponse.setHttpStatus(HttpStatus.BAD_REQUEST);
         errorResponse.setDetail(e.getMessage());
         log.error(e.getMessage());
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = IllegalArgumentException.class)
+    protected ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException e) {
+        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.ILLEGAL_ARGUMENT);
+        errorResponse.setHttpStatus(HttpStatus.BAD_REQUEST);
+        errorResponse.setDetail(e.getMessage());
+        log.error(e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = DuplicateEmailException.class)
