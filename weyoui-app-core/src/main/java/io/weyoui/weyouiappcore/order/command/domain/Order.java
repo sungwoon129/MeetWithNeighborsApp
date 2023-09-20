@@ -19,6 +19,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "orders", indexes = {
+        @Index(name = "idx_id_and_date", columnList = "order_id, order_date"),
         @Index(name = "idx_order_date", columnList = "order_date"),
         @Index(name = "idx_order_date_and_state", columnList = "order_date, state"),
 })
@@ -26,7 +27,7 @@ import java.util.List;
 public class Order extends BaseTimeEntity {
 
     @EmbeddedId
-    private OrderId orderId;
+    private OrderId id;
 
     @Embedded
     private Orderer orderer;
@@ -56,8 +57,8 @@ public class Order extends BaseTimeEntity {
 
 
 
-    public Order(OrderId orderId, Orderer orderer, OrderStore orderStore, List<OrderLine> orderLines, String message, String paymentMethodCode) {
-        setOrderId(orderId);
+    public Order(OrderId id, Orderer orderer, OrderStore orderStore, List<OrderLine> orderLines, String message, String paymentMethodCode) {
+        setId(id);
         setOrderer(orderer);
         setOrderStore(orderStore);
         setOrderLines(orderLines);
@@ -66,12 +67,12 @@ public class Order extends BaseTimeEntity {
         this.message = message;
         this.totalAmounts = calculateTotalAmounts();
 
-        Events.raise(new OrderPlacedEvent(orderId.getId(), orderer, orderLines, orderDate, totalAmounts.getValue(), paymentMethodCode));
+        Events.raise(new OrderPlacedEvent(id.getId(), orderer, orderLines, orderDate, totalAmounts.getValue(), paymentMethodCode));
     }
 
     public OrderViewResponseDto toResponseDto() {
         return OrderViewResponseDto.builder()
-                .orderId(orderId.getId())
+                .id(id.getId())
                 .orderer(orderer)
                 .orderLines(orderLines.stream().map(OrderLine::toResponseDto).toList())
                 .message(message)
@@ -82,9 +83,9 @@ public class Order extends BaseTimeEntity {
                 .build();
     }
 
-    private void setOrderId(OrderId orderId) {
-        if (orderId == null) throw new IllegalArgumentException("주문 ID 값이 필요합니다.");
-        this.orderId = orderId;
+    private void setId(OrderId id) {
+        if (id == null) throw new IllegalArgumentException("주문 ID 값이 필요합니다.");
+        this.id = id;
     }
 
     private void setOrderer(Orderer orderer) {
@@ -126,7 +127,7 @@ public class Order extends BaseTimeEntity {
     public void cancel() {
         verifyCompletePayment();
         this.state = OrderState.CANCEL;
-        Events.raise(new OrderCanceledEvent(orderId.getId()));
+        Events.raise(new OrderCanceledEvent(id.getId()));
 
     }
 
