@@ -1,5 +1,6 @@
 package io.weyoui.weyouiappcore.order.query.infrastructure;
 
+import io.weyoui.weyouiappcore.order.command.domain.OrderId;
 import io.weyoui.weyouiappcore.order.command.domain.OrderState;
 import io.weyoui.weyouiappcore.order.query.application.dto.OrderSearchRequest;
 import io.weyoui.weyouiappcore.order.query.application.dto.OrderViewResponseDto;
@@ -38,9 +39,10 @@ class OrderQueryRepositoryImplTest {
         orderSearchRequest.setStartDateTime(LocalDateTime.of(2023,9,18,0,0,0));
         orderSearchRequest.setEndDateTime(LocalDateTime.of(2023,12,31,23,59,59));
         List<Sort.Order> order = new ArrayList<>();
+        order.add(new Sort.Order(Sort.Direction.DESC, "id"));
         order.add(new Sort.Order(Sort.Direction.DESC, "orderDate"));
         Sort sort = Sort.by(order);
-        Pageable pageable = PageRequest.of(0,30, sort);
+        Pageable pageable = PageRequest.ofSize(30).withSort(sort);
 
         //when
         Page<OrderViewResponseDto> orders = orderQueryRepository.findByConditions(orderSearchRequest,pageable);
@@ -53,6 +55,37 @@ class OrderQueryRepositoryImplTest {
                     .orElseThrow().getMessage()
         ).isEqualTo("테스트 주문");
     }
+
+    @DisplayName("마지막으로 조회한 ID를 전달하면 주문ID의 내림차순으로 요청한 수 만큼의 주문목록을 얻을 수 있다.")
+    @Test
+    void findByConditions_lastOrderId_test() {
+        //given
+        OrderSearchRequest orderSearchRequest = new OrderSearchRequest();
+        orderSearchRequest.setOrderer("임의의 모임");
+        orderSearchRequest.setStates(new String[]{OrderState.ORDER.getCode()});
+        orderSearchRequest.setStartDateTime(LocalDateTime.of(2023,9,18,0,0,0));
+        orderSearchRequest.setEndDateTime(LocalDateTime.of(2023,12,31,23,59,59));
+        orderSearchRequest.setLastSearchedId(new OrderId("order4"));
+
+        List<Sort.Order> order = new ArrayList<>();
+        order.add(new Sort.Order(Sort.Direction.DESC, "id"));
+        order.add(new Sort.Order(Sort.Direction.DESC, "orderDate"));
+        Sort sort = Sort.by(order);
+        Pageable pageable = PageRequest.ofSize(10).withSort(sort);
+
+
+        //when
+        Page<OrderViewResponseDto> orders = orderQueryRepository.findByConditions(orderSearchRequest,pageable);
+
+        //then
+        assertThat(orders.getTotalElements()).isGreaterThanOrEqualTo(1L);
+        assertThat(orders.getContent().stream()
+                .filter(o -> o.getOrderer().getUserId().getId().equals("user1"))
+                .findFirst()
+                .orElseThrow().getMessage()
+        ).isEqualTo("테스트 주문");
+    }
+
 
 
 }

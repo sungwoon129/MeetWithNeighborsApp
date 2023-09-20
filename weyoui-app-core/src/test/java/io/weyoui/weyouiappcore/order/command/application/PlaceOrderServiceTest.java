@@ -51,10 +51,10 @@ class PlaceOrderServiceTest {
         StoreId storeId = new StoreId("store1");
 
         //when
-        OrderId orderId = placeOrderService.placeOrder(orderRequest,storeId, userId);;
+        OrderId id = placeOrderService.placeOrder(orderRequest,storeId, userId);;
 
         //then
-        Order order = orderQueryRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException(""));
+        Order order = orderQueryRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(""));
         assertThat(order.getTotalAmounts().getValue()).isEqualTo(new Money(30000).getValue());
         assertThat(order.getState()).isEqualTo(OrderState.ORDER);
         assertThat(order.getMessage()).isEqualTo(orderRequest.getMessage());
