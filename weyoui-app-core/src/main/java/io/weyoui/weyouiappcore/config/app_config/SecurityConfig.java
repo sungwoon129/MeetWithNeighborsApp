@@ -61,7 +61,10 @@ public class SecurityConfig {
                 authorizeHttpRequests
                         .requestMatchers("/api/v1/users/**").hasAnyRole("USER","ADMIN")
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/guest/**").permitAll());
+                        .requestMatchers("/api/v1/guest/**").permitAll()
+                        .anyRequest().permitAll()
+        );
+
 
 
         return http.build();
