@@ -43,15 +43,15 @@ public class PlaceOrderService {
             Product product = productQueryService.findById(op.getProductId());
             orderLines.add(new OrderLine(product.getId(), product.getName(), product.getPrice(), op.getQuantity()));
         }
-        OrderId orderId = orderRepository.nextId();
+        OrderId id = orderRepository.nextId();
         Orderer orderer = ordererService.createOrderer(orderRequest.getGroupId(), userId);
         OrderStore orderStore = orderStoreService.createOrderStore(storeId);
 
-        Order order = new Order(orderId,orderer, orderStore, orderLines,orderRequest.getMessage(), orderRequest.getPaymentMethodCode());
+        Order order = new Order(id,orderer, orderStore, orderLines,orderRequest.getMessage(), orderRequest.getPaymentMethodCode());
 
         orderRepository.save(order);
 
-        return orderId;
+        return id;
     }
 
     private List<ErrorResponse> validateOrderRequest(OrderRequest orderRequest) {

@@ -48,16 +48,16 @@ public class OrderQueryRepositoryImpl implements OrderQueryRepositoryCustom{
     }
 
     @Override
-    public OrderViewResponseDto findByIdToFetchAll(OrderId orderId) {
+    public OrderViewResponseDto findByIdToFetchAll(OrderId id) {
         OrderViewResponseDto resultSet = jpaQueryFactory
                 .from(order)
                 .join(order.orderLines,orderLine)
-                .where(orderId == null ? null : order.orderId.eq(orderId))
+                .where(id == null ? null : order.id.eq(id))
                 .transform(
-                        groupBy(order.orderId)
+                        groupBy(order.id)
                                 .as(
                                         new QOrderViewResponseDto(
-                                                order.orderId.id,
+                                                order.id.id,
                                                 order.orderer,
                                                 order.orderStore,
                                                 list(new QOrderLineViewResponse(
@@ -74,7 +74,7 @@ public class OrderQueryRepositoryImpl implements OrderQueryRepositoryCustom{
                                                 order.totalAmounts
                                         )
                                 )
-                ).getOrDefault(orderId, null);
+                ).getOrDefault(id, null);
 
         if(resultSet == null) throw new IllegalArgumentException("ID와 일치하는 주문 정보가 존재하지 않습니다.");
 
@@ -107,9 +107,9 @@ public class OrderQueryRepositoryImpl implements OrderQueryRepositoryCustom{
                 .orderBy(getOrderSpecifier(pageable.getSort()))
                 .limit(pageable.getPageSize())
                 .transform(
-                        groupBy(order.orderId)
+                        groupBy(order.id)
                                 .list(new QOrderViewResponseDto(
-                                        order.orderId.id,
+                                        order.id.id,
                                         order.orderer,
                                         order.orderStore,
                                         list(new QOrderLineViewResponse(
@@ -129,12 +129,12 @@ public class OrderQueryRepositoryImpl implements OrderQueryRepositoryCustom{
     }
 
     private BooleanExpression OrderIdLt(OrderId lastSearchedId) {
-        return lastSearchedId == null ? null : order.orderId.id.lt(lastSearchedId.getId());
+        return lastSearchedId == null ? null : order.id.id.lt(lastSearchedId.getId());
     }
 
 
     private OrderSpecifier<?>[] getOrderSpecifier(Sort sort) {
-        if(sort.isEmpty()) return  new OrderSpecifier[] {order.orderId.id.desc()};
+        if(sort.isEmpty()) return  new OrderSpecifier[] {order.id.id.desc()};
         return sort.stream()
                 .map(order -> {
                     PathBuilder<io.weyoui.weyouiappcore.order.command.domain.Order> pathBuilder = new PathBuilder<>(QOrder.order.getType(), QOrder.order.getMetadata());

@@ -20,7 +20,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class OrderViewResponseDto {
-    private String orderId;
+    private String id;
     private Orderer orderer;
     private OrderStore orderStore;
     private OrderState orderState;
@@ -33,9 +33,9 @@ public class OrderViewResponseDto {
 
     @Builder
     @QueryProjection
-    public OrderViewResponseDto(String orderId, Orderer orderer, OrderStore orderStore,List<OrderLineViewResponse> orderLines, long orderDate, OrderState state, String message, PaymentInfo paymentInfo,
+    public OrderViewResponseDto(String id, Orderer orderer, OrderStore orderStore,List<OrderLineViewResponse> orderLines, long orderDate, OrderState state, String message, PaymentInfo paymentInfo,
                                 Money totalAmounts) {
-        this.orderId = orderId;
+        this.id = id;
         this.orderer = orderer;
         this.orderStore = orderStore;
         this.orderLines = orderLines;

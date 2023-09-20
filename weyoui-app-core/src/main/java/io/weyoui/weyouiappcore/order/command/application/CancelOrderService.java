@@ -20,8 +20,8 @@ public class CancelOrderService {
         this.cancelOrderPolicy = cancelOrderPolicy;
     }
 
-    public void cancel(OrderId orderId, Canceller canceller) {
-        Order order = orderQueryService.findById(orderId);
+    public void cancel(OrderId id, Canceller canceller) {
+        Order order = orderQueryService.findById(id);
         if(!cancelOrderPolicy.hasCancellationPermission(order, canceller)) throw new IllegalStateException("주문 취소정책에 맞지 않아 주문을 취소할 수 없습니다.");
 
         order.cancel();
