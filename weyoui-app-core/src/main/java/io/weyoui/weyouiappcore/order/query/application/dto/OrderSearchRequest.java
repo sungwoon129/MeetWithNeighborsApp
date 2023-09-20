@@ -1,5 +1,6 @@
 package io.weyoui.weyouiappcore.order.query.application.dto;
 
+import io.weyoui.weyouiappcore.order.command.domain.OrderId;
 import io.weyoui.weyouiappcore.order.command.domain.OrderState;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,4 +19,5 @@ public class OrderSearchRequest {
     private String[] states = Arrays.stream(OrderState.values()).map(OrderState::getCode).toArray(String[]::new);
     private LocalDateTime startDateTime = LocalDateTime.now().with(LocalTime.MIN);
     private LocalDateTime endDateTime = LocalDateTime.now().with(LocalTime.MAX);
+    private OrderId lastSearchedId;
 }

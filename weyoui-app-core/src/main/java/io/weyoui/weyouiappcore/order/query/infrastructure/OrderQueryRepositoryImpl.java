@@ -2,6 +2,7 @@ package io.weyoui.weyouiappcore.order.query.infrastructure;
 
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.core.util.StringUtils;
@@ -98,12 +99,12 @@ public class OrderQueryRepositoryImpl implements OrderQueryRepositoryCustom{
                 .from(order)
                 .join(order.orderLines, orderLine)
                 .where(
+                        OrderIdLt(orderSearchRequest.getLastSearchedId()),
                         isInDate(orderSearchRequest.getStartDateTime(), orderSearchRequest.getEndDateTime()),
                         isInState(orderSearchRequest.getStates()),
                         nameLike(orderSearchRequest.getOrderer())
                 )
                 .orderBy(getOrderSpecifier(pageable.getSort()))
-                .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .transform(
                         groupBy(order.orderId)
@@ -127,8 +128,13 @@ public class OrderQueryRepositoryImpl implements OrderQueryRepositoryCustom{
                 );
     }
 
+    private BooleanExpression OrderIdLt(OrderId lastSearchedId) {
+        return lastSearchedId == null ? null : order.orderId.id.lt(lastSearchedId.getId());
+    }
+
 
     private OrderSpecifier<?>[] getOrderSpecifier(Sort sort) {
+        if(sort.isEmpty()) return  new OrderSpecifier[] {order.orderId.id.desc()};
         return sort.stream()
                 .map(order -> {
                     PathBuilder<io.weyoui.weyouiappcore.order.command.domain.Order> pathBuilder = new PathBuilder<>(QOrder.order.getType(), QOrder.order.getMetadata());
