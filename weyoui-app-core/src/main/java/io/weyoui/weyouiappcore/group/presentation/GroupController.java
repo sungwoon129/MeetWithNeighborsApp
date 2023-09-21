@@ -1,5 +1,6 @@
 package io.weyoui.weyouiappcore.group.presentation;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import io.weyoui.weyouiappcore.common.model.CommonResponse;
 import io.weyoui.weyouiappcore.common.model.ResultYnType;
 import io.weyoui.weyouiappcore.config.app_config.LimitedPageSize;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "모임")
 @RestController
 public class GroupController {
 

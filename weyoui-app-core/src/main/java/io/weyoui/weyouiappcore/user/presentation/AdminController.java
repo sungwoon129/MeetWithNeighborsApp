@@ -1,5 +1,6 @@
 package io.weyoui.weyouiappcore.user.presentation;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import io.weyoui.weyouiappcore.common.model.CommonResponse;
 import io.weyoui.weyouiappcore.config.app_config.LimitedPageSize;
 import io.weyoui.weyouiappcore.user.command.domain.User;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-
+@Tag(name = "관리자")
 @RestController
 public class AdminController {
 

@@ -1,5 +1,6 @@
 package io.weyoui.weyouiappcore.user.query.application.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.weyoui.weyouiappcore.user.command.domain.UserState;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
+@Schema(description = "회원 목록 검색 요청 DTO")
 @Setter
 @Getter
 @NoArgsConstructor

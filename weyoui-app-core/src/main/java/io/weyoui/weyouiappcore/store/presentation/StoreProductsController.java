@@ -1,5 +1,6 @@
 package io.weyoui.weyouiappcore.store.presentation;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import io.weyoui.weyouiappcore.common.model.CommonResponse;
 import io.weyoui.weyouiappcore.common.model.ResultYnType;
 import io.weyoui.weyouiappcore.config.app_config.LoginUserId;
@@ -13,6 +14,7 @@ import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "가게 상품")
 @RestController
 public class StoreProductsController {
 

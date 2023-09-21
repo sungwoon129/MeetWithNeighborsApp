@@ -61,6 +61,22 @@ jwt:
     expiration-in-access-token: 600000
     secret-key: we3y6o54ui134nsndnfenGR34zcR3kiKM5MVz3po5zer10Ge5fKqI98vRCbLiqpz40t1t5ef9Zc
 
-baseUrl: http://localhost:8080
+
 filePath: D:\\weyoui-file
 
+springdoc:
+  swagger-ui:
+    path: /api-docs/index.html
+    groups-order: desc
+    doc-expansion: none
+    tags-sorter: alpha
+    operations-sorter: method
+  api-docs:
+    path: /api-docs
+  show-actuator: true
+  default-produces-media-type: application/json
+
+api:
+  server:
+    baseUrl: http://localhost:8080
+    description: local

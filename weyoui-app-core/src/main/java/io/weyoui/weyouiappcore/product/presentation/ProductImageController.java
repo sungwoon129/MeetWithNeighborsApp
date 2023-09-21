@@ -1,5 +1,6 @@
 package io.weyoui.weyouiappcore.product.presentation;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import io.weyoui.weyouiappcore.common.model.CommonResponse;
 import io.weyoui.weyouiappcore.common.model.ResultYnType;
 import io.weyoui.weyouiappcore.config.app_config.LoginUserId;
@@ -18,13 +19,14 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Tag(name = "상품 이미지")
 @RestController
-public class ProductController {
+public class ProductImageController {
 
     private final UpdateProductImageService updateProductImageService;
     private final ProductQueryService productQueryService;
 
-    public ProductController(UpdateProductImageService updateProductImageService, ProductQueryService productQueryService) {
+    public ProductImageController(UpdateProductImageService updateProductImageService, ProductQueryService productQueryService) {
         this.updateProductImageService = updateProductImageService;
         this.productQueryService = productQueryService;
     }

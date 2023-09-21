@@ -34,7 +34,7 @@ public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
 
 
-    public SecurityConfig(@Value("${baseUrl}")String baseUrl, JwtTokenProvider jwtTokenProvider ) {
+    public SecurityConfig(@Value("${api.server.baseUrl}")String baseUrl, JwtTokenProvider jwtTokenProvider ) {
         this.baseUrl = baseUrl;
         this.jwtTokenProvider = jwtTokenProvider;
     }

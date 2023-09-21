@@ -1,5 +1,8 @@
 package io.weyoui.weyouiappcore.user.presentation;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import io.weyoui.weyouiappcore.common.model.CommonResponse;
 import io.weyoui.weyouiappcore.common.model.ResultYnType;
 import io.weyoui.weyouiappcore.config.app_config.LoginUserId;
@@ -9,9 +12,11 @@ import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import io.weyoui.weyouiappcore.user.query.application.UserViewService;
 import io.weyoui.weyouiappcore.user.query.application.dto.UserResponse;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "회원")
 @RestController
 public class UserController {
 
@@ -24,6 +29,8 @@ public class UserController {
     }
 
 
+    @Operation(summary = "단일 회원 조회", description = "단일 회원 조회")
+    @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
     @GetMapping("/api/v1/users/{userId}")
     public ResponseEntity<CommonResponse<UserResponse>> findById(@PathVariable UserId userId) {
 
