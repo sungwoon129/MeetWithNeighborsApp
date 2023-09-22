@@ -70,6 +70,7 @@ public class GuestController {
 
     }
 
+    @Operation(summary = "JWT 토큰 재발급", description = "REFRESH 토큰을 이용해 ACCESS 토큰 재발급하기(HTTP HEADER REFERSH TOKEN 값 필요")
     @PostMapping("/api/v1/guest/reissue")
     public ResponseEntity<CommonResponse<UserResponse.Token>> reissue(HttpServletRequest request) {
 
@@ -84,6 +85,7 @@ public class GuestController {
         return ResponseEntity.ok().body(new CommonResponse<>(newToken));
     }
 
+    @Operation(summary = "비밀번호 초기화", description = "새 비밀번호로 비밀번호 초기화(본인 인증필요)")
     @PutMapping("/api/v1/guest/password-reset")
     public ResponseEntity<CommonResponse<String>> resetPassword(PasswordResetRequest passwordResetRequest) {
 

@@ -39,6 +39,8 @@ public class UserController {
         return ResponseEntity.ok().body(new CommonResponse<>(user.toResponseDto()));
     }
 
+    @Operation(summary = "내 정보 조회", description = "내 정보 조회")
+    @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
     @GetMapping("/api/v1/users/me")
     public ResponseEntity<CommonResponse<UserResponse>> findByEmail(@LoginUserId UserId userid) {
 
@@ -47,6 +49,8 @@ public class UserController {
         return ResponseEntity.ok().body(new CommonResponse<>(user.toResponseDto()));
     }
 
+    @Operation(summary = "내 닉네임 변경", description = "닉네임 변경")
+    @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
     @PutMapping("/api/v1/users/me/nickname")
     public ResponseEntity<CommonResponse<?>> changeNickname(@LoginUserId UserId userId, @RequestBody UserUpdateRequest userUpdateRequest) {
         updateUserInfoService.changeNickname(userId, userUpdateRequest);
@@ -54,6 +58,8 @@ public class UserController {
         return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
     }
 
+    @Operation(summary = "본인 인증 ", description = "본인 인증 정보 갱신(외부서비스 인증 후 DB 반영처리)")
+    @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
     @PutMapping("/api/v1/users/me/identification")
     public ResponseEntity<CommonResponse<?>> identify(@LoginUserId UserId userId, @RequestBody UserUpdateRequest userUpdateRequest) {
         updateUserInfoService.identify(userId, userUpdateRequest);
@@ -61,6 +67,8 @@ public class UserController {
         return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
     }
 
+    @Operation(summary = "내 주소 변경", description = "내 주소 변경 - Address 필드값만 필수")
+    @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
     @PutMapping("/api/v1/users/me/address")
     public ResponseEntity<CommonResponse<?>> changeAddress(@LoginUserId UserId userId, @RequestBody UserUpdateRequest userUpdateRequest) {
         updateUserInfoService.changeAddress(userId, userUpdateRequest);
