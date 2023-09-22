@@ -8,6 +8,7 @@ import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.core.util.StringUtils;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import io.weyoui.weyouiappcore.group.command.domain.GroupId;
 import io.weyoui.weyouiappcore.order.command.domain.OrderId;
 import io.weyoui.weyouiappcore.order.command.domain.OrderState;
 import io.weyoui.weyouiappcore.order.command.domain.QOrder;
@@ -15,6 +16,7 @@ import io.weyoui.weyouiappcore.order.query.application.dto.OrderSearchRequest;
 import io.weyoui.weyouiappcore.order.query.application.dto.OrderViewResponseDto;
 import io.weyoui.weyouiappcore.order.query.application.dto.QOrderLineViewResponse;
 import io.weyoui.weyouiappcore.order.query.application.dto.QOrderViewResponseDto;
+import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -89,7 +91,9 @@ public class OrderQueryRepositoryImpl implements OrderQueryRepositoryCustom{
                 .where(
                         isInDate(orderSearchRequest.getStartDateTime(), orderSearchRequest.getEndDateTime()),
                         isInState(orderSearchRequest.getStates()),
-                        nameLike(orderSearchRequest.getOrderer())
+                        nameLike(orderSearchRequest.getOrderer().getName()),
+                        OrderGroupIdEquals(orderSearchRequest.getOrderer().getGroupId()),
+                        OrderUserIdEquals(orderSearchRequest.getOrderer().getUserId())
                 );
     }
 
@@ -102,7 +106,9 @@ public class OrderQueryRepositoryImpl implements OrderQueryRepositoryCustom{
                         OrderIdLt(orderSearchRequest.getLastSearchedId()),
                         isInDate(orderSearchRequest.getStartDateTime(), orderSearchRequest.getEndDateTime()),
                         isInState(orderSearchRequest.getStates()),
-                        nameLike(orderSearchRequest.getOrderer())
+                        nameLike(orderSearchRequest.getOrderer().getName()),
+                        OrderGroupIdEquals(orderSearchRequest.getOrderer().getGroupId()),
+                        OrderUserIdEquals(orderSearchRequest.getOrderer().getUserId())
                 )
                 .orderBy(getOrderSpecifier(pageable.getSort()))
                 .limit(pageable.getPageSize())
@@ -127,6 +133,9 @@ public class OrderQueryRepositoryImpl implements OrderQueryRepositoryCustom{
                                 ))
                 );
     }
+
+
+
 
     private BooleanExpression OrderIdLt(OrderId lastSearchedId) {
         return lastSearchedId == null ? null : order.id.id.lt(lastSearchedId.getId());
@@ -157,5 +166,13 @@ public class OrderQueryRepositoryImpl implements OrderQueryRepositoryCustom{
     private BooleanExpression isInDate(LocalDateTime start, LocalDateTime end) {
         if(start == null || end == null) return null;
         return order.orderDate.goe(start.toEpochSecond(ZoneOffset.UTC)).and(order.orderDate.loe(end.toEpochSecond(ZoneOffset.UTC)));
+    }
+
+    private BooleanExpression OrderGroupIdEquals(GroupId groupId) {
+        return groupId == null ? null : order.orderer.groupId.eq(groupId);
+    }
+
+    private BooleanExpression OrderUserIdEquals(UserId userId) {
+        return userId == null ? null : order.orderer.userId.eq(userId);
     }
 }

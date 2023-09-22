@@ -1,7 +1,9 @@
 package io.weyoui.weyouiappcore.order.query.application.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.weyoui.weyouiappcore.order.command.domain.OrderId;
 import io.weyoui.weyouiappcore.order.command.domain.OrderState;
+import io.weyoui.weyouiappcore.order.command.domain.Orderer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +17,8 @@ import java.util.Arrays;
 @NoArgsConstructor
 public class OrderSearchRequest {
 
-    private String orderer;
+    @Schema(name = "주문자", description = "주문자 이름")
+    private Orderer orderer;
     private String[] states = Arrays.stream(OrderState.values()).map(OrderState::getCode).toArray(String[]::new);
     private LocalDateTime startDateTime = LocalDateTime.now().with(LocalTime.MIN);
     private LocalDateTime endDateTime = LocalDateTime.now().with(LocalTime.MAX);
