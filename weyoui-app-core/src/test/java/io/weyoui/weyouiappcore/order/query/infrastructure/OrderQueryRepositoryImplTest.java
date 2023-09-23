@@ -1,9 +1,12 @@
 package io.weyoui.weyouiappcore.order.query.infrastructure;
 
+import io.weyoui.weyouiappcore.group.command.domain.GroupId;
 import io.weyoui.weyouiappcore.order.command.domain.OrderId;
 import io.weyoui.weyouiappcore.order.command.domain.OrderState;
+import io.weyoui.weyouiappcore.order.command.domain.Orderer;
 import io.weyoui.weyouiappcore.order.query.application.dto.OrderSearchRequest;
-import io.weyoui.weyouiappcore.order.query.application.dto.OrderViewResponseDto;
+import io.weyoui.weyouiappcore.order.query.application.dto.OrderViewResponse;
+import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +37,8 @@ class OrderQueryRepositoryImplTest {
     void findByConditions_test() {
         //given
         OrderSearchRequest orderSearchRequest = new OrderSearchRequest();
-        orderSearchRequest.setOrderer("임의의 모임");
+        Orderer orderer = new Orderer(GroupId.of("group1"), UserId.of("user1"), "임의의 모임", "01012345678");
+        orderSearchRequest.setOrderer(orderer);
         orderSearchRequest.setStates(new String[]{OrderState.ORDER.getCode()});
         orderSearchRequest.setStartDateTime(LocalDateTime.of(2023,9,18,0,0,0));
         orderSearchRequest.setEndDateTime(LocalDateTime.of(2023,12,31,23,59,59));
@@ -45,7 +49,7 @@ class OrderQueryRepositoryImplTest {
         Pageable pageable = PageRequest.ofSize(30).withSort(sort);
 
         //when
-        Page<OrderViewResponseDto> orders = orderQueryRepository.findByConditions(orderSearchRequest,pageable);
+        Page<OrderViewResponse> orders = orderQueryRepository.findByConditions(orderSearchRequest,pageable);
 
         //then
         assertThat(orders.getTotalElements()).isGreaterThanOrEqualTo(1L);
@@ -61,7 +65,8 @@ class OrderQueryRepositoryImplTest {
     void findByConditions_lastOrderId_test() {
         //given
         OrderSearchRequest orderSearchRequest = new OrderSearchRequest();
-        orderSearchRequest.setOrderer("임의의 모임");
+        Orderer orderer = new Orderer(GroupId.of("group1"), UserId.of("user1"), "임의의 모임", "01012345678");
+        orderSearchRequest.setOrderer(orderer);
         orderSearchRequest.setStates(new String[]{OrderState.ORDER.getCode()});
         orderSearchRequest.setStartDateTime(LocalDateTime.of(2023,9,18,0,0,0));
         orderSearchRequest.setEndDateTime(LocalDateTime.of(2023,12,31,23,59,59));
@@ -75,7 +80,7 @@ class OrderQueryRepositoryImplTest {
 
 
         //when
-        Page<OrderViewResponseDto> orders = orderQueryRepository.findByConditions(orderSearchRequest,pageable);
+        Page<OrderViewResponse> orders = orderQueryRepository.findByConditions(orderSearchRequest,pageable);
 
         //then
         assertThat(orders.getTotalElements()).isGreaterThanOrEqualTo(1L);
