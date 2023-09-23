@@ -19,7 +19,7 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
-public class OrderViewResponseDto {
+public class OrderViewResponse {
     private String id;
     private Orderer orderer;
     private OrderStore orderStore;
@@ -33,8 +33,8 @@ public class OrderViewResponseDto {
 
     @Builder
     @QueryProjection
-    public OrderViewResponseDto(String id, Orderer orderer, OrderStore orderStore,List<OrderLineViewResponse> orderLines, long orderDate, OrderState state, String message, PaymentInfo paymentInfo,
-                                Money totalAmounts) {
+    public OrderViewResponse(String id, Orderer orderer, OrderStore orderStore, List<OrderLineViewResponse> orderLines, long orderDate, OrderState state, String message, PaymentInfo paymentInfo,
+                             Money totalAmounts) {
         this.id = id;
         this.orderer = orderer;
         this.orderStore = orderStore;

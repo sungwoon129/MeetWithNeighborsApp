@@ -2,7 +2,6 @@ package io.weyoui.weyouiappcore.order.query.infrastructure;
 
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.core.util.StringUtils;
@@ -13,9 +12,9 @@ import io.weyoui.weyouiappcore.order.command.domain.OrderId;
 import io.weyoui.weyouiappcore.order.command.domain.OrderState;
 import io.weyoui.weyouiappcore.order.command.domain.QOrder;
 import io.weyoui.weyouiappcore.order.query.application.dto.OrderSearchRequest;
-import io.weyoui.weyouiappcore.order.query.application.dto.OrderViewResponseDto;
+import io.weyoui.weyouiappcore.order.query.application.dto.OrderViewResponse;
 import io.weyoui.weyouiappcore.order.query.application.dto.QOrderLineViewResponse;
-import io.weyoui.weyouiappcore.order.query.application.dto.QOrderViewResponseDto;
+import io.weyoui.weyouiappcore.order.query.application.dto.QOrderViewResponse;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,23 +41,23 @@ public class OrderQueryRepositoryImpl implements OrderQueryRepositoryCustom{
 
 
     @Override
-    public Page<OrderViewResponseDto> findByConditions(OrderSearchRequest orderSearchRequest, Pageable pageable) {
-        List<OrderViewResponseDto> contents = getContents(orderSearchRequest, pageable);
+    public Page<OrderViewResponse> findByConditions(OrderSearchRequest orderSearchRequest, Pageable pageable) {
+        List<OrderViewResponse> contents = getContents(orderSearchRequest, pageable);
         JPAQuery<Long> countQuery = getCountQuery(orderSearchRequest);
 
         return PageableExecutionUtils.getPage(contents, pageable, countQuery::fetchOne);
     }
 
     @Override
-    public OrderViewResponseDto findByIdToFetchAll(OrderId id) {
-        OrderViewResponseDto resultSet = jpaQueryFactory
+    public OrderViewResponse findByIdToFetchAll(OrderId id) {
+        OrderViewResponse resultSet = jpaQueryFactory
                 .from(order)
                 .join(order.orderLines,orderLine)
                 .where(id == null ? null : order.id.eq(id))
                 .transform(
                         groupBy(order.id)
                                 .as(
-                                        new QOrderViewResponseDto(
+                                        new QOrderViewResponse(
                                                 order.id.id,
                                                 order.orderer,
                                                 order.orderStore,
@@ -97,7 +96,7 @@ public class OrderQueryRepositoryImpl implements OrderQueryRepositoryCustom{
                 );
     }
 
-    private List<OrderViewResponseDto> getContents(OrderSearchRequest orderSearchRequest, Pageable pageable) {
+    private List<OrderViewResponse> getContents(OrderSearchRequest orderSearchRequest, Pageable pageable) {
 
         return jpaQueryFactory
                 .from(order)
@@ -114,7 +113,7 @@ public class OrderQueryRepositoryImpl implements OrderQueryRepositoryCustom{
                 .limit(pageable.getPageSize())
                 .transform(
                         groupBy(order.id)
-                                .list(new QOrderViewResponseDto(
+                                .list(new QOrderViewResponse(
                                         order.id.id,
                                         order.orderer,
                                         order.orderStore,

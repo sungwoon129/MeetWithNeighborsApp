@@ -81,7 +81,7 @@ public class User extends BaseTimeEntity {
                 .id(id.getId())
                 .email(email)
                 .nickname(nickname)
-                .address(address)
+                .address(address.toResponseDto())
                 .groups(groups)
                 .role(role)
                 .state(state)

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.weyoui.weyouiappcore.common.exception.ErrorCode;
 import io.weyoui.weyouiappcore.common.exception.ErrorResponse;
 import io.weyoui.weyouiappcore.common.model.CommonResponse;
-import io.weyoui.weyouiappcore.order.query.application.dto.OrderViewResponseDto;
+import io.weyoui.weyouiappcore.order.query.application.dto.OrderViewResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -60,7 +60,7 @@ class OrderControllerTest {
                 .andReturn();
 
         //then
-        CommonResponse<OrderViewResponseDto> response = objectMapper.readValue(result.getResponse().getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {});
+        CommonResponse<OrderViewResponse> response = objectMapper.readValue(result.getResponse().getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {});
         assertThat(response.getData().getOrderer().getName()).isEqualTo(expectedOrdererName);
         assertThat(response.getData().getTotalAmounts().getValue()).isEqualTo(expectedOrderAmounts);
     }

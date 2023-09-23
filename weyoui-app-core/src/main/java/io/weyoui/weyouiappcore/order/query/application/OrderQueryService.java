@@ -4,7 +4,7 @@ import io.weyoui.weyouiappcore.aspects.PerfLogging;
 import io.weyoui.weyouiappcore.order.command.domain.Order;
 import io.weyoui.weyouiappcore.order.command.domain.OrderId;
 import io.weyoui.weyouiappcore.order.query.application.dto.OrderSearchRequest;
-import io.weyoui.weyouiappcore.order.query.application.dto.OrderViewResponseDto;
+import io.weyoui.weyouiappcore.order.query.application.dto.OrderViewResponse;
 import io.weyoui.weyouiappcore.order.query.infrastructure.OrderQueryRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,11 +25,11 @@ public class OrderQueryService {
     }
 
     @PerfLogging
-    public Page<OrderViewResponseDto> findByConditions(OrderSearchRequest orderSearchRequest, Pageable pageable) {
+    public Page<OrderViewResponse> findByConditions(OrderSearchRequest orderSearchRequest, Pageable pageable) {
         return orderQueryRepository.findByConditions(orderSearchRequest, pageable);
     }
 
-    public OrderViewResponseDto findByIdToFetchAll(OrderId orderId) {
+    public OrderViewResponse findByIdToFetchAll(OrderId orderId) {
         return orderQueryRepository.findByIdToFetchAll(orderId);
     }
 }

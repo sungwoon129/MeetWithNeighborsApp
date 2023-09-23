@@ -16,7 +16,7 @@ import io.weyoui.weyouiappcore.order.command.domain.Canceller;
 import io.weyoui.weyouiappcore.order.command.domain.OrderId;
 import io.weyoui.weyouiappcore.order.query.application.OrderQueryService;
 import io.weyoui.weyouiappcore.order.query.application.dto.OrderSearchRequest;
-import io.weyoui.weyouiappcore.order.query.application.dto.OrderViewResponseDto;
+import io.weyoui.weyouiappcore.order.query.application.dto.OrderViewResponse;
 import io.weyoui.weyouiappcore.store.command.domain.StoreId;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import org.springframework.data.domain.Page;
@@ -63,8 +63,8 @@ public class OrderController {
     @Operation(summary = "주문 목록 조회", description = "주문 목록 조회(검색 조건 ; 주문자 모임 ID, 주문자 회원 ID, 주문자 이름, 주문 상태, 주문 일) ")
     @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
     @GetMapping("/api/v1/users/orders")
-    public ResponseEntity<CommonResponse<List<OrderViewResponseDto>>> findByConditions(OrderSearchRequest orderSearchRequest, @LimitedPageSize(maxSize = 100) Pageable pageable) {
-        Page<OrderViewResponseDto> page = orderQueryService.findByConditions(orderSearchRequest, pageable);
+    public ResponseEntity<CommonResponse<List<OrderViewResponse>>> findByConditions(OrderSearchRequest orderSearchRequest, @LimitedPageSize(maxSize = 100) Pageable pageable) {
+        Page<OrderViewResponse> page = orderQueryService.findByConditions(orderSearchRequest, pageable);
 
         return ResponseEntity.ok().body(new CommonResponse<>(page.getContent(), page.getTotalElements()));
     }
@@ -72,11 +72,11 @@ public class OrderController {
     @Operation(summary = "주문 상세 조회", description = "주문 ID로 단일 주문 상세 조회")
     @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
     @GetMapping("/api/v1/users/order/{orderId}")
-    public ResponseEntity<CommonResponse<OrderViewResponseDto>> findByIdToFetchAll(@PathVariable OrderId orderId) {
+    public ResponseEntity<CommonResponse<OrderViewResponse>> findByIdToFetchAll(@PathVariable OrderId orderId) {
 
-        OrderViewResponseDto orderViewResponseDto = orderQueryService.findByIdToFetchAll(orderId);
+        OrderViewResponse orderViewResponse = orderQueryService.findByIdToFetchAll(orderId);
 
-        return ResponseEntity.ok().body(new CommonResponse<>(orderViewResponseDto));
+        return ResponseEntity.ok().body(new CommonResponse<>(orderViewResponse));
 
     }
 

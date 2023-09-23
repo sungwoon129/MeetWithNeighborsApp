@@ -1,6 +1,6 @@
 package io.weyoui.weyouiappcore.user.query.application.dto;
 
-import io.weyoui.weyouiappcore.common.model.Address;
+import io.weyoui.weyouiappcore.common.model.AddressResponse;
 import io.weyoui.weyouiappcore.groupMember.command.domain.GroupMember;
 import io.weyoui.weyouiappcore.user.command.domain.DeviceInfo;
 import io.weyoui.weyouiappcore.user.command.domain.RoleType;
@@ -22,7 +22,7 @@ public class UserResponse {
 
     private String nickname;
 
-    private Address address;
+    private AddressResponse address;
 
     private Set<GroupMember> groups;
 

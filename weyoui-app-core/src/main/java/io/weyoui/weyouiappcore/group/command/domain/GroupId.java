@@ -21,6 +21,10 @@ public class GroupId implements Serializable {
         this.id = id;
     }
 
+    public static GroupId of(String id) {
+        return new GroupId(id);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
