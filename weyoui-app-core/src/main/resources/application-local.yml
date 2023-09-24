@@ -49,6 +49,8 @@ rabbitmq:
   routing:
     pay:
       key: weyoui.pay
+    refund:
+      key: weyoui.key
 
 
 jwt:

@@ -10,7 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PaymentRequest {
 
+    private String paymentId;
     private String orderId;
     private PaymentMethod method;
     private int totalAmounts;
+    private String reqType;
 }
