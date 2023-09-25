@@ -38,6 +38,7 @@ public class UserAuthService {
                 .id(userId)
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .deviceInfo(request.getDeviceInfo())
                 .state(UserState.ACTIVE)
                 .role(RoleType.ROLE_USER)
                 .build();
