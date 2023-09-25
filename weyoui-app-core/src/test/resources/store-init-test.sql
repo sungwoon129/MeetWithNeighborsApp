@@ -33,6 +33,12 @@ values ("테스트 주문",1695026980,"임의의 가게","store1","group1","임�
 insert into order_line (order_id,line_idx,amounts,name,price,product_id,quantity)
 values ("order1",0,30000,"임의의 상품",10000,"product1",3);
 
+insert into orders (message,order_date,name,order_store_id,orderer_id,orderer_name,orderer_phone,user_id,payment_id,payment_method,payment_state,state,total_amounts,order_id)
+values ("테스트 주문2",1695026980,"임의의 가게","store1","group1","임의의 모임","01012345678","user1","payment1",null,null,"PAYMENT_COMPLETE",30000,"order2");
+
+insert into order_line (order_id,line_idx,amounts,name,price,product_id,quantity)
+values ("order2",0,30000,"임의의 상품",10000,"product1",3);
+
 insert into image(image_path, image_type, product_id, list_idx) values('external/1','external','product1',0);
 insert into image(image_path, image_type, product_id, list_idx) values('internal/1','internal','product1',1);
 
