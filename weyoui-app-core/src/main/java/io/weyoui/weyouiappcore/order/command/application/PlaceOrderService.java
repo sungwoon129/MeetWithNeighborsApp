@@ -39,9 +39,11 @@ public class PlaceOrderService {
         if(!errors.isEmpty()) throw new ValidationErrorException(errors);
 
         List<OrderLine> orderLines = new ArrayList<>();
+        int idx = 0;
         for(OrderProduct op : orderRequest.getOrderProducts()) {
             Product product = productQueryService.findById(op.getProductId());
-            orderLines.add(new OrderLine(product.getId(), product.getName(), product.getPrice(), op.getQuantity()));
+            orderLines.add(new OrderLine(product.getId(), product.getName(), product.getPrice(), op.getQuantity(), idx));
+            idx++;
         }
         OrderId id = orderRepository.nextId();
         Orderer orderer = ordererService.createOrderer(orderRequest.getGroupId(), userId);

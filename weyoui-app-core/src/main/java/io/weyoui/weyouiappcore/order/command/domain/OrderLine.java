@@ -25,7 +25,6 @@ public class OrderLine {
 
     private int quantity;
 
-    // TODO : orderLine 생성 시점에 lineIdx 순서대로 생성되도록 변경필요
     @Column(name = "line_idx")
     private int lineIdx;
 
@@ -35,12 +34,13 @@ public class OrderLine {
 
     protected OrderLine() {}
 
-    public OrderLine(ProductId productId, String name, Money price, int quantity) {
+    public OrderLine(ProductId productId, String name, Money price, int quantity, int lineIdx) {
         this.productId = productId;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
         this.amounts = calculateAmounts();
+        this.lineIdx = lineIdx;
     }
 
     private Money calculateAmounts() {

@@ -16,7 +16,6 @@ public class OrderRequestValidator {
             if(orderRequest.getOrderProducts().isEmpty()) errors.add(ErrorResponse.of(ErrorCode.VALIDATION_FAILED, "orderProduct field must be at least 1 in length."));
         }
 
-
         return errors;
     }
 }
