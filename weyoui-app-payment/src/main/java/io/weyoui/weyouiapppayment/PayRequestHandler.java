@@ -1,25 +1,31 @@
-package io.weyoui.weyouiappcore.order.infrastructure.pay;
+package io.weyoui.weyouiapppayment;
 
-import io.weyoui.weyouiappcore.order.command.application.dto.PaymentRequest;
-import io.weyoui.weyouiappcore.order.command.domain.PaymentInfo;
-import io.weyoui.weyouiappcore.order.command.domain.PaymentState;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.concurrent.ThreadLocalRandom;
 
+@Component
 @RequiredArgsConstructor
-public class ExternalPaymentHandler {
+public class PayRequestHandler {
+
+    private final ObjectMapper objectMapper;
 
     @RabbitListener(queues = "weyoui.paymentQueue")
-    public PaymentInfo consume(PaymentRequest paymentRequest) {
+    public String consume(PaymentRequest paymentRequest) throws JsonProcessingException {
+        System.out.println(paymentRequest.getPaymentId());
+        System.out.println(paymentRequest.getReqType());
+        System.out.println(paymentRequest.getTotalAmounts());
 
-        return createPaymentInfo(paymentRequest);
+        return objectMapper.writeValueAsString(createPaymentInfo(paymentRequest));
 
     }
-
 
     private PaymentInfo createPaymentInfo(PaymentRequest paymentRequest) {
 
@@ -31,4 +37,5 @@ public class ExternalPaymentHandler {
         String number = String.format("%tY%<tm%<td%<tH-%d", new Date(), randomNum);
         return new PaymentInfo(number, paymentRequest.getMethod(), PaymentState.PAYMENT_COMPLETE, null);
     }
+
 }
