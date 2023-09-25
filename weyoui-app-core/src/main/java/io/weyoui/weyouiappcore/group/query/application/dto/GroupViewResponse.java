@@ -1,5 +1,6 @@
 package io.weyoui.weyouiappcore.group.query.application.dto;
 
+import io.weyoui.weyouiappcore.common.model.Address;
 import io.weyoui.weyouiappcore.common.model.AddressResponse;
 import io.weyoui.weyouiappcore.group.command.domain.GroupState;
 import io.weyoui.weyouiappcore.groupMember.query.application.dto.GroupMemberViewResponse;
@@ -23,10 +24,10 @@ public class GroupViewResponse {
     private List<GroupMemberViewResponse> groupMembers;
 
     @Builder
-    public GroupViewResponse(String groupId, String name, AddressResponse address, int headCount, int capacity, GroupState state, List<GroupMemberViewResponse> groupMembers) {
+    public GroupViewResponse(String groupId, String name, Address address, int headCount, int capacity, GroupState state, List<GroupMemberViewResponse> groupMembers) {
         this.groupId = groupId;
         this.name = name;
-        this.address = address;
+        this.address = address.toResponseDto();
         this.headCount = headCount;
         this.capacity = capacity;
         this.state = state;

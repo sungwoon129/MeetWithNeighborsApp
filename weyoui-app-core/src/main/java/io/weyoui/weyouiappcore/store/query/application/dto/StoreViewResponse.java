@@ -1,6 +1,7 @@
 package io.weyoui.weyouiappcore.store.query.application.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
+import io.weyoui.weyouiappcore.common.model.Address;
 import io.weyoui.weyouiappcore.common.model.AddressResponse;
 import io.weyoui.weyouiappcore.product.query.application.dto.ProductViewResponse;
 import io.weyoui.weyouiappcore.store.command.domain.Owner;
@@ -31,11 +32,11 @@ public class StoreViewResponse {
 
     @QueryProjection
     @Builder
-    public StoreViewResponse(StoreId storeId, String name, Owner owner, AddressResponse address, List<ProductViewResponse> productInfos, Float rating, StoreCategory category, StoreState state) {
+    public StoreViewResponse(StoreId storeId, String name, Owner owner, Address address, List<ProductViewResponse> productInfos, Float rating, StoreCategory category, StoreState state) {
         this.storeId = storeId;
         this.name = name;
         this.owner = owner;
-        this.address = address;
+        this.address = address.toResponseDto();
         this.productInfos = productInfos.stream().filter(productViewResponse -> productViewResponse.getId() != null).collect(Collectors.toList());
         this.rating = rating;
         this.category = category;

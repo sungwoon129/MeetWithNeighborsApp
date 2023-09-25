@@ -78,7 +78,7 @@ public class Group extends BaseTimeEntity {
         return GroupViewResponse.builder()
                 .groupId(id.getId())
                 .name(name)
-                .address(place.toResponseDto())
+                .address(place)
                 .headCount(getHeadCount())
                 .capacity(capacity)
                 .state(state)
