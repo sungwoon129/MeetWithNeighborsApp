@@ -1,4 +1,7 @@
 spring:
+  devtools:
+    livereload:
+      enabled: off
   config:
     activate:
       on-profile: local
@@ -15,7 +18,7 @@ spring:
   jpa:
     open-in-view: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
