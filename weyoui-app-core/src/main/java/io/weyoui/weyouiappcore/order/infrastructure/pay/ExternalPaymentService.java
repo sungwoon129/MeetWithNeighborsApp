@@ -38,7 +38,7 @@ public class ExternalPaymentService implements PaymentService {
 
         PaymentInfo paymentInfo = (PaymentInfo) rabbitTemplate.convertSendAndReceive(exchangeName, routingKey, paymentRequest);
 
-        order.setPaymentInfo(paymentInfo);
+        order.completePayment(paymentInfo);
 
     }
 

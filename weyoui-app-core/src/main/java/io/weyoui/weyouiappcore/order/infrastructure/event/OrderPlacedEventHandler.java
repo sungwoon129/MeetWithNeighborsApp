@@ -21,7 +21,7 @@ public class OrderPlacedEventHandler {
 
         orderAlarmService.alarm(event.getId(), event.getOrderLines(),event.getOrderDate(), event.getTotalAmounts());
 
-        PaymentRequest paymentRequest = new PaymentRequest(event.getId(), PaymentMethod.findByCode(event.getPaymentMethodCode()), event.getTotalAmounts());
+        PaymentRequest paymentRequest = new PaymentRequest(event.getId(), PaymentMethod.findByCode(event.getPaymentMethodCode()), event.getTotalAmounts(), "pay");
         paymentService.payment(paymentRequest);
     }
 }

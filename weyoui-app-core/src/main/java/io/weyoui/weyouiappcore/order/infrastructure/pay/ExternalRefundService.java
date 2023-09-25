@@ -1,7 +1,10 @@
 package io.weyoui.weyouiappcore.order.infrastructure.pay;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.weyoui.weyouiappcore.common.exception.ExternalPaymentException;
 import io.weyoui.weyouiappcore.order.command.application.RefundService;
+import io.weyoui.weyouiappcore.order.command.application.dto.PaymentRequest;
 import io.weyoui.weyouiappcore.order.command.domain.Order;
 import io.weyoui.weyouiappcore.order.command.domain.OrderId;
 import io.weyoui.weyouiappcore.order.command.domain.PaymentInfo;
@@ -27,24 +30,23 @@ public class ExternalRefundService implements RefundService {
     private String routingKey;
 
     private final OrderQueryService orderQueryService;
+    private final ObjectMapper objectMapper;
+
 
     @Override
-    public void refund(String orderId) {
+    public void refund(String orderId) throws JsonProcessingException {
         Order order = orderQueryService.findById(new OrderId(orderId));
 
-        PaymentInfo refundResult = (PaymentInfo) rabbitTemplate.convertSendAndReceive(exchangeName,
-                routingKey,
-                order.getPaymentInfo());
+        String result = (String) rabbitTemplate.convertSendAndReceive(exchangeName, routingKey,
+                new PaymentRequest(order.getPaymentInfo().getId(), orderId, order.getPaymentInfo().getMethod(), order.getTotalAmounts().getValue(), "refund"));
 
-        assert refundResult != null;
+        PaymentInfo refundResult = objectMapper.readValue(result, PaymentInfo.class);
 
         if(refundResult.getState() != PaymentState.PAYMENT_REFUND || refundResult.getCancelDate() == null) {
             throw new ExternalPaymentException("외부 결제서비스에서 환불처리가 실패하였습니다.");
         }
 
-        // TODO : 비동기적으로 외부서비스의 처리결과가 엔티티에 정상적으로 반영되는지 확인
-        order.setPaymentInfo(refundResult);
+        order.completeCancel(refundResult);
         log.info("주문이 취소되었습니다.");
-
     }
 }

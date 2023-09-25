@@ -1,5 +1,6 @@
 package io.weyoui.weyouiappcore.order.infrastructure.event;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.weyoui.weyouiappcore.order.command.application.RefundService;
 import io.weyoui.weyouiappcore.order.command.domain.OrderCanceledEvent;
 import org.springframework.context.event.EventListener;
@@ -14,7 +15,7 @@ public class OrderCanceledEventHandler {
     }
 
     @EventListener(OrderCanceledEvent.class)
-    public void handle(OrderCanceledEvent event) {
+    public void handle(OrderCanceledEvent event) throws JsonProcessingException {
         refundService.refund(event.getOrderId());
     }
 }

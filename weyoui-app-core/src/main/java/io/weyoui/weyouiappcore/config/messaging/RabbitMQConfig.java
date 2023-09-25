@@ -36,7 +36,10 @@ public class RabbitMQConfig {
     private String exchangeName;
 
     @Value("${rabbitmq.routing.pay.key}")
-    private String routingKey;
+    private String payRoutingKey;
+
+    @Value("${rabbitmq.routing.refund.key}")
+    private String refundRoutingKey;
 
     @Bean
     public Queue queue() {
@@ -49,8 +52,13 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Binding binding(Queue queue, DirectExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    public Binding payBinding(Queue queue, DirectExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(payRoutingKey);
+    }
+
+    @Bean
+    public Binding refundBinding(Queue queue, DirectExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(refundRoutingKey);
     }
 
     @Bean
@@ -76,6 +84,7 @@ public class RabbitMQConfig {
         final SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
         factory.setMessageConverter(jackson2JsonMessageConverter());
+
 
         return factory;
     }

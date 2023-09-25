@@ -104,13 +104,20 @@ public class Order extends BaseTimeEntity {
         calculateTotalAmounts();
     }
 
-    public void setPaymentInfo(PaymentInfo paymentInfo) {
-        if(paymentInfo == null) throw new ExternalPaymentException("외부 결제서비스 요청과정에서 에러가 발생했습니다.");
-        this.paymentInfo = paymentInfo;
+    public void completePayment(PaymentInfo payResponse) {
 
-        if(paymentInfo.getState().equals(PaymentState.PAYMENT_COMPLETE)) {
-            state = OrderState.PAYMENT_COMPLETE;
-        }
+        this.paymentInfo.validate(payResponse);
+
+        state = OrderState.PAYMENT_COMPLETE;
+        this.paymentInfo = payResponse;
+    }
+
+    public void completeCancel(PaymentInfo payResponse) {
+
+        this.paymentInfo.validate(payResponse);
+
+        state = OrderState.CANCEL;
+        this.paymentInfo = payResponse;
     }
 
 
@@ -136,7 +143,7 @@ public class Order extends BaseTimeEntity {
     }
 
     private boolean isCompletePayment() {
-        return this.state == OrderState.PAYMENT_COMPLETE || this.state == OrderState.CONFIRM || this.state == OrderState.COMPLETE;
+        return state == OrderState.PAYMENT_COMPLETE || state == OrderState.COMPLETE;
     }
 
 

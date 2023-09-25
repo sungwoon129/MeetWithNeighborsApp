@@ -1,5 +1,6 @@
 package io.weyoui.weyouiappcore.order.command.domain;
 
+import io.weyoui.weyouiappcore.common.exception.ExternalPaymentException;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -38,5 +39,10 @@ public class PaymentInfo {
 
     public void setPaymentMethod(String paymentMethodCode) {
         this.method = PaymentMethod.findByCode(paymentMethodCode);
+    }
+
+    public void validate(PaymentInfo paymentInfo) {
+        if(paymentInfo == null) throw new ExternalPaymentException("외부 결제서비스 요청과정에서 에러가 발생했습니다.");
+
     }
 }
