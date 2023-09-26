@@ -106,7 +106,7 @@ WeYouI(가제)는 SNS를 통해서 전 세계 사람들과 소통할 수 있지�
 
 
 
-### 스토리보드 ###
+### UI DESIGN ###
 전체 스토리보드는 [WeYou,I.pdf](https://github.com/sungwoon129/MeetWithNeighborsApp/files/11898676/WeYou.I.pdf) 에서 확인할 수 있습니다.
 아래는 전체 스토리보드 중 일부입니다.
 
@@ -119,4 +119,8 @@ WeYouI(가제)는 SNS를 통해서 전 세계 사람들과 소통할 수 있지�
 ![WeYou,I - 전체](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/7f8bf7d8-7685-4815-b78a-c93ff381a993)
 
 
+### SWAGGER API ###
 
+![image](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/2184c620-9431-4e1d-a634-0aa87c34b0d8)
+
+![image](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/af39593a-a375-4242-93d1-4caf788c2ee1)
