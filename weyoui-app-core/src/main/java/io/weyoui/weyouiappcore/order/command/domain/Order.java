@@ -139,12 +139,11 @@ public class Order extends BaseTimeEntity {
     }
 
     private void verifyCompletePayment() {
-        if(!isCompletePayment()) throw new IllegalStateException("결제가 완료되지 않은 주문입니다.");
+        if(!canCancel()) throw new IllegalStateException("결제가 완료되지 않은 주문입니다.");
     }
 
-    private boolean isCompletePayment() {
-        return state == OrderState.PAYMENT_COMPLETE || state == OrderState.COMPLETE;
+    private boolean canCancel() {
+        return state == OrderState.ORDER || state == OrderState.PAYMENT_COMPLETE;
     }
-
 
 }
