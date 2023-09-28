@@ -59,10 +59,15 @@ public class StoreQueryRepositoryImpl implements StoreQueryRepositoryCustom {
                 .from(store)
                 .leftJoin(store.productInfos,product).fetchJoin()
                 .leftJoin(product.images,image).fetchJoin()
+                .where(isValidState())
                 .fetchOne();
 
-        assert findStore != null;
+        if(findStore == null) throw new IllegalArgumentException("일치하는 store id를 가진 가게가 존재하지 않습니다.");
         return findStore.toResponseDto();
+    }
+
+    private BooleanExpression isValidState() {
+        return store.state.eq(StoreState.OPEN).or(store.state.eq(StoreState.NOT_OPEN));
     }
 
     private BooleanExpression equalsId(StoreId storeId) {
@@ -86,6 +91,7 @@ public class StoreQueryRepositoryImpl implements StoreQueryRepositoryCustom {
                 .from(store)
                 .leftJoin(store.productInfos, product)
                 .where(
+                        isValidState(),
                         nameLike(storeSearchRequest.getName()),
                         isInState(storeSearchRequest.getStates()),
                         isWithInDistance(storeSearchRequest.getLocation(), storeSearchRequest.getDistance())
@@ -106,6 +112,7 @@ public class StoreQueryRepositoryImpl implements StoreQueryRepositoryCustom {
                                                         product.id,
                                                         product.name,
                                                         product.price,
+                                                        product.stock,
                                                         product.state
                                                 )),
                                                 store.rating,
