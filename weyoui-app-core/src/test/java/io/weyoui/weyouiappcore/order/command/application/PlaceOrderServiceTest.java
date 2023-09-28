@@ -41,7 +41,7 @@ class PlaceOrderServiceTest {
         OrderRequest orderRequest = new OrderRequest();
 
         List<OrderProduct> orderLines = new ArrayList<>();
-        orderLines.add(new OrderProduct(new ProductId("product1"), "임의의 상품", new Money(10000), 3));
+        orderLines.add(new OrderProduct(new ProductId("product1"), new Money(10000), 3));
 
         orderRequest.setGroupId(new GroupId("group1"));
         orderRequest.setOrderProducts(orderLines);
