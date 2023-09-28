@@ -50,7 +50,7 @@ public class OrderController {
         return ResponseEntity.ok().body(new CommonResponse<>(orderId));
     }
 
-    @Operation(summary = "주문 취소", description = "주문 취소 정책에 부합되는 주문 취소 요청")
+    @Operation(summary = "주문 취소(환불 O)", description = "주문 상태에 따라 취소 정책 및 환불 정책에 부합되는 주문 취소")
     @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
     @PutMapping("/api/v1/users/order/{orderId}/cancel")
     public ResponseEntity<CommonResponse<?>> cancelOrder(@PathVariable OrderId orderId, @LoginUserId UserId userId, @RequestBody GroupId groupId) {
