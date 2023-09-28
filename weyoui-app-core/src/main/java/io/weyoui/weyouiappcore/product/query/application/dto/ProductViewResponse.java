@@ -20,16 +20,18 @@ public class ProductViewResponse {
     private ProductId id;
     private String name;
     private Money price;
+    private int stock;
     private ProductState state;
     private List<ImageViewResponse> images = new ArrayList<>();
 
 
     @Builder
     @QueryProjection
-    public ProductViewResponse(ProductId id, String name, Money price, ProductState state, List<ImageViewResponse> images) {
+    public ProductViewResponse(ProductId id, String name, Money price, int stock, ProductState state, List<ImageViewResponse> images) {
         this.id = id;
         this.name = name;
         this.price = price;
+        this.stock = stock;
         this.state = state;
         this.images = images.stream().filter(imageViewResponse -> imageViewResponse.getId() != null).collect(Collectors.toList());
     }

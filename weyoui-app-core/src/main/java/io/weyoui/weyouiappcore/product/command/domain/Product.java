@@ -1,6 +1,7 @@
 package io.weyoui.weyouiappcore.product.command.domain;
 
 import com.querydsl.core.util.StringUtils;
+import io.weyoui.weyouiappcore.common.exception.OutOfStockException;
 import io.weyoui.weyouiappcore.common.jpa.MoneyConverter;
 import io.weyoui.weyouiappcore.common.model.BaseTimeEntity;
 import io.weyoui.weyouiappcore.common.model.Money;
@@ -43,6 +44,9 @@ public class Product extends BaseTimeEntity {
     @Convert(converter = MoneyConverter.class)
     private Money price;
 
+    @Column(name = "stock")
+    private int stock;
+
     @BatchSize(size = 2000)
     @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
@@ -74,6 +78,7 @@ public class Product extends BaseTimeEntity {
                 .id(id)
                 .name(name)
                 .price(price)
+                .stock(stock)
                 .state(state)
                 .images(images.stream().map(Image::toResponseDto).collect(Collectors.toList()))
                 .build();
@@ -96,6 +101,14 @@ public class Product extends BaseTimeEntity {
 
     public void setStateByCode(String stateCode) {
         this.state = ProductState.findByCode(stateCode);
+    }
+
+    public void verifyStock(int orderQuantity) {
+        if(stock < orderQuantity) throw new OutOfStockException("남은 재고 수량보다 주문 수량이 더 많습니다. \n 주문 수량 : " + orderQuantity + "\n 재고 : " + stock);
+    }
+
+    public void verifyOnSale() {
+        if(state != ProductState.FOR_SALE) throw new IllegalStateException("현재 판매중인 상품이 아닙니다.");
     }
 
     public void updateImages(List<MultipartFile> files, List<FileInfo> fileInfos, StorageServiceRouter storageServiceRouter) {

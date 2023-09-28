@@ -42,6 +42,8 @@ public class PlaceOrderService {
         int idx = 0;
         for(OrderProduct op : orderRequest.getOrderProducts()) {
             Product product = productQueryService.findById(op.getProductId());
+            product.verifyStock(op.getQuantity());
+            product.verifyOnSale();
             orderLines.add(new OrderLine(product.getId(), product.getName(), product.getPrice(), op.getQuantity(), idx));
             idx++;
         }

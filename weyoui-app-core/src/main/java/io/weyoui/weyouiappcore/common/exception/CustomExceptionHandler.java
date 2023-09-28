@@ -115,6 +115,14 @@ public class CustomExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(value = OutOfStockException.class)
+    protected ResponseEntity<ErrorResponse> handleOutOfStockException(OutOfStockException e) {
+        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.VALIDATION_FAILED);
+        errorResponse.setHttpStatus(HttpStatus.BAD_REQUEST);
+        errorResponse.setDetail(e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 
 
 
