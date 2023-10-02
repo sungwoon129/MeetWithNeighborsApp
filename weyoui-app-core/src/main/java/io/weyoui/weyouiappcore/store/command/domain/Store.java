@@ -19,7 +19,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
-@Table(name = "store")
+@Table(name = "store", indexes = {
+        @Index(name = "idx_id_and_rating", columnList = "id, state, rating"),
+        @Index(name = "idx_id_and_rating", columnList = "address, state, rating")
+})
 @Entity
 public class Store extends BaseTimeEntity {
 
