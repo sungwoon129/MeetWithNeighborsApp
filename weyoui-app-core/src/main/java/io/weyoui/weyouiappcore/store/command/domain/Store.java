@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 
 @Getter
 @Table(name = "store", indexes = {
-        @Index(name = "idx_id_and_rating", columnList = "id, state, rating"),
-        @Index(name = "idx_id_and_rating", columnList = "address, state, rating")
+        @Index(name = "idx_id_state_rating", columnList = "store_id, state, rating"),
+        @Index(name = "idx_address_state_rating", columnList = "address1, state, rating")
 })
 @Entity
 public class Store extends BaseTimeEntity {
