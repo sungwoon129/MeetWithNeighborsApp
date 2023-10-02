@@ -1,7 +1,6 @@
 package io.weyoui.weyouiappcore.order.command.application;
 
 import io.weyoui.weyouiappcore.order.command.domain.*;
-import io.weyoui.weyouiappcore.order.query.application.dto.OrderViewResponse;
 import io.weyoui.weyouiappcore.order.query.infrastructure.OrderQueryRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
