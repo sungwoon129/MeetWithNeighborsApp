@@ -37,6 +37,7 @@ class PlaceOrderServiceTest {
     @DisplayName("주문 요청사항 검증을 통과하면 주문이 등록된다")
     @Test
     void canOrderAfterVerifying_test() {
+
         //given
         OrderRequest orderRequest = new OrderRequest();
 
