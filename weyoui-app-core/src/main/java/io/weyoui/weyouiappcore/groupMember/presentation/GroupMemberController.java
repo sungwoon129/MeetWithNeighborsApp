@@ -44,4 +44,13 @@ public class GroupMemberController {
 
         return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
     }
+
+    @Operation(summary = "모임에서 추방하기(모임장 역할 필요)", description = "모임장은 모임 구성원을 추방할 수 있다")
+    @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
+    @PutMapping("/api/v1/users/group-member/{groupMemberId}/state")
+    public ResponseEntity<CommonResponse<String>> kickOutMember(@LoginUserId UserId userId, @PathVariable GroupMemberId groupMemberId) {
+        groupMemberService.kickOutMember(groupMemberId, userId);
+
+        return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
+    }
 }
