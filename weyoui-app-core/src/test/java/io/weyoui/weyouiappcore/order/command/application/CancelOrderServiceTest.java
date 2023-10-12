@@ -30,7 +30,7 @@ class CancelOrderServiceTest {
 
         //when
         cancelOrderService.cancel(orderId, canceller);
-        Thread.sleep(1000);
+        Thread.sleep(1000); // 외부결제서비스 처리시간을 고려한 대기시간
 
         //then
         Order order = orderQueryRepository.findById(orderId).get();
