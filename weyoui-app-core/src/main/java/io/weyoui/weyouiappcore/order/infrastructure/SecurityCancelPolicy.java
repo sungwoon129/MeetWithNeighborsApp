@@ -25,9 +25,9 @@ public class SecurityCancelPolicy implements CancelOrderPolicy {
 
     private boolean isCurrentUserAdminRole() {
         SecurityContext context = SecurityContextHolder.getContext();
-        if(context == null) return false;
+        if(context == null) return false; // 회원 정보가 존재하지 않는 경우(Spring Security context 내에)
         Authentication authentication = context.getAuthentication();
-        if(authentication == null) return false;
+        if(authentication == null) return false; // 권한정보가 없는 경우
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         if(authorities == null) return false;
         return authorities.stream().anyMatch(auth -> auth.getAuthority().equals(RoleType.ROLE_ADMIN.name()));
