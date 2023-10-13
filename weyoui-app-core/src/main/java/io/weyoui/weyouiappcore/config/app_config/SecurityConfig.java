@@ -1,5 +1,6 @@
 package io.weyoui.weyouiappcore.config.app_config;
 
+import io.weyoui.weyouiappcore.user.command.application.UserTokenService;
 import io.weyoui.weyouiappcore.user.infrastructure.JwtTokenProvider;
 import io.weyoui.weyouiappcore.user.infrastructure.filter.CustomAccessDeniedHandler;
 import io.weyoui.weyouiappcore.user.infrastructure.filter.EntryPointUnauthorizedHandler;
@@ -7,6 +8,7 @@ import io.weyoui.weyouiappcore.user.infrastructure.filter.JwtAuthenticationFilte
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -30,13 +32,17 @@ import java.util.Collections;
 public class SecurityConfig {
 
 
-    private final String baseUrl;
+    private final String allowOrigin;
     private final JwtTokenProvider jwtTokenProvider;
+    private final UserTokenService userTokenService;
+    private final CustomOauth2UserService customOauth2UserService;
 
 
-    public SecurityConfig(@Value("${api.server.baseUrl}")String baseUrl, JwtTokenProvider jwtTokenProvider ) {
-        this.baseUrl = baseUrl;
+    public SecurityConfig(@Value("${api.client.allow-origin}")String allowOrigin, JwtTokenProvider jwtTokenProvider, UserTokenService userTokenService, CustomOauth2UserService customOauth2UserService ) {
+        this.allowOrigin = allowOrigin;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.userTokenService = userTokenService;
+        this.customOauth2UserService = customOauth2UserService;
     }
 
     @Bean
@@ -56,7 +62,6 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable);
 
-
         http.authorizeHttpRequests((authorizeHttpRequests) ->
                 authorizeHttpRequests
                         .requestMatchers("/api/v1/users/**").hasAnyRole("USER","ADMIN")
@@ -65,6 +70,9 @@ public class SecurityConfig {
                         .anyRequest().permitAll()
         );
 
+        http.oauth2Login(oauth2 -> oauth2
+                        .successHandler(new OAuth2LoginSeccessHandler(jwtTokenProvider,userTokenService))
+                        .userInfoEndpoint(endPoint -> endPoint.userService(customOauth2UserService)));
 
 
         return http.build();
@@ -73,8 +81,9 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Collections.singletonList(baseUrl));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+        configuration.setAllowedOrigins(Collections.singletonList(allowOrigin));
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedMethods(Arrays.asList(HttpMethod.GET.name(),HttpMethod.POST.name(),HttpMethod.PATCH.name(),HttpMethod.PUT.name(),HttpMethod.OPTIONS.name(),HttpMethod.DELETE.name()));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

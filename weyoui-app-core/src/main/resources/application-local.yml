@@ -37,6 +37,18 @@ spring:
     redis:
       host: localhost
       port: 6379
+  security:
+    oauth2:
+      client:
+        registration:
+          naver:
+            client-id: id
+            client-secret: secret
+            redirect-uri: {baseUrl}/{action}/oauth2/code/{registrationId}
+            authorization-grant-type: authorization_code
+            scope: nickname,email,gender,age,profile_image
+            client-name: Naver
+
 logging:
   level:
     org.hibernate:
@@ -54,6 +66,10 @@ rabbitmq:
       key: weyoui.pay
     refund:
       key: weyoui.key
+
+
+
+
 
 
 jwt:
@@ -85,3 +101,6 @@ api:
   server:
     baseUrl: http://localhost:8080
     description: local
+  client:
+    allow-origin: http://localhost:3000
+
