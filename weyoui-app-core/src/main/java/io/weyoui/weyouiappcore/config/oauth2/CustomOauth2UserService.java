@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.config.app_config;
+package io.weyoui.weyouiappcore.config.oauth2;
 
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;

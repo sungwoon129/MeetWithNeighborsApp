@@ -1,4 +1,4 @@
-package io.weyoui.weyouiappcore.config.app_config;
+package io.weyoui.weyouiappcore.config.oauth2;
 
 import io.weyoui.weyouiappcore.user.command.application.UserTokenService;
 import io.weyoui.weyouiappcore.user.infrastructure.JwtTokenProvider;
@@ -10,8 +10,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 
 import java.io.IOException;
 
-public class OAuth2LoginSeccessHandler implements AuthenticationSuccessHandler {
-    public OAuth2LoginSeccessHandler(JwtTokenProvider jwtTokenProvider, UserTokenService userTokenService) {
+public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
+    public OAuth2LoginSuccessHandler(JwtTokenProvider jwtTokenProvider, UserTokenService userTokenService) {
     }
 
     @Override

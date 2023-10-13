@@ -1,5 +1,7 @@
 package io.weyoui.weyouiappcore.config.app_config;
 
+import io.weyoui.weyouiappcore.config.oauth2.CustomOauth2UserService;
+import io.weyoui.weyouiappcore.config.oauth2.OAuth2LoginSuccessHandler;
 import io.weyoui.weyouiappcore.user.command.application.UserTokenService;
 import io.weyoui.weyouiappcore.user.infrastructure.JwtTokenProvider;
 import io.weyoui.weyouiappcore.user.infrastructure.filter.CustomAccessDeniedHandler;
@@ -71,7 +73,7 @@ public class SecurityConfig {
         );
 
         http.oauth2Login(oauth2 -> oauth2
-                        .successHandler(new OAuth2LoginSeccessHandler(jwtTokenProvider,userTokenService))
+                        .successHandler(new OAuth2LoginSuccessHandler(jwtTokenProvider,userTokenService))
                         .userInfoEndpoint(endPoint -> endPoint.userService(customOauth2UserService)));
 
 
