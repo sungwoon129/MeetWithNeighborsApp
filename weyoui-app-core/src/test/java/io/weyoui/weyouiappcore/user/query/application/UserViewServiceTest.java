@@ -22,7 +22,7 @@ class UserViewServiceTest {
     @InjectMocks
     UserViewService userViewService;
 
-    @DisplayName("중복된 이메일은 예외를 발생시킨다")
+    @DisplayName("중복된 이메일로 회원가입을 시도할 경우 예외를 발생시킨다")
     @Test
     void duplicateEmailTest_fail() {
         //given
