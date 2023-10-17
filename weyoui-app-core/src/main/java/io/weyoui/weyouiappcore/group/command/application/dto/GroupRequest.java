@@ -2,6 +2,7 @@ package io.weyoui.weyouiappcore.group.command.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.weyoui.weyouiappcore.common.model.Address;
+import jakarta.validation.constraints.Max;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,8 +13,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class GroupRequest {
 
+    @Max(50)
     private String name;
     private String category;
+    @Max(999)
     private String description;
     private Address place;
     private int capacity;

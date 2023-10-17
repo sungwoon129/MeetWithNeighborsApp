@@ -1,5 +1,7 @@
 package io.weyoui.weyouiappcore.group.command.application;
 
+import io.weyoui.weyouiappcore.common.exception.ErrorResponse;
+import io.weyoui.weyouiappcore.common.exception.ValidationErrorException;
 import io.weyoui.weyouiappcore.group.command.application.dto.GroupRequest;
 import io.weyoui.weyouiappcore.group.command.domain.Group;
 import io.weyoui.weyouiappcore.group.command.domain.GroupCategory;
@@ -10,6 +12,8 @@ import io.weyoui.weyouiappcore.groupMember.command.domain.GroupMember;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Transactional
 @Service
@@ -25,6 +29,10 @@ public class GroupService {
 
     public GroupId createGroup(GroupRequest groupRequest) {
         GroupId groupId = groupRepository.nextId();
+        List<ErrorResponse> errors = validateGroupRequest(groupRequest);
+
+        if(!errors.isEmpty()) throw new ValidationErrorException(errors);
+
         Group group = Group.builder()
                 .id(groupId)
                 .name(groupRequest.getName())
@@ -41,6 +49,10 @@ public class GroupService {
         groupRepository.save(group);
 
         return groupId;
+    }
+
+    private List<ErrorResponse> validateGroupRequest(GroupRequest groupRequest) {
+        return new GroupValidator().validate(groupRequest);
     }
 
     public void endActivity(GroupId groupId, UserId userId) {

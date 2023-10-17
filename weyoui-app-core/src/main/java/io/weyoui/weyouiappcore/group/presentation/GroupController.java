@@ -18,6 +18,7 @@ import io.weyoui.weyouiappcore.group.query.application.dto.GroupViewResponse;
 import io.weyoui.weyouiappcore.groupMember.command.application.GroupMemberService;
 import io.weyoui.weyouiappcore.groupMember.command.domain.GroupMemberId;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -43,7 +44,7 @@ public class GroupController {
     @Operation(summary = "모임 등록", description = "새로운 모임 등록")
     @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
     @PostMapping("/api/v1/users/group")
-    public ResponseEntity<CommonResponse<GroupAddResponse>> createGroup(@LoginUserId UserId userId, @RequestBody GroupRequest groupRequest) {
+    public ResponseEntity<CommonResponse<GroupAddResponse>> createGroup(@LoginUserId UserId userId, @RequestBody @Valid GroupRequest groupRequest) {
         GroupId groupId = groupService.createGroup(groupRequest);
         GroupMemberId groupMemberId = groupMemberService.addMemberToGroupAsLeader(userId, groupId);
 
@@ -106,7 +107,7 @@ public class GroupController {
     @Operation(summary = "모임 정보 변경", description = "모임 정보 변경")
     @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
     @PutMapping("/api/v1/users/groups/{groupId}")
-    public ResponseEntity<CommonResponse<?>> changeGroupInfo(@LoginUserId UserId userId, @PathVariable GroupId groupId, @RequestBody GroupRequest groupRequest) {
+    public ResponseEntity<CommonResponse<?>> changeGroupInfo(@LoginUserId UserId userId, @PathVariable GroupId groupId, @RequestBody @Valid GroupRequest groupRequest) {
 
         groupService.updateGroup(userId,groupId,groupRequest);
 
