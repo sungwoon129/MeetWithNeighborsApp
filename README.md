@@ -59,7 +59,7 @@ WeYouI(가제)는 SNS를 통해서 전 세계 사람들과 소통할 수 있지�
 + 가게 정보 수정
 + 가게 삭제
 + 가게 주문내역이 있는 모임은 주문시점으로부터 72시간내에 평점을 매길 수 있다.
-+ 가게의 평점은 모임의 구성원 모두가 매길 수 있으며, 구성원이 매긴 평점의 평균을 반영한다.
++ 가게의 평점은 모임의 구성원 모두가 매길 수 있으며, 구성원이 매긴 평점의 평균을 반영한다. [구현 예정]
 + 가게 목록 조회
     + 가게 목록은 사용자의 현재 위치를 기준으로 한다. 
 
@@ -96,9 +96,8 @@ WeYouI(가제)는 SNS를 통해서 전 세계 사람들과 소통할 수 있지�
 + Gradle 7.5
 + JPA(Hibernate 6.2.2 Final)
 + MySql
-+ Message Queue : RabbitMQ
-+ Redis
-
++ Message Queue : RabbitMQ : 주문 알람 처리 및 외부 결제서비스 호출 목적
++ Redis : JWT 토큰정보 관리 목적
 
 
 ### UML ###
@@ -109,6 +108,7 @@ WeYouI(가제)는 SNS를 통해서 전 세계 사람들과 소통할 수 있지�
 ### UI DESIGN ###
 전체 스토리보드는 [WeYou,I.pdf](https://github.com/sungwoon129/MeetWithNeighborsApp/files/11898676/WeYou.I.pdf) 에서 확인할 수 있습니다.
 아래는 전체 스토리보드 중 일부입니다.
+아직 API 구현이 완료되지 않아 화면단은 <b> 미구현 </b> 상태입니다.
 
 ![크기변환_홈 _ 로그인 정보가 없는 경우](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/c81e2c87-7f32-4310-a76f-5ef717e8e31b)
 ![크기변환_홈(모임) - 메인 - 목록 _ 로그인 정보가 있는 경우](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/daf4e810-e1a8-430d-8c99-71d9addd5b2e)
@@ -121,6 +121,12 @@ WeYouI(가제)는 SNS를 통해서 전 세계 사람들과 소통할 수 있지�
 
 ### SWAGGER API ###
 
+[URL] : 구현 예정
+
 ![image](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/2184c620-9431-4e1d-a634-0aa87c34b0d8)
 
 ![image](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/af39593a-a375-4242-93d1-4caf788c2ee1)
+
+
+
+
