@@ -46,6 +46,8 @@ public class Store extends BaseTimeEntity {
 
     private Float rating;
 
+    private long reviewCount;
+
     @Enumerated(EnumType.STRING)
     private StoreCategory category;
 
@@ -137,5 +139,11 @@ public class Store extends BaseTimeEntity {
         Product product = findStoreProduct(productId);
 
         product.setStateByCode(ProductState.DELETED.getCode());
+    }
+
+    public void calcRating(float avgRating) {
+        float sum = rating * reviewCount;
+        this.reviewCount += 1;
+        this.rating = (sum + avgRating) / reviewCount;
     }
 }
