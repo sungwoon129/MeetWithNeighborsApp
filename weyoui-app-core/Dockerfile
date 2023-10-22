@@ -6,6 +6,4 @@ COPY ${JAR_PATH}/weyoui-app-core-0.0.1-SNAPSHOT.jar /weyoui-server/weyoui-app-co
 
 WORKDIR /weyoui-server
 
-CMD ["java","-jar","weyoui-app-core-0.0.1-SNAPSHOT.jar"]
-
-ENTRYPOINT ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "weyoui-app-core.jar", "--spring.profiles.active=dev"]
