@@ -1,9 +1,11 @@
-FROM openjdk:17-alpine
-
-WORKDIR /usr/src/weyoui
+FROM adoptopenjdk:17-jdk-hotspot
 
 ARG JAR_PATH=./build/libs
 
-COPY ${JAR_PATH}/weyoui-app-core-0.0.1-SNAPSHOT.jar ${JAR_PATH}/weyoui-app-core-0.0.1-SNAPSHOT.jar
+COPY ${JAR_PATH}/weyoui-app-core-0.0.1-SNAPSHOT.jar /weyoui-server/weyoui-app-core.jar
 
-CMD ["java","-jar","./build/libs/weyoui-app-core-0.0.1-SNAPSHOT.jar"]
+WORKDIR /weyoui-server
+
+CMD ["java","-jar","weyoui-app-core-0.0.1-SNAPSHOT.jar"]
+
+ENTRYPOINT ["java", "-jar", "app.jar"]

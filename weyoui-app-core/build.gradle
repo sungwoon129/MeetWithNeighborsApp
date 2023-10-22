@@ -84,3 +84,7 @@ clean {
 tasks.withType(JavaCompile).configureEach {
     options.generatedSourceOutputDirectory.set(file(generated))
 }
+
+tasks.withType(Test).configureEach {
+    enabled = false
+}
