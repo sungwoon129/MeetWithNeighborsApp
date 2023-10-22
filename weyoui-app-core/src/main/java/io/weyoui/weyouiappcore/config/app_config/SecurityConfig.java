@@ -1,7 +1,5 @@
 package io.weyoui.weyouiappcore.config.app_config;
 
-import io.weyoui.weyouiappcore.config.oauth2.CustomOauth2UserService;
-import io.weyoui.weyouiappcore.config.oauth2.OAuth2LoginSuccessHandler;
 import io.weyoui.weyouiappcore.user.command.application.UserTokenService;
 import io.weyoui.weyouiappcore.user.infrastructure.JwtTokenProvider;
 import io.weyoui.weyouiappcore.user.infrastructure.filter.CustomAccessDeniedHandler;
@@ -37,14 +35,14 @@ public class SecurityConfig {
     private final String allowOrigin;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserTokenService userTokenService;
-    private final CustomOauth2UserService customOauth2UserService;
+    //private final CustomOauth2UserService customOauth2UserService;
 
 
-    public SecurityConfig(@Value("${api.client.allow-origin}")String allowOrigin, JwtTokenProvider jwtTokenProvider, UserTokenService userTokenService, CustomOauth2UserService customOauth2UserService ) {
+    public SecurityConfig(@Value("${api.client.allow-origin}")String allowOrigin, JwtTokenProvider jwtTokenProvider, UserTokenService userTokenService /*, CustomOauth2UserService customOauth2UserService */) {
         this.allowOrigin = allowOrigin;
         this.jwtTokenProvider = jwtTokenProvider;
         this.userTokenService = userTokenService;
-        this.customOauth2UserService = customOauth2UserService;
+        //this.customOauth2UserService = customOauth2UserService;
     }
 
     @Bean
@@ -72,9 +70,9 @@ public class SecurityConfig {
                         .anyRequest().permitAll()
         );
 
-        http.oauth2Login(oauth2 -> oauth2
+/*        http.oauth2Login(oauth2 -> oauth2
                         .successHandler(new OAuth2LoginSuccessHandler(jwtTokenProvider,userTokenService))
-                        .userInfoEndpoint(endPoint -> endPoint.userService(customOauth2UserService)));
+                        .userInfoEndpoint(endPoint -> endPoint.userService(customOauth2UserService)));*/
 
 
         return http.build();
