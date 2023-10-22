@@ -1,5 +1,7 @@
 ## 내 주변 이웃들과의 소모임 앱 WeYou,I ##
 
+<h3><b>[SWAGGER API 링크](http://20.39.194.127:48080/api-docs/swagger-ui/index.html#/)</b></h3>
+
 ### 개요 ###
 WeYouI(가제)는 SNS를 통해서 전 세계 사람들과 소통할 수 있지만, 우리 옆집에 사는 이웃과는 소통이 적은 사회에서 이웃들과 조금 더 
 친해지길 바라는 목적을 가지고 만든 어플리케이션입니다. 
@@ -121,7 +123,7 @@ WeYouI(가제)는 SNS를 통해서 전 세계 사람들과 소통할 수 있지�
 
 ### SWAGGER API ###
 
-[URL] : 구현 예정
+<b>[SWAGGER API 링크](http://20.39.194.127:48080/api-docs/swagger-ui/index.html#/)</b>
 
 ![image](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/2184c620-9431-4e1d-a634-0aa87c34b0d8)
 
