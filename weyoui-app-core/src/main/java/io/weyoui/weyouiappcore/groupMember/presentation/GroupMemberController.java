@@ -38,7 +38,7 @@ public class GroupMemberController {
 
     @Operation(summary = "모임에서 나가기", description = "모임에서 나가기")
     @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
-    @PutMapping("/api/v1/users/group-member/{groupMemberId}/state")
+    @PutMapping("/api/v1/users/group-member/{groupMemberId}/state/kick")
     public ResponseEntity<CommonResponse<String>> leaveGroup(@LoginUserId UserId userId, @PathVariable GroupMemberId groupMemberId) {
         groupMemberService.leave(groupMemberId, userId);
 
@@ -47,7 +47,7 @@ public class GroupMemberController {
 
     @Operation(summary = "모임에서 추방하기(모임장 역할 필요)", description = "모임장은 모임 구성원을 추방할 수 있다")
     @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
-    @PutMapping("/api/v1/users/group-member/{groupMemberId}/state")
+    @PutMapping("/api/v1/users/group-member/{groupMemberId}/state/leave")
     public ResponseEntity<CommonResponse<String>> kickOutMember(@LoginUserId UserId userId, @PathVariable GroupMemberId groupMemberId) {
         groupMemberService.kickOutMember(groupMemberId, userId);
 
