@@ -21,12 +21,12 @@ public class SignUpRequest {
     private String email;
 
     @Schema(description = "password", nullable = false, example = "exam")
-    @Min(value = 4, message = "비밀번호는 4자리 이상의 문자 혹은 숫자로 이루어져야 합니다.")
+    @Min(value = 3, message = "비밀번호는 4자리 이상의 문자 혹은 숫자로 이루어져야 합니다.")
     @NotEmpty(message = "비밀번호 필드는 필수입력값입니다.")
     private String password;
 
     @Schema(description = "password 확인", nullable = false, example = "exam")
-    @Min(value = 4, message = "비밀번호는 4자리 이상의 문자 혹은 숫자로 이루어져야 합니다.")
+    @Min(value = 3, message = "비밀번호는 4자리 이상의 문자 혹은 숫자로 이루어져야 합니다.")
     @NotEmpty(message = "비밀번호 확인 필드는 필수입력값입니다.")
     private String passwordConfirm;
     private DeviceInfo deviceInfo;
