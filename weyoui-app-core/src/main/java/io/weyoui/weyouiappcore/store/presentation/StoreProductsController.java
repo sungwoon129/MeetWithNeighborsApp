@@ -8,6 +8,8 @@ import io.weyoui.weyouiappcore.common.model.ResultYnType;
 import io.weyoui.weyouiappcore.config.app_config.LoginUserId;
 import io.weyoui.weyouiappcore.product.command.application.dto.ProductRequest;
 import io.weyoui.weyouiappcore.product.command.domain.ProductId;
+import io.weyoui.weyouiappcore.product.query.application.dto.ProductQueryService;
+import io.weyoui.weyouiappcore.product.query.application.dto.ProductViewResponse;
 import io.weyoui.weyouiappcore.store.command.application.DeleteStoreProductService;
 import io.weyoui.weyouiappcore.store.command.application.RegisterProductService;
 import io.weyoui.weyouiappcore.store.command.application.UpdateProductService;
@@ -24,11 +26,13 @@ public class StoreProductsController {
     private final RegisterProductService registerProductService;
     private final UpdateProductService updateProductService;
     private final DeleteStoreProductService deleteStoreProductService;
+    private final ProductQueryService productQueryService;
 
-    public StoreProductsController(RegisterProductService registerProductService, UpdateProductService updateProductService, DeleteStoreProductService deleteStoreProductService) {
+    public StoreProductsController(RegisterProductService registerProductService, UpdateProductService updateProductService, DeleteStoreProductService deleteStoreProductService, ProductQueryService productQueryService) {
         this.registerProductService = registerProductService;
         this.updateProductService = updateProductService;
         this.deleteStoreProductService = deleteStoreProductService;
+        this.productQueryService = productQueryService;
     }
 
     @Operation(summary = "가게 상품 등록", description = "본인 가게 새 상품 등록")
@@ -57,5 +61,15 @@ public class StoreProductsController {
         deleteStoreProductService.deleteStoreProduct(storeId, productId, userId);
 
         return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
+    }
+
+    @Operation(summary = "상품에 등록된 모든 이미지를 포함한 가게 상품 상세 정보 조회", description = "가게 상품 상세 정보 조회(상품과 관련된 모든 이미지 포함)")
+    @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
+    @GetMapping("/api/v1/users/store/product/{productId}")
+    public ResponseEntity<CommonResponse<ProductViewResponse>> findById(@PathVariable ProductId productId) {
+
+        ProductViewResponse productViewResponse = productQueryService.findById(productId).toResponseDto();
+
+        return ResponseEntity.ok().body(new CommonResponse<>(productViewResponse));
     }
 }

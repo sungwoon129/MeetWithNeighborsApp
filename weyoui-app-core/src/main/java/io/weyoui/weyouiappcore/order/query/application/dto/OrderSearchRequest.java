@@ -17,7 +17,7 @@ import java.util.Arrays;
 @NoArgsConstructor
 public class OrderSearchRequest {
 
-    @Schema(name = "주문자", description = "주문자 이름")
+    @Schema(name = "orderer", description = "주문자 이름")
     private Orderer orderer;
     private String[] states = Arrays.stream(OrderState.values()).map(OrderState::getCode).toArray(String[]::new);
     private LocalDateTime startDateTime = LocalDateTime.now().with(LocalTime.MIN);

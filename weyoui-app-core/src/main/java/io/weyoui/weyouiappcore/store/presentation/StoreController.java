@@ -77,7 +77,8 @@ public class StoreController {
         return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
     }
 
-    @Operation(summary = "가게 삭제", description = "본인 가게 삭제")
+    @Operation(summary = "가게 삭제", description = "자신이 생성한 가게 삭제")
+    @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
     @PutMapping("/api/v1/users/store/{storeId}/delete")
     public ResponseEntity<CommonResponse<?>> deleteStore(@LoginUserId UserId userId, @PathVariable StoreId storeId) {
         storeService.deleteStore(userId,storeId);

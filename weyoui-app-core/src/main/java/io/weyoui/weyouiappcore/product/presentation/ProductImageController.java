@@ -22,16 +22,15 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Tag(name = "상품 이미지")
+@Tag(name = "파일")
 @RestController
 public class ProductImageController {
 
     private final UpdateProductImageService updateProductImageService;
-    private final ProductQueryService productQueryService;
 
-    public ProductImageController(UpdateProductImageService updateProductImageService, ProductQueryService productQueryService) {
+
+    public ProductImageController(UpdateProductImageService updateProductImageService) {
         this.updateProductImageService = updateProductImageService;
-        this.productQueryService = productQueryService;
     }
 
 
@@ -48,13 +47,4 @@ public class ProductImageController {
         return ResponseEntity.created(new URI("/store/product/images")).body(new CommonResponse<>(ResultYnType.Y));
     }
 
-    @Operation(summary = "가게 상품 상세 정보 조회", description = "가게 상품 상세 정보 조회(이미지 포함)")
-    @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
-    @GetMapping("/api/v1/users/store/product/{productId}")
-    public ResponseEntity<CommonResponse<ProductViewResponse>> findById(@PathVariable ProductId productId) {
-
-        ProductViewResponse productViewResponse = productQueryService.findById(productId).toResponseDto();
-
-        return ResponseEntity.ok().body(new CommonResponse<>(productViewResponse));
-    }
 }
