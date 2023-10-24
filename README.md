@@ -103,6 +103,7 @@ WeYouI(가제)는 SNS를 통해서 전 세계 사람들과 소통할 수 있지�
 + Message Queue : RabbitMQ : 주문 알람 처리 및 외부 결제서비스 호출 목적
 + Redis : JWT 토큰정보 관리 목적
 + Azure : 애플리케이션 배포 목적
++ Docker : 추후 비용문제로 애플리케이션, redis, rabbitmq를 다른 클라우드 서비스로 옮기기 편하게 하기 위해 사용
 
 ### UML ###
 ![UML](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/9c5e5fd5-bf60-4fbf-8cf0-77644b20fdf4)
