@@ -1,6 +1,8 @@
 ## 내 주변 이웃들과의 소모임 앱 WeYou,I ##
 
-<h3> <b> [SWAGGER API 링크](http://20.39.194.127:48080/api-docs/swagger-ui/index.html#/) </b> </h3>
+<h3><b> 
+[SWAGGER API 링크](http://20.39.194.127:48080/api-docs/swagger-ui/index.html#/) 
+</b></h3>
 
 ### 개요 ###
 WeYouI(가제)는 SNS를 통해서 전 세계 사람들과 소통할 수 있지만, 우리 옆집에 사는 이웃과는 소통이 적은 사회에서 이웃들과 조금 더 
@@ -60,7 +62,7 @@ WeYouI(가제)는 SNS를 통해서 전 세계 사람들과 소통할 수 있지�
 + 가게 등록
 + 가게 정보 수정
 + 가게 삭제
-+ 가게 주문내역이 있는 모임은 주문시점으로부터 72시간내에 평점을 매길 수 있다.
++ 가게 주문내역이 있는 모임은 주문시점으로부터 72시간내에 평점을 매길 수 있다. [구현 예정]
 + 가게의 평점은 모임의 구성원 모두가 매길 수 있으며, 구성원이 매긴 평점의 평균을 반영한다. [구현 예정]
 + 가게 목록 조회
     + 가게 목록은 사용자의 현재 위치를 기준으로 한다. 
@@ -97,10 +99,10 @@ WeYouI(가제)는 SNS를 통해서 전 세계 사람들과 소통할 수 있지�
 + SpringBoot 3.1
 + Gradle 7.5
 + JPA(Hibernate 6.2.2 Final)
-+ MySql
++ MySql(Azure Database for Mysql)
 + Message Queue : RabbitMQ : 주문 알람 처리 및 외부 결제서비스 호출 목적
 + Redis : JWT 토큰정보 관리 목적
-
++ Azure : 애플리케이션 배포 목적
 
 ### UML ###
 ![UML](https://github.com/sungwoon129/MeetWithNeighborsApp/assets/43958570/9c5e5fd5-bf60-4fbf-8cf0-77644b20fdf4)
