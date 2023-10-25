@@ -44,9 +44,9 @@ public class Store extends BaseTimeEntity {
     private Set<Product> productInfos = new HashSet<>();
 
 
-    private Float rating;
+    private Float rating = 0.0f;
 
-    private long reviewCount;
+    private long reviewCount = 0;
 
     @Enumerated(EnumType.STRING)
     private StoreCategory category;
