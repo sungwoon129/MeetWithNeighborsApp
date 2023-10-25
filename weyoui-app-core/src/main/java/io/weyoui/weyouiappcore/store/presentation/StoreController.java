@@ -10,7 +10,6 @@ import io.weyoui.weyouiappcore.config.app_config.LoginUserId;
 import io.weyoui.weyouiappcore.store.command.application.CreateStoreService;
 import io.weyoui.weyouiappcore.store.command.application.StoreService;
 import io.weyoui.weyouiappcore.store.command.application.dto.StoreRequest;
-import io.weyoui.weyouiappcore.store.command.domain.Store;
 import io.weyoui.weyouiappcore.store.command.domain.StoreId;
 import io.weyoui.weyouiappcore.store.query.application.StoreViewService;
 import io.weyoui.weyouiappcore.store.query.application.dto.StoreSearchRequest;
@@ -58,7 +57,7 @@ public class StoreController {
         return ResponseEntity.ok().body(new CommonResponse<>(storeViewService.findByIdToFetchAll(storeId)));
     }
 
-    @Operation(summary = "가게 목록 조회", description = "내 현재 위치로부터 가까운 가게 조회(기본 3km)")
+    @Operation(summary = "가게 목록 조회", description = "내 현재 위치로부터 가까운 가게 조회(기본 3km) \n 기본 조건으로만 검색하려면 storeSearchRequest, pageable를 {}로 설정하면 됩니다.")
     @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
     @GetMapping("/api/v1/users/stores")
     public ResponseEntity<CommonResponse<List<StoreViewResponse>>> search(StoreSearchRequest storeSearchRequest, @LimitedPageSize Pageable pageable) {
