@@ -74,7 +74,7 @@ public class GroupController {
         return ResponseEntity.ok().body(new CommonResponse<>(groupViewResponse));
     }
 
-    @Operation(summary = "모임 목록 조회", description = "모임 목록 조회")
+    @Operation(summary = "모임 목록 조회", description = "검색 조건 중 states는 B(활동 전), I(활동 중), E(활동 종료), D(삭제) 값 중 선택하여 검색가능합니다. \n 기본 조건으로만 검색하려면 GroupSearchRequest, pageable 모두 전달하지 않으면 됩니다.")
     @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
     @GetMapping("/api/v1/users/groups")
     public ResponseEntity<CommonResponse<List<GroupViewResponse>>> search(@RequestBody @Nullable GroupSearchRequest groupSearchRequest, @Nullable @LimitedPageSize Pageable pageable) {
