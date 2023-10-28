@@ -60,6 +60,7 @@ public class StoreController {
     }
 
     @Operation(summary = "가게 목록 조회", description = "내 현재 위치로부터 가까운 가게 조회(기본 3km) \n 검색조건 중 states는 O(운영중),B(일시중지),N(비운영),D(삭제) 중 선택하여 검색가능합니다. \n 기본 조건으로만 검색하려면 storeSearchReqeust, pageable 모두 전달하지 않으면 됩니다.")
+    @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
     @GetMapping("/api/v1/users/stores")
     public ResponseEntity<CommonResponse<List<StoreViewResponse>>> search(@RequestBody @Nullable StoreSearchRequest storeSearchRequest, @RequestBody @Nullable @LimitedPageSize Pageable pageable) {
 
