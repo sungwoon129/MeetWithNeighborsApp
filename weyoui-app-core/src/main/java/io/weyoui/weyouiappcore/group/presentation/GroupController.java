@@ -18,7 +18,9 @@ import io.weyoui.weyouiappcore.group.query.application.dto.GroupViewResponse;
 import io.weyoui.weyouiappcore.groupMember.command.application.GroupMemberService;
 import io.weyoui.weyouiappcore.groupMember.command.domain.GroupMemberId;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
+import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Null;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -75,7 +77,9 @@ public class GroupController {
     @Operation(summary = "모임 목록 조회", description = "모임 목록 조회")
     @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
     @GetMapping("/api/v1/users/groups")
-    public ResponseEntity<CommonResponse<List<GroupViewResponse>>> search(GroupSearchRequest groupSearchRequest, @LimitedPageSize Pageable pageable) {
+    public ResponseEntity<CommonResponse<List<GroupViewResponse>>> search(@RequestBody @Nullable GroupSearchRequest groupSearchRequest, @Nullable @LimitedPageSize Pageable pageable) {
+
+        if(groupSearchRequest == null) groupSearchRequest = new GroupSearchRequest();
 
         Page<Group> result = groupViewService.findByConditions(groupSearchRequest,pageable);
 

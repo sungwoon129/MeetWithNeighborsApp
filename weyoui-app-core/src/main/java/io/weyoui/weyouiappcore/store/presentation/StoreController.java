@@ -15,7 +15,9 @@ import io.weyoui.weyouiappcore.store.query.application.StoreViewService;
 import io.weyoui.weyouiappcore.store.query.application.dto.StoreSearchRequest;
 import io.weyoui.weyouiappcore.store.query.application.dto.StoreViewResponse;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
+import jakarta.annotation.Nullable;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -58,9 +60,11 @@ public class StoreController {
     }
 
     @Operation(summary = "가게 목록 조회", description = "내 현재 위치로부터 가까운 가게 조회(기본 3km) \n 기본 조건으로만 검색하려면 storeSearchRequest, pageable를 {}로 설정하면 됩니다.")
-    @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
     @GetMapping("/api/v1/users/stores")
-    public ResponseEntity<CommonResponse<List<StoreViewResponse>>> search(StoreSearchRequest storeSearchRequest, @LimitedPageSize Pageable pageable) {
+    public ResponseEntity<CommonResponse<List<StoreViewResponse>>> search(@RequestBody @Nullable StoreSearchRequest storeSearchRequest, @RequestBody @Nullable @LimitedPageSize Pageable pageable) {
+
+        if(storeSearchRequest == null) storeSearchRequest = new StoreSearchRequest();
+        if(pageable == null) pageable = PageRequest.of(0, 10);
 
         Page<StoreViewResponse> result = storeViewService.findByConditions(storeSearchRequest,pageable);
 
