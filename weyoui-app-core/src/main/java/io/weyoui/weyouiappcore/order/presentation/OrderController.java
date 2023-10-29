@@ -62,7 +62,7 @@ public class OrderController {
         return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
     }
 
-    @Operation(summary = "주문 목록 조회", description = "주문 목록 조회(검색 조건 ; 주문자 모임 ID, 주문자 회원 ID, 주문자 이름, 주문 상태, 주문 일) \n 검색조건 중 states는 O1(주문),02(결제요청),03(결제완료),04(주문확인),05(주문완료),06(주문취소) 중 선택하여 검색가능합니다. \n  기본 조건으로만 검색하려면 OrderSearchRequest, pageable 모두 전달하지 않으면 됩니다.")
+    @Operation(summary = "주문 목록 조회", description = "주문 목록 조회(검색 조건 ; 주문자 모임 ID, 주문자 회원 ID, 주문자 이름, 주문 상태, 주문 일) \n 검색조건 중 states는 O1(주문),02(결제요청),03(결제완료),04(주문확인),05(주문완료),06(주문취소) 중 선택하여 검색가능합니다. \n  기본 조건으로만 검색하려면 Orderer 필드의 name,userId,groupId의 값이 유효해야 합니다.")
     @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
     @GetMapping("/api/v1/users/orders")
     public ResponseEntity<CommonResponse<List<OrderViewResponse>>> findByConditions(@RequestBody @Nullable OrderSearchRequest orderSearchRequest, @Nullable @LimitedPageSize(maxSize = 100) Pageable pageable) {
