@@ -96,10 +96,11 @@ WeYouI(가제)는 SNS를 통해서 전 세계 사람들과 소통할 수 있지�
 + 결제서비스는 외부서비스를 사용한다고 가정하며, 실제로 구현하진 않는다. 서비스 요청까지만 구현한다.
 
 ### 기술 스택 ###
-+ SpringBoot 3.1
-+ Gradle 7.5
++ SpringBoot 3.1.0
++ Gradle 8.2
 + JPA(Hibernate 6.2.2 Final)
-+ MySql(Azure Database for Mysql)
++ QueryDSL 5.0.0
++ MySql(Azure Database for Mysql 5.7.43)
 + Message Queue : RabbitMQ : 주문 알람 처리 및 외부 결제서비스 호출 목적
 + Redis : JWT 토큰정보 관리 목적
 + Azure : 애플리케이션 배포 목적

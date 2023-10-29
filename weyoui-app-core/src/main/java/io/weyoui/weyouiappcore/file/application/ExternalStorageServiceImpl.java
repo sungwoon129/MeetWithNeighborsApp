@@ -11,6 +11,8 @@ public class ExternalStorageServiceImpl implements StorageService{
         return StorageType.findStorage(storageTypeCode).equals(StorageType.EXTERNAL);
     }
 
+
+    // TODO : S3 같은 외부 저장소가 추가되면 구현
     @Override
     public String save(MultipartFile file) {
         return null;
