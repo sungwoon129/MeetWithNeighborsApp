@@ -126,7 +126,7 @@ public class GroupController {
         return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
     }
 
-    @Operation(summary = "모임 구성원들에게 모임장소 도착 알림보내기", description = "자신을 제외한 모임 구성원들에게 모임장소 도착 알림 발송")
+    @Operation(summary = "모임 구성원들에게 모임장소 도착 알림보내기", description = "자신을 제외한 모임 구성원들에게 모임장소 도착 알림 발송(클라이언트 구현 후 App push)")
     @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
     @PostMapping("/api/v1/users/groups/{groupId}/alarm")
     public ResponseEntity<CommonResponse<String>> sendAlarmToMemberExceptMe(@LoginUserId UserId userId, @PathVariable GroupId groupId) {
