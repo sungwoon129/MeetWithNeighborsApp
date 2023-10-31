@@ -20,7 +20,6 @@ import io.weyoui.weyouiappcore.groupMember.command.domain.GroupMemberId;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Null;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -123,6 +122,15 @@ public class GroupController {
     @PutMapping("/api/v1/users/groups/{groupId}/state")
     public ResponseEntity<CommonResponse<?>> invalidateGroup(@PathVariable GroupId groupId) {
         groupService.invalidateGroup(groupId);
+
+        return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
+    }
+
+    @Operation(summary = "모임 구성원들에게 모임장소 도착 알림보내기", description = "자신을 제외한 모임 구성원들에게 모임장소 도착 알림 발송")
+    @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
+    @PostMapping("/api/v1/users/groups/{groupId}/alarm")
+    public ResponseEntity<CommonResponse<String>> sendAlarmToMemberExceptMe(@LoginUserId UserId userId, @PathVariable GroupId groupId) {
+        groupService.sendAlarmToMemberExceptMe(groupId, userId);
 
         return ResponseEntity.ok().body(new CommonResponse<>(ResultYnType.Y));
     }

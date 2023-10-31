@@ -26,7 +26,7 @@ public class OrderQueryService {
 
     @PerfLogging
     public Page<OrderViewResponse> findByConditions(OrderSearchRequest orderSearchRequest, Pageable pageable) {
-        if(orderSearchRequest.getOrderer() == null) throw new IllegalArgumentException("유효한 주문자 정보가 존재하지 않습니다.");
+        if(orderSearchRequest.getOrderer() == null) throw new IllegalArgumentException("주문자 정보가 존재하지 않습니다.");
         return orderQueryRepository.findByConditions(orderSearchRequest, pageable);
     }
 

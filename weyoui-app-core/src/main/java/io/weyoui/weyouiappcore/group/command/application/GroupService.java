@@ -21,10 +21,12 @@ public class GroupService {
 
     private final GroupRepository groupRepository;
     private final GroupViewService groupViewService;
+    private final AlarmService alarmService;
 
-    public GroupService(GroupRepository groupRepository, GroupViewService groupViewService) {
+    public GroupService(GroupRepository groupRepository, GroupViewService groupViewService, AlarmService alarmService) {
         this.groupRepository = groupRepository;
         this.groupViewService = groupViewService;
+        this.alarmService = alarmService;
     }
 
     public GroupId createGroup(GroupRequest groupRequest) {
@@ -104,5 +106,14 @@ public class GroupService {
         group.checkActivityTimeValidation();
         group.changeStateByCurrentTime();
 
+    }
+
+    public void sendAlarmToMemberExceptMe(GroupId groupId, UserId userId) {
+
+        Group group = groupViewService.findById(groupId);
+
+        GroupMember groupMember = group.getGroupMember(userId);
+
+        group.sendAlarmToMembers(groupMember, alarmService);
     }
 }

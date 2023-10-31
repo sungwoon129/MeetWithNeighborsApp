@@ -2,6 +2,7 @@ package io.weyoui.weyouiappcore.group.command.domain;
 
 import io.weyoui.weyouiappcore.common.model.Address;
 import io.weyoui.weyouiappcore.common.model.BaseTimeEntity;
+import io.weyoui.weyouiappcore.group.command.application.AlarmService;
 import io.weyoui.weyouiappcore.group.query.application.dto.GroupViewResponse;
 import io.weyoui.weyouiappcore.groupMember.command.domain.GroupMember;
 import io.weyoui.weyouiappcore.user.command.domain.User;
@@ -183,5 +184,9 @@ public class Group extends BaseTimeEntity {
     public void checkGroupMember(User user) {
         boolean isMember = members.stream().anyMatch(groupMember -> groupMember.isActiveGroupMember(user.getId()));
         if(!isMember) throw new NoSuchElementException("요청한 회원은 이 그룹의 구성원이 아닙니다.");
+    }
+
+    public void sendAlarmToMembers(GroupMember exceptGroupMember, AlarmService alarmService) {
+        alarmService.sendAlarm(members.stream().toList(), exceptGroupMember);
     }
 }
