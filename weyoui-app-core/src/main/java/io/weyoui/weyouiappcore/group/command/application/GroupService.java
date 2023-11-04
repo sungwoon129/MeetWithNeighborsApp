@@ -53,6 +53,21 @@ public class GroupService {
         return groupId;
     }
 
+    public GroupId createGroup(GroupRequest groupRequest, UserId userId) {
+        GroupId groupId = groupRepository.nextId();
+        List<ErrorResponse> errors = validateGroupRequest(groupRequest);
+
+        if(!errors.isEmpty()) throw new ValidationErrorException(errors);
+
+        Group group = Group.createGroup(groupRequest,userId,groupId);
+
+        group.changeStateByCurrentTime();
+
+        groupRepository.save(group);
+
+        return groupId;
+    }
+
     private List<ErrorResponse> validateGroupRequest(GroupRequest groupRequest) {
         return new GroupValidator().validate(groupRequest);
     }

@@ -10,4 +10,9 @@ import lombok.NoArgsConstructor;
 public class GroupAddResponse {
     private String groupId;
     private String groupMemberId;
+
+
+    public GroupAddResponse(String groupId) {
+        this.groupId = groupId;
+    }
 }

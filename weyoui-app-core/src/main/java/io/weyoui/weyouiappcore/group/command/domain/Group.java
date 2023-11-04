@@ -1,9 +1,12 @@
 package io.weyoui.weyouiappcore.group.command.domain;
 
+import io.weyoui.weyouiappcore.common.event.Events;
 import io.weyoui.weyouiappcore.common.model.Address;
 import io.weyoui.weyouiappcore.common.model.BaseTimeEntity;
 import io.weyoui.weyouiappcore.group.command.application.AlarmService;
+import io.weyoui.weyouiappcore.group.command.application.dto.GroupRequest;
 import io.weyoui.weyouiappcore.group.query.application.dto.GroupViewResponse;
+import io.weyoui.weyouiappcore.groupMember.command.application.GroupMemberService;
 import io.weyoui.weyouiappcore.groupMember.command.domain.GroupMember;
 import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
@@ -73,6 +76,24 @@ public class Group extends BaseTimeEntity {
         this.place = place;
         this.startTime = startTime;
         this.endTime = endTime;
+    }
+
+    public static Group createGroup(GroupRequest groupRequest, UserId userId, GroupId groupId) {
+
+        Group group = Group.builder()
+                .id(groupId)
+                .name(groupRequest.getName())
+                .category(GroupCategory.findByName(groupRequest.getCategory()))
+                .capacity(groupRequest.getCapacity())
+                .description(groupRequest.getDescription())
+                .place(groupRequest.getPlace())
+                .startTime(groupRequest.getStartTime())
+                .endTime(groupRequest.getEndTime())
+                .build();
+
+        Events.raise(new GroupMemberAddEvent(userId, groupId));
+
+        return group;
     }
 
     public GroupViewResponse toResponseDto() {

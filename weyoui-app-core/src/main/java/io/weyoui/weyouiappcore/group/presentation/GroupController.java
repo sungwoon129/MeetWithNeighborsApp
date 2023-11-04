@@ -46,10 +46,11 @@ public class GroupController {
     @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
     @PostMapping("/api/v1/users/group")
     public ResponseEntity<CommonResponse<GroupAddResponse>> createGroup(@LoginUserId UserId userId, @RequestBody @Valid GroupRequest groupRequest) {
-        GroupId groupId = groupService.createGroup(groupRequest);
-        GroupMemberId groupMemberId = groupMemberService.addMemberToGroupAsLeader(userId, groupId);
+        GroupId groupId = groupService.createGroup(groupRequest, userId);
+        //GroupMemberId groupMemberId = groupMemberService.addMemberToGroupAsLeader(userId, groupId);
 
-        GroupAddResponse groupAddResponseBody = new GroupAddResponse(groupId.getId(), groupMemberId.getId());
+        //GroupAddResponse groupAddResponseBody = new GroupAddResponse(groupId.getId(), groupMemberId.getId());
+        GroupAddResponse groupAddResponseBody = new GroupAddResponse(groupId.getId());
 
         return ResponseEntity.ok().body(new CommonResponse<>(groupAddResponseBody));
     }
