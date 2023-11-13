@@ -20,6 +20,9 @@ public class StoreServiceTest {
     @Autowired
     StoreService storeService;
 
+    /**
+     * service 단위 테스트의 경우 비즈니스 로직에서 throw하는 예외를 발생시키지만 통합테스트로 구현해 MockMvc에서 HTTP 메소드로 요청을 보낼경우 예외내용을 클라이언트에 전달
+     */
     @DisplayName("가게 주인이 아닌 회원은 가게를 수정 시도를 하면 NoAuthException을 발생시킨다")
     @Test
     void updateStoreTest_fail() {
