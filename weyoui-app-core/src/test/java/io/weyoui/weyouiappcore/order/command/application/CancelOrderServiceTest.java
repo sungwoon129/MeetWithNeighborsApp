@@ -24,7 +24,6 @@ class CancelOrderServiceTest {
     @Test
     void canCancelOrder_test() throws InterruptedException {
         //given
-        // TODO. rabbitMQ connection 테스트 필요
         OrderId orderId = new OrderId("order1");
         Canceller canceller = new Canceller("user1", "group1");
 

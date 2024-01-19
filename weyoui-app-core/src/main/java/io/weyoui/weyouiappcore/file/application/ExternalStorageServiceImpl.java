@@ -12,7 +12,7 @@ public class ExternalStorageServiceImpl implements StorageService{
     }
 
 
-    // TODO : S3 같은 외부 저장소가 추가되면 구현
+    // TODO : S3 같은 외부 저장소를 고려한 메소드
     @Override
     public String save(MultipartFile file) {
         return null;

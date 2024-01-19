@@ -13,7 +13,7 @@ public class ExternalAlarmService implements AlarmService {
     @Override
     public void sendAlarm(List<GroupMember> groupMembers, GroupMember exceptGroupMember) {
 
-        // TODO : 클라이언트 구현 후 firebase와 같은 외부서비스에 push 요청처리. 메시지 큐에 위임하는 것도 방법
+        // TODO : 클라이언트 구현 후 firebase와 같은 외부서비스에 push 요청처리한다고 가정. 메시지 큐에 위임하는 것도 방법
         groupMembers.stream()
                 .filter(groupMember -> groupMember.getGroupMemberId() != exceptGroupMember.getGroupMemberId())
                 .forEach(groupMember -> log.info(exceptGroupMember.getUser().getNickname() + "님이 약속장소에 도착하였습니다."));
