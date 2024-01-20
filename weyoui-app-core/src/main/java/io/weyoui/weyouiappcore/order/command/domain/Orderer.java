@@ -1,5 +1,7 @@
 package io.weyoui.weyouiappcore.order.command.domain;
 
+import io.weyoui.weyouiappcore.common.exception.NoAuthException;
+import io.weyoui.weyouiappcore.common.exception.ValidationErrorException;
 import io.weyoui.weyouiappcore.group.command.domain.GroupId;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import jakarta.persistence.*;
@@ -49,5 +51,13 @@ public class Orderer {
     @Override
     public int hashCode() {
         return Objects.hash(groupId, userId);
+    }
+
+    public void verifyGroupAndUser(GroupId groupId, UserId userId) {
+        if(groupId != this.groupId || userId != this.userId) throw new NoAuthException("유효한 주문자가 아닙니다.");
+    }
+
+    public void verifyGroup(GroupId groupId, UserId userId) {
+        if(groupId != this.groupId) throw new NoAuthException("유효한 주문자가 아닙니다.");
     }
 }
