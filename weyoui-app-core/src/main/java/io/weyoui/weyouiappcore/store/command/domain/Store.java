@@ -7,6 +7,7 @@ import io.weyoui.weyouiappcore.product.command.application.dto.ProductRequest;
 import io.weyoui.weyouiappcore.product.command.domain.Product;
 import io.weyoui.weyouiappcore.product.command.domain.ProductId;
 import io.weyoui.weyouiappcore.product.command.domain.ProductState;
+import io.weyoui.weyouiappcore.review.command.application.dto.Score;
 import io.weyoui.weyouiappcore.store.query.application.dto.StoreViewResponse;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -141,9 +142,10 @@ public class Store extends BaseTimeEntity {
         product.setStateByCode(ProductState.DELETED.getCode());
     }
 
-    public void calcRating(float avgRating) {
+    public void calcRating(float rating) {
         float sum = rating * reviewCount;
         this.reviewCount += 1;
-        this.rating = (sum + avgRating) / reviewCount;
+        this.rating = (sum + rating) / reviewCount;
     }
+
 }

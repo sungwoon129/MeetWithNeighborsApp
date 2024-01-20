@@ -25,13 +25,13 @@ public class OrderReviewService {
 
 
     @Transactional
-    public ReviewId addReview(ReviewOrderRequest reviewOrderRequest, UserId userId, OrderId orderId) {
+    public ReviewId writeReview(ReviewOrderRequest reviewOrderRequest, UserId userId, OrderId orderId) {
 
         Order order = orderQueryService.findById(orderId);
 
         Reviewer reviewer = reviewerService.createReviewer(reviewOrderRequest.getGroupId(),userId, order.getOrderer());
         ReviewId reviewId = reviewRepository.nextId();
-        ReviewStore reviewStore = reviewStoreService.createStore(order.getOrderStore().getStoreId());
+        ReviewStore reviewStore = reviewStoreService.createReviewStore(order.getOrderStore().getStoreId(), reviewOrderRequest.getRating());
 
         Review review = Review.builder()
                 .reviewId(reviewId)

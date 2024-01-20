@@ -1,5 +1,8 @@
 package io.weyoui.weyouiappcore.review.command.application.dto;
 
+import lombok.Getter;
+
+@Getter
 public enum Score {
     ONE(1),
     TWO(2),
