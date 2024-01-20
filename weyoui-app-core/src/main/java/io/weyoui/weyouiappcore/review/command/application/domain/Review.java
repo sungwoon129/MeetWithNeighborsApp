@@ -1,16 +1,16 @@
 package io.weyoui.weyouiappcore.review.command.application.domain;
 
+import io.weyoui.weyouiappcore.common.exception.TimeOverException;
 import io.weyoui.weyouiappcore.common.model.BaseTimeEntity;
-import io.weyoui.weyouiappcore.order.command.domain.OrderStore;
 import io.weyoui.weyouiappcore.review.command.application.dto.Score;
-import io.weyoui.weyouiappcore.store.command.domain.StoreId;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -30,15 +30,22 @@ public class Review extends BaseTimeEntity {
 
     private Score score;
 
-    @Builder
-    public Review(ReviewId reviewId, Reviewer reviewer, ReviewStore reviewStore, String comment, Score score) {
+    public Review(ReviewId reviewId, Reviewer reviewer, ReviewStore reviewStore, String comment, Score score, LocalDateTime orderDate) {
 
         setReviewStore(reviewStore);
+        validWithin3days(orderDate);
 
         this.id = reviewId;
         this.reviewer = reviewer;
         this.comment = comment;
         this.score = score;
+    }
+
+    private void validWithin3days(LocalDateTime orderDate) {
+        LocalDateTime now = LocalDateTime.now();
+        if(now.isAfter(orderDate.plusDays(3))) {
+            throw new TimeOverException("리뷰 작성은 주문일로부터 3일 이내에 가능합니다.");
+        }
     }
 
     private void setReviewStore(ReviewStore reviewStore) {
