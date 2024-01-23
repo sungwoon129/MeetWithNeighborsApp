@@ -5,10 +5,11 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.weyoui.weyouiappcore.common.model.CommonResponse;
 import io.weyoui.weyouiappcore.config.app_config.LoginUserId;
 import io.weyoui.weyouiappcore.order.command.domain.OrderId;
-import io.weyoui.weyouiappcore.review.command.application.OrderReviewService;
+import io.weyoui.weyouiappcore.review.command.application.ReviewService;
 import io.weyoui.weyouiappcore.review.command.application.domain.ReviewId;
 import io.weyoui.weyouiappcore.review.command.application.dto.ReviewOrderRequest;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ReviewController {
 
-    private final OrderReviewService orderReviewService;
+    private final ReviewService reviewService;
 
     @Operation(summary = "가게 리뷰", description = "상품을 주문한 가게에 대한 리뷰 작성")
     @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
     @PostMapping("/api/v1/users/order/{orderId}/review")
-    public ResponseEntity<CommonResponse<ReviewId>> writeReview(@PathVariable OrderId orderId, @LoginUserId UserId userId, @RequestBody ReviewOrderRequest reviewOrderRequest) {
-        ReviewId reviewId = orderReviewService.writeReview(reviewOrderRequest, userId, orderId);
+    public ResponseEntity<CommonResponse<ReviewId>> writeReview(@PathVariable OrderId orderId, @LoginUserId UserId userId, @RequestBody @Valid ReviewOrderRequest reviewOrderRequest) {
+        ReviewId reviewId = reviewService.writeReview(reviewOrderRequest, userId, orderId);
 
         return ResponseEntity.ok().body(new CommonResponse<>(reviewId));
     }

@@ -24,21 +24,27 @@ public class Review extends BaseTimeEntity {
     private Reviewer reviewer;
 
     @Embedded
+    private ReviewOrder reviewOrder;
+
+    @Embedded
     private ReviewStore reviewStore;
 
     private String comment;
 
     private Score score;
 
-    public Review(ReviewId reviewId, Reviewer reviewer, ReviewStore reviewStore, String comment, Score score, LocalDateTime orderDate) {
+
+
+    public Review(ReviewId reviewId, Reviewer reviewer, ReviewStore reviewStore, String comment, Score score, ReviewOrder reviewOrder) {
 
         setReviewStore(reviewStore);
-        validWithin3days(orderDate);
+        validWithin3days(reviewOrder.getOrderCompleteDate());
 
         this.id = reviewId;
         this.reviewer = reviewer;
         this.comment = comment;
         this.score = score;
+        this.reviewOrder = reviewOrder;
     }
 
     private void validWithin3days(LocalDateTime orderDate) {
