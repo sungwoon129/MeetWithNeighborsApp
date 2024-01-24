@@ -13,13 +13,13 @@ public class Reviewer {
 
     @Embedded
     @AttributeOverrides(
-            @AttributeOverride(name = "id", column = @Column(name = "orderer_id"))
+            @AttributeOverride(name = "id", column = @Column(name = "review_group_id"))
     )
     private GroupId groupId;
 
     @Embedded
     @AttributeOverrides(
-            @AttributeOverride(name = "id", column = @Column(name = "user_id"))
+            @AttributeOverride(name = "id", column = @Column(name = "review_user_id"))
     )
     private UserId userId;
 
