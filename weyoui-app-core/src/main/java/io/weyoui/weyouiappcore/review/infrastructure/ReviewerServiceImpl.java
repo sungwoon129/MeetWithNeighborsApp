@@ -20,17 +20,16 @@ public class ReviewerServiceImpl implements ReviewerService {
 
     private final UserViewService userViewService;
     private final GroupViewService groupViewService;
-    private final OrdererService ordererService;
 
 
     @Override
-    public Reviewer createReviewer(GroupId groupId, UserId userId, Orderer orderer) {
+    public Reviewer createReviewer(GroupId groupId, UserId requestUserId, Orderer orderer) {
 
         Group group = groupViewService.findById(groupId);
-        User user = userViewService.findById(userId);
+        User user = userViewService.findById(requestUserId);
 
         group.checkGroupMember(user);
-        orderer.verifyGroup(groupId, userId);
+        orderer.verifyGroup(groupId);
 
         return new Reviewer(group.getId(), user.getId(), user.getNickname(),user.getDeviceInfo().getPhone());
     }
