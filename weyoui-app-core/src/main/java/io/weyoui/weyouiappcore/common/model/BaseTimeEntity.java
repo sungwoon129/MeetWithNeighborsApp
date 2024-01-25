@@ -1,5 +1,6 @@
 package io.weyoui.weyouiappcore.common.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
@@ -14,9 +15,11 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class BaseTimeEntity {
 
+    @Column(name = "created_time")
     @CreatedDate
     private LocalDateTime createdTime;
 
+    @Column(name = "last_modified_time")
     @LastModifiedDate
     private LocalDateTime lastModifiedTime;
 }

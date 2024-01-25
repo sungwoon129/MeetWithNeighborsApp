@@ -54,10 +54,10 @@ public class Orderer {
     }
 
     public void verifyGroupAndUser(GroupId groupId, UserId userId) {
-        if(groupId != this.groupId || userId != this.userId) throw new NoAuthException("유효한 주문자가 아닙니다.");
+        if(!groupId.equals(this.groupId) || !userId.equals(this.userId)) throw new NoAuthException("유효한 주문자가 아닙니다.");
     }
 
     public void verifyGroup(GroupId groupId) {
-        if(groupId != this.groupId) throw new NoAuthException("유효한 주문자가 아닙니다.");
+        if(!groupId.equals(this.groupId)) throw new NoAuthException("유효한 주문자가 아닙니다.");
     }
 }

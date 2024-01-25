@@ -37,7 +37,7 @@ class ReviewServiceTest {
     UserViewService userViewService;
 
     @Autowired
-    GroupViewService groupId;
+    GroupViewService groupViewService;
 
     @Autowired
     OrderQueryService orderQueryService;
@@ -69,7 +69,7 @@ class ReviewServiceTest {
         float originalRating =  store.getRating();
 
 
-        OrderId orderId = new OrderId("order1");
+        OrderId orderId = new OrderId("order2");
         GroupId groupId = new GroupId("group1");
         UserId userId = new UserId("user1");
 
@@ -85,7 +85,8 @@ class ReviewServiceTest {
         reviewService.writeReview(reviewOrderRequest,userId,orderId);
 
         //then
-        assertThat(expected).isEqualTo(store.getRating());
+        Store updateStore = storeViewService.findById(storeId);
+        assertThat(expected).isEqualTo(updateStore.getRating());
     }
 
 

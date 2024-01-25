@@ -45,9 +45,10 @@ public class Store extends BaseTimeEntity {
     private Set<Product> productInfos = new HashSet<>();
 
 
-    private Float rating = 0.0f;
+    private Float rating;
 
-    private long reviewCount = 0;
+    @Column(name = "review_count")
+    private long reviewCount;
 
     @Enumerated(EnumType.STRING)
     private StoreCategory category;
@@ -70,6 +71,7 @@ public class Store extends BaseTimeEntity {
         this.category = category;
         this.state = state;
         this.description = description;
+        this.rating = 0f;
     }
 
     public Product createProduct(ProductId productId, ProductRequest productRequest) {

@@ -6,14 +6,12 @@ import io.weyoui.weyouiappcore.common.model.BaseTimeEntity;
 import io.weyoui.weyouiappcore.group.command.application.AlarmService;
 import io.weyoui.weyouiappcore.group.command.application.dto.GroupRequest;
 import io.weyoui.weyouiappcore.group.query.application.dto.GroupViewResponse;
-import io.weyoui.weyouiappcore.groupMember.command.application.GroupMemberService;
 import io.weyoui.weyouiappcore.groupMember.command.domain.GroupMember;
 import io.weyoui.weyouiappcore.user.command.domain.User;
 import io.weyoui.weyouiappcore.user.command.domain.UserId;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -21,7 +19,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 @Getter
-@Table(name = "groups")
+@Table(name = "gathering")
 @Entity
 public class Group extends BaseTimeEntity {
 
@@ -35,8 +33,7 @@ public class Group extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private GroupCategory category;
 
-    @ColumnDefault("1")
-    private int capacity;
+    private Integer capacity;
 
     @Lob
     private String description;
@@ -76,6 +73,11 @@ public class Group extends BaseTimeEntity {
         this.place = place;
         this.startTime = startTime;
         this.endTime = endTime;
+    }
+
+    @PrePersist
+    private void prePersist() {
+        this.capacity = this.capacity == null ? 1 : this.capacity;
     }
 
     public static Group createGroup(GroupRequest groupRequest, UserId userId, GroupId groupId) {
