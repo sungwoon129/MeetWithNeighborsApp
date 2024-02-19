@@ -48,7 +48,7 @@ public class GuestController {
     )
     @Operation(summary = "회원 로그인", description = "email과 password를 이용해 로그인 합니다")
     @PostMapping("/api/v1/guest/login")
-    public ResponseEntity<CommonResponse<UserResponse.Token>> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<CommonResponse<UserResponse.Token>> login(@RequestBody @Valid LoginRequest loginRequest) {
 
         UserResponse.Token token = userTokenService.login(loginRequest);
 
