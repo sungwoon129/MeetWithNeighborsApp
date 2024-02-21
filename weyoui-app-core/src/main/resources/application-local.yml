@@ -7,9 +7,9 @@ spring:
       on-profile: local
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/weyoui?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3308/weyoui?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
-    password: root_pw1234!#
+    password: 1234
   servlet:
     multipart:
       enabled: true
@@ -18,15 +18,15 @@ spring:
   jpa:
     open-in-view: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: create-drop
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
     properties:
       hibernate.format_sql: true
-      dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+      #dialect: org.hibernate.dialect.MySQLDialect
       hibernate:
-        dialect: org.hibernate.spatial.dialect.mysql.MySQL56InnoDBSpatialDialect
+        dialect: org.hibernate.spatial.dialect.mysql.MySQLSpatialDialect
         #default_batch_fetch_size: 2000
   rabbitmq:
     host: localhost
@@ -52,6 +52,7 @@ spring:
 logging:
   level:
     org.hibernate:
+      # 실제로 실행되는 쿼리와 쿼리파라미터를 확인하기 위함
       orm.jdbc.bind: trace
       type: trace
       stat: debug

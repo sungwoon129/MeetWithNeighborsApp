@@ -1,28 +1,54 @@
 spring:
+  devtools:
+    livereload:
+      enabled: off
   config:
     activate:
       on-profile: test
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/weyoui?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3308/weyoui?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
     password: 1234
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 30MB
   jpa:
     open-in-view: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
     properties:
       hibernate.format_sql: true
-      dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+      #dialect: org.hibernate.dialect.MySQLDialect
       hibernate:
-        dialect: org.hibernate.spatial.dialect.mysql.MySQL56InnoDBSpatialDialect
+        dialect: org.hibernate.spatial.dialect.mysql.MySQLSpatialDialect
+        #default_batch_fetch_size: 2000
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
   data:
     redis:
       host: localhost
       port: 6379
+        #security:
+        #oauth2:
+        #client:
+        #registration:
+        #naver:
+        #client-id: id
+        #client-secret: secret
+        #redirect-uri: {baseUrl}/{action}/oauth2/code/{registrationId}
+        #authorization-grant-type: authorization_code
+      #scope: nickname,email,gender,age,profile_image
+      #client-name: Naver
+
 logging:
   level:
     org.hibernate:
@@ -30,15 +56,51 @@ logging:
       type: trace
       stat: debug
 
+rabbitmq:
+  queue:
+    name: weyoui.paymentQueue
+  exchange:
+    name: weyoui.paymentExchange
+  routing:
+    pay:
+      key: weyoui.pay
+    refund:
+      key: weyoui.key
+
+
+
+
+
+
 jwt:
   token:
     # 30분
     #expiration-in-refresh-token: 1800000
     # 7일
     #expiration-in-access-token: 604800000 7일
-    expiration-in-refresh-token: 240000
-    expiration-in-access-token: 180000
+    expiration-in-refresh-token: 1200000
+    expiration-in-access-token: 600000
     secret-key: we3y6o54ui134nsndnfenGR34zcR3kiKM5MVz3po5zer10Ge5fKqI98vRCbLiqpz40t1t5ef9Zc
 
-baseUrl: http://localhost:8080
+
+filePath: D:\\weyoui-file
+
+springdoc:
+  swagger-ui:
+    path: /api-docs/index.html
+    groups-order: desc
+    doc-expansion: none
+    tags-sorter: alpha
+    operations-sorter: method
+  api-docs:
+    path: /api-docs
+  show-actuator: true
+  default-produces-media-type: application/json
+
+api:
+  server:
+    baseUrl: http://localhost:8080
+    description: local
+  client:
+    allow-origin: http://localhost:3000
 
